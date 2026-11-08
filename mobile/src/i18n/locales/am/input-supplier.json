@@ -1,0 +1,86 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "መሸጫዎን ያስተዳድሩ",
+    "stats": {
+      "products": "ምርቶች",
+      "orders": "ትዕዛዞች",
+      "revenue": "ገቢ",
+      "lowStock": "ዝቅተኛ ክምችት ዕቃዎች"
+    },
+    "sections": {
+      "recentOrders": "የቅርብ ጊዜ ትዕዛዞች",
+      "topSelling": "ከፍተኛ ሽያጭ",
+      "lowStockAlerts": "ዝቅተኛ ክምችት ማንቂያዎች"
+    }
+  },
+  "storeProfile": {
+    "title": "የመሸጫ መገለጫ",
+    "edit": "የመሸጫ መገለጫ አስተካክል",
+    "fields": {
+      "storeName": "የመሸጫ ስም",
+      "description": "መግለጫ",
+      "logo": "አርማ",
+      "banner": "ባነር",
+      "businessAddress": "የንግድ አድራሻ",
+      "contactEmail": "የኢሜይል አድራሻ",
+      "contactPhone": "የስልክ ቁጥር",
+      "operatingHours": "የሥራ ሰዓቶች",
+      "storeOpen": "መሸጫ ክፍት"
+    }
+  },
+  "catalog": {
+    "title": "የእኔ ካታሎግ",
+    "addInput": "ግብዓት ጨምር",
+    "editInput": "ግብዓት አስተካክል",
+    "empty": "ካታሎግዎ ባዶ ነው",
+    "fields": {
+      "name": "የምርት ስም",
+      "category": "ምድብ",
+      "inputType": "የግብዓት ዓይነት",
+      "description": "መግለጫ",
+      "price": "ዋጋ (ብር)",
+      "unit": "መለኪያ",
+      "stockQuantity": "የክምችት መጠን",
+      "specifications": "ዝርዝር መረጃዎች",
+      "images": "ምስሎች"
+    },
+    "categories": {
+      "seeds": "ዘሮች",
+      "fertilizers": "ማዳበሪያዎች",
+      "pesticides": "ፀረ-ተባዮች",
+      "tools": "መሳሪያዎች",
+      "equipment": "ውቅር"
+    }
+  },
+  "inventory": {
+    "title": "ክምችት",
+    "stockIn": "ክምችት ገቢ",
+    "stockOut": "ክምችት ወጪ",
+    "adjustment": "ማስተካከያ",
+    "lowStock": "ዝቅተኛ ክምችት",
+    "outOfStock": "ከክምችት ውጪ",
+    "movements": "የክምችት እንቅስቃሴዎች"
+  },
+  "orders": {
+    "title": "ትዕዛዞች",
+    "empty": "እስካሁን ምንም ትዕዛዝ የለም",
+    "actions": {
+      "accept": "ተቀበል",
+      "reject": "አትቀበል",
+      "markProcessing": "በሂደት ላይ ብለው ምልክት ያድርጉ",
+      "markReady": "ዝግጁ ብለው ምልክት ያድርጉ",
+      "markCompleted": "ተጠናቅቋል ብለው ምልክት ያድርጉ"
+    }
+  },
+  "finance": {
+    "title": "ክፍያዎች እና ፋይናንስ",
+    "overview": "አጠቃላይ እይታ",
+    "payments": "ክፍያዎች",
+    "transactions": "ግብይቶች",
+    "invoices": "ደረሰኞች",
+    "refunds": "ተመላሾች",
+    "totalRevenue": "ጠቅላላ ገቢ",
+    "pendingPayouts": "በመጠባበቅ ላይ ያሉ ክፍያዎች"
+  }
+}

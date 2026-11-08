@@ -1,0 +1,49 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "jsx": "react-native",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@assets/*": ["assets/*"],
+      "@components/*": ["src/shared/components/*"],
+      "@hooks/*": ["src/shared/hooks/*"],
+      "@services/*": ["src/shared/services/*"],
+      "@utils/*": ["src/shared/utils/*"],
+      "@constants/*": ["src/shared/constants/*"],
+      "@store/*": ["src/shared/store/*"],
+      "@styles/*": ["src/shared/styles/*"],
+      "@modules/*": ["src/modules/*"],
+      "@navigation/*": ["src/navigation/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@i18n/*": ["src/i18n/*"],
+      "@app/*": ["src/app/*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "ios",
+    "android",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+}

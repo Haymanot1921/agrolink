@@ -1,0 +1,73 @@
+{
+  "permissions": {
+    "camera": {
+      "title": "Camera permission",
+      "message": "AgroLink needs camera access to upload photos.",
+      "action": "Allow camera",
+      "denied": "Camera permission was denied. Enable it in Settings."
+    },
+    "photos": {
+      "title": "Photos permission",
+      "message": "AgroLink needs access to your photos to attach images.",
+      "action": "Allow photos",
+      "denied": "Photos permission was denied. Enable it in Settings."
+    },
+    "location": {
+      "title": "Location permission",
+      "message": "AgroLink uses your location to show nearby products and set farm addresses.",
+      "action": "Allow location",
+      "denied": "Location permission was denied. Enable it in Settings."
+    },
+    "microphone": {
+      "title": "Microphone permission",
+      "message": "AgroLink uses the microphone for voice messages and video consultations.",
+      "action": "Allow microphone",
+      "denied": "Microphone permission was denied. Enable it in Settings."
+    },
+    "notifications": {
+      "title": "Notifications permission",
+      "message": "Enable notifications to receive order updates and important alerts.",
+      "action": "Allow notifications",
+      "denied": "Notifications permission was denied. Enable it in Settings."
+    },
+    "openSettings": "Open Settings"
+  },
+  "network": {
+    "offlineTitle": "No internet connection",
+    "offlineBody": "Please check your connection and try again.",
+    "online": "Back online",
+    "slowConnection": "Slow connection detected"
+  },
+  "biometric": {
+    "title": "Biometric login",
+    "enable": "Enable biometric login",
+    "disable": "Disable biometric login",
+    "promptMessage": "Log in to AgroLink",
+    "promptCancel": "Cancel",
+    "success": "Authenticated successfully",
+    "failed": "Authentication failed. Please try again.",
+    "notAvailable": "Biometric login is not available on this device",
+    "notEnrolled": "No biometrics enrolled on this device"
+  },
+  "push": {
+    "channelOrders": "Orders",
+    "channelMessages": "Messages",
+    "channelConsultations": "Consultations",
+    "channelTickets": "Support"
+  },
+  "deepLink": {
+    "invalid": "This link is not valid",
+    "expired": "This link has expired"
+  },
+  "updates": {
+    "newVersion": "New version available",
+    "updateNow": "Update now",
+    "later": "Later",
+    "maintenance": "AgroLink is under maintenance. Please try again later."
+  },
+  "gestures": {
+    "swipeDelete": "Swipe to delete",
+    "pullToRefresh": "Pull to refresh",
+    "longPress": "Long press for more options"
+  }
+}

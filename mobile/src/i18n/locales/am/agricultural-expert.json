@@ -1,0 +1,106 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "የምክክር አጠቃላይ እይታዎ",
+    "stats": {
+      "pendingRequests": "በመጠባበቅ ላይ ያሉ ጥያቄዎች",
+      "upcomingConsultations": "የሚመጡ",
+      "completedConsultations": "ተጠናቅቀዋል",
+      "earnings": "ገቢ"
+    },
+    "sections": {
+      "upcomingConsultations": "የሚመጡ ምክክሮች",
+      "pendingRequests": "በመጠባበቅ ላይ ያሉ ጥያቄዎች",
+      "recentMessages": "የቅርብ ጊዜ መልዕክቶች"
+    }
+  },
+  "expertProfile": {
+    "title": "የባለሙያ መገለጫ",
+    "edit": "መገለጫ አስተካክል",
+    "fields": {
+      "biography": "የሕይወት ታሪክ",
+      "education": "ትምህርት",
+      "experienceYears": "የልምድ ዓመታት",
+      "certifications": "የምስክር ወረቀቶች",
+      "languages": "የሚናገሯቸው ቋንቋዎች",
+      "consultationFee": "የምክክር ክፍያ (ብር)",
+      "specializations": "ልዩ ሙያዎች"
+    }
+  },
+  "specializations": {
+    "title": "ልዩ ሙያዎች",
+    "add": "ልዩ ሙያ ጨምር",
+    "cropExpertise": "የሰብል ሙያ",
+    "livestockExpertise": "የእንስሳት ሙያ",
+    "soilWater": "አፈር እና ውሃ",
+    "pestDisease": "ተባይ እና በሽታ",
+    "categories": {
+      "crop_protection": "የሰብል ጥበቃ",
+      "soil_fertility": "የአፈር ለምነት",
+      "irrigation": "መስኖ",
+      "livestock_health": "የእንስሳት ጤና",
+      "post_harvest": "ከመኸር በኋላ"
+    }
+  },
+  "requests": {
+    "title": "የምክክር ጥያቄዎች",
+    "empty": "በመጠባበቅ ላይ ያሉ ጥያቄዎች የሉም",
+    "actions": {
+      "accept": "ተቀበል",
+      "decline": "አትቀበል",
+      "requestClarification": "ማብራሪያ ጠይቅ",
+      "reschedule": "እንደገና ቀን ያስይዙ"
+    },
+    "details": {
+      "farmer": "ገበሬ",
+      "problem": "ችግር",
+      "attachments": "ዓባሪዎች",
+      "preferredTime": "ተመራጭ ጊዜ"
+    }
+  },
+  "consultations": {
+    "title": "ምክክሮች",
+    "upcoming": "የሚመጡ",
+    "active": "ንቁ",
+    "completed": "ተጠናቅቀዋል",
+    "cancelled": "ተሰርዘዋል",
+    "notes": "ማስታወሻዎች",
+    "recordNotes": "የምክክር ማስታወሻ ይመዝግቡ",
+    "diagnosis": "ምርመራ",
+    "recommendations": "ምክረ ሀሳቦች",
+    "followUp": "ክትትል"
+  },
+  "schedule": {
+    "title": "መርሐግብር",
+    "availability": "ተገኝነት",
+    "blockedTime": "የተዘጋ ጊዜ",
+    "upcoming": "የሚመጡ ቀጠሮዎች"
+  },
+  "cases": {
+    "title": "የጉዳይ አስተዳደር",
+    "createCase": "ጉዳይ ፍጠር",
+    "empty": "ምንም ጉዳዮች የሉም",
+    "fields": {
+      "subject": "ርዕስ",
+      "problemType": "የችግር ዓይነት",
+      "description": "መግለጫ",
+      "crop": "ሰብል",
+      "attachments": "ዓባሪዎች"
+    }
+  },
+  "advice": {
+    "title": "የባለሙያ ምክር",
+    "createAdvice": "ምክር ፍጠር",
+    "history": "የምክር ታሪክ",
+    "recommendedActions": "የሚመከሩ እርምጃዎች",
+    "treatmentPlan": "የሕክምና እቅድ",
+    "followUp": "ክትትል"
+  },
+  "earnings": {
+    "title": "ገቢ እና ክፍያዎች",
+    "totalEarned": "ጠቅላላ ገቢ",
+    "pendingPayouts": "በመጠባበቅ ላይ ያሉ ክፍያዎች",
+    "payoutHistory": "የክፍያ ታሪክ",
+    "requestPayout": "ክፍያ ጠይቅ"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "የእርሻዎ አጠቃላይ እይታ እነሆ",
+    "stats": {
+      "products": "ምርቶች",
+      "activeProducts": "ንቁ ዝርዝሮች",
+      "orders": "ትዕዛዞች",
+      "pendingOrders": "በመጠባበቅ ላይ",
+      "revenue": "ገቢ",
+      "thisMonth": "በዚህ ወር"
+    },
+    "sections": {
+      "recentOrders": "የቅርብ ጊዜ ትዕዛዞች",
+      "topProducts": "ከፍተኛ ምርቶች",
+      "recentActivity": "የቅርብ ጊዜ እንቅስቃሴ",
+      "weather": "የአየር ሁኔታ"
+    },
+    "quickActions": {
+      "addProduct": "ምርት ጨምር",
+      "viewOrders": "ትዕዛዞችን ተመልከት",
+      "askExpert": "ባለሙያ ጠይቅ"
+    }
+  },
+  "products": {
+    "title": "የእኔ ምርቶች",
+    "addProduct": "ምርት ጨምር",
+    "editProduct": "ምርት አስተካክል",
+    "productDetails": "የምርት ዝርዝሮች",
+    "empty": "እስካሁን ምንም ምርት የለዎትም",
+    "emptyCta": "የመጀመሪያ ምርትዎን ይጨምሩ",
+    "fields": {
+      "name": "የምርት ስም",
+      "category": "ምድብ",
+      "description": "መግለጫ",
+      "quantity": "መጠን",
+      "unit": "መለኪያ",
+      "price": "ዋጋ (ብር)",
+      "location": "አካባቢ",
+      "images": "የምርት ምስሎች",
+      "availability": "ተገኝነት"
+    },
+    "status": {
+      "draft": "ረቂቅ",
+      "pending_review": "በግምገማ ላይ",
+      "published": "ታትሟል",
+      "rejected": "ተቀባይነት አላገኘም",
+      "inactive": "ንቁ ያልሆነ",
+      "sold_out": "ተሽጧል"
+    },
+    "creationMethod": {
+      "direct_farmer": "በእርስዎ የተጨመረ",
+      "assisted_support": "በድጋፍ የተጨመረ"
+    },
+    "actions": {
+      "publish": "አትም",
+      "unpublish": "አታትም",
+      "markSoldOut": "ተሽጧል ብለው ምልክት ያድርጉ",
+      "activate": "አንቃ",
+      "deactivate": "አጥፋ",
+      "delete": "ሰርዝ",
+      "viewOrders": "ትዕዛዞችን ተመልከት"
+    },
+    "messages": {
+      "created": "ምርት ተፈጥሯል",
+      "updated": "ምርት ተዘምኗል",
+      "deleted": "ምርት ተሰርዟል",
+      "published": "ምርት ታትሟል",
+      "unpublished": "ምርት ከህትመት ተነስቷል"
+    }
+  },
+  "orders": {
+    "title": "የእኔ ትዕዛዞች",
+    "empty": "እስካሁን ምንም ትዕዛዝ የለዎትም",
+    "filters": {
+      "all": "ሁሉም",
+      "pending": "በመጠባበቅ ላይ",
+      "confirmed": "ተረጋግጧል",
+      "preparing": "በዝግጅት ላይ",
+      "ready_for_dispatch": "ዝግጁ",
+      "completed": "ተጠናቅቋል",
+      "cancelled": "ተሰርዟል",
+      "disputed": "አከራካሪ"
+    },
+    "actions": {
+      "accept": "ትዕዛዝ ተቀበል",
+      "reject": "ትዕዛዝ አትቀበል",
+      "markPreparing": "በዝግጅት ላይ ብለው ምልክት ያድርጉ",
+      "markReady": "ዝግጁ ብለው ምልክት ያድርጉ",
+      "markCompleted": "ተጠናቅቋል ብለው ምልክት ያድርጉ",
+      "contactBuyer": "ገዢን ያግኙ"
+    },
+    "details": {
+      "buyer": "ገዢ",
+      "items": "ዕቃዎች",
+      "total": "ጠቅላላ",
+      "orderedAt": "የታዘዘበት ቀን",
+      "deliveryAddress": "የማድረሻ አድራሻ"
+    }
+  },
+  "consultations": {
+    "title": "የእኔ ምክክሮች",
+    "findExpert": "ባለሙያ ፈልግ",
+    "newRequest": "አዲስ የምክክር ጥያቄ",
+    "empty": "እስካሁን ምንም ምክክር የለዎትም",
+    "fields": {
+      "expert": "ባለሙያ",
+      "subject": "ርዕስ",
+      "description": "ችግርዎን ይግለጹ",
+      "preferredTime": "ተመራጭ ጊዜ",
+      "attachments": "ፎቶዎችን አያይዝ (አማራጭ)"
+    },
+    "status": {
+      "pending": "በመጠባበቅ ላይ",
+      "accepted": "ተቀባይነት አግኝቷል",
+      "rejected": "ተቀባይነት አላገኘም",
+      "rescheduled": "እንደገና ተያዘ",
+      "in_progress": "በሂደት ላይ",
+      "completed": "ተጠናቅቋል",
+      "cancelled": "ተሰርዟል",
+      "no_show": "አልተገኘም"
+    }
+  },
+  "profile": {
+    "title": "የእኔ መገለጫ",
+    "editProfile": "መገለጫ አስተካክል",
+    "farmDetails": "የእርሻ ዝርዝሮች",
+    "documents": "ሰነዶች",
+    "verification": "የማረጋገጫ ሁኔታ",
+    "accessMethod": "የመዳረሻ ዘዴ",
+    "accessDirect": "ቀጥታ መዳረሻ",
+    "accessAssisted": "የተደገፈ መዳረሻ",
+    "fields": {
+      "fullName": "ሙሉ ስም",
+      "phone": "የስልክ ቁጥር",
+      "region": "ክልል",
+      "zone": "ዞን",
+      "woreda": "ወረዳ",
+      "farmName": "የእርሻ ስም",
+      "farmSize": "የእርሻ መጠን (ሄክታር)",
+      "primaryCrops": "ዋና ሰብሎች"
+    }
+  },
+  "settings": {
+    "title": "ቅንብሮች",
+    "account": "መለያ",
+    "security": "ደህንነት",
+    "notifications": "ማሳወቂያዎች",
+    "privacy": "ግላዊነት",
+    "language": "ቋንቋ",
+    "appearance": "መልክ"
+  }
+}

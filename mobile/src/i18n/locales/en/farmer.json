@@ -1,0 +1,153 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Here's your farm at a glance",
+    "stats": {
+      "products": "Products",
+      "activeProducts": "Active listings",
+      "orders": "Orders",
+      "pendingOrders": "Pending orders",
+      "revenue": "Revenue",
+      "thisMonth": "This month"
+    },
+    "sections": {
+      "recentOrders": "Recent orders",
+      "topProducts": "Top products",
+      "recentActivity": "Recent activity",
+      "weather": "Weather"
+    },
+    "quickActions": {
+      "addProduct": "Add product",
+      "viewOrders": "View orders",
+      "askExpert": "Ask an expert"
+    }
+  },
+  "products": {
+    "title": "My Products",
+    "addProduct": "Add product",
+    "editProduct": "Edit product",
+    "productDetails": "Product details",
+    "empty": "You don't have any products yet",
+    "emptyCta": "Add your first product",
+    "fields": {
+      "name": "Product name",
+      "category": "Category",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "price": "Price (ETB)",
+      "location": "Location",
+      "images": "Product images",
+      "availability": "Availability"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending_review": "Pending review",
+      "published": "Published",
+      "rejected": "Rejected",
+      "inactive": "Inactive",
+      "sold_out": "Sold out"
+    },
+    "creationMethod": {
+      "direct_farmer": "Added by you",
+      "assisted_support": "Added with support"
+    },
+    "actions": {
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "markSoldOut": "Mark as sold out",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "delete": "Delete",
+      "viewOrders": "View orders"
+    },
+    "messages": {
+      "created": "Product created",
+      "updated": "Product updated",
+      "deleted": "Product deleted",
+      "published": "Product published",
+      "unpublished": "Product unpublished"
+    }
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "You have no orders yet",
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "ready_for_dispatch": "Ready",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "disputed": "Disputed"
+    },
+    "actions": {
+      "accept": "Accept order",
+      "reject": "Reject order",
+      "markPreparing": "Mark as preparing",
+      "markReady": "Mark as ready",
+      "markCompleted": "Mark as completed",
+      "contactBuyer": "Contact buyer"
+    },
+    "details": {
+      "buyer": "Buyer",
+      "items": "Items",
+      "total": "Total",
+      "orderedAt": "Ordered on",
+      "deliveryAddress": "Delivery address"
+    }
+  },
+  "consultations": {
+    "title": "My Consultations",
+    "findExpert": "Find an expert",
+    "newRequest": "New consultation request",
+    "empty": "You have no consultations yet",
+    "fields": {
+      "expert": "Expert",
+      "subject": "Subject",
+      "description": "Describe your problem",
+      "preferredTime": "Preferred time",
+      "attachments": "Attach photos (optional)"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "rescheduled": "Rescheduled",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No show"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "editProfile": "Edit profile",
+    "farmDetails": "Farm details",
+    "documents": "Documents",
+    "verification": "Verification status",
+    "accessMethod": "Access method",
+    "accessDirect": "Direct access",
+    "accessAssisted": "Assisted access",
+    "fields": {
+      "fullName": "Full name",
+      "phone": "Phone number",
+      "region": "Region",
+      "zone": "Zone",
+      "woreda": "Woreda",
+      "farmName": "Farm name",
+      "farmSize": "Farm size (hectares)",
+      "primaryCrops": "Primary crops"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "security": "Security",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "language": "Language",
+    "appearance": "Appearance"
+  }
+}
