@@ -1,0 +1,110 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Discover fresh products near you",
+    "stats": {
+      "orders": "Orders",
+      "activeOrders": "Active orders",
+      "favorites": "Favorites",
+      "reviews": "Reviews"
+    },
+    "sections": {
+      "recentOrders": "Recent orders",
+      "recommended": "Recommended for you",
+      "featuredFarmers": "Featured farmers"
+    }
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "searchPlaceholder": "Search products…",
+    "empty": "No products found",
+    "filters": {
+      "category": "Category",
+      "location": "Location",
+      "priceRange": "Price range",
+      "availability": "Availability",
+      "sortBy": "Sort by"
+    },
+    "sort": {
+      "newest": "Newest",
+      "priceLowHigh": "Price: low to high",
+      "priceHighLow": "Price: high to low",
+      "popular": "Most popular"
+    },
+    "product": {
+      "seller": "Seller",
+      "location": "Location",
+      "quantity": "Available quantity",
+      "addToCart": "Add to cart",
+      "buyNow": "Buy now",
+      "reportListing": "Report listing",
+      "contactSeller": "Contact seller"
+    }
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "emptyCta": "Browse marketplace",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Checkout",
+    "removeItem": "Remove item",
+    "quantityUpdated": "Quantity updated"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingInfo": "Delivery information",
+    "paymentMethod": "Payment method",
+    "review": "Review order",
+    "confirm": "Place order",
+    "placing": "Placing order…",
+    "success": "Order placed successfully",
+    "paymentRecordOnly": "Payment will be recorded for verification."
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "You have no orders yet",
+    "actions": {
+      "viewDetails": "View details",
+      "cancelOrder": "Cancel order",
+      "contactSeller": "Contact seller",
+      "leaveReview": "Leave a review",
+      "openDispute": "Open dispute"
+    }
+  },
+  "disputes": {
+    "title": "Disputes",
+    "empty": "You have no disputes",
+    "create": "Open a dispute",
+    "fields": {
+      "reason": "Reason",
+      "description": "Describe the issue",
+      "evidence": "Evidence (optional)"
+    },
+    "reasons": {
+      "product_quality": "Product quality",
+      "wrong_item": "Wrong item received",
+      "not_received": "Not received",
+      "payment_issue": "Payment issue",
+      "other": "Other"
+    },
+    "status": {
+      "open": "Open",
+      "under_review": "Under review",
+      "awaiting_evidence": "Awaiting evidence",
+      "resolved": "Resolved",
+      "closed": "Closed",
+      "escalated": "Escalated"
+    }
+  },
+  "reviews": {
+    "title": "Reviews",
+    "myReviews": "My reviews",
+    "writeReview": "Write a review",
+    "rating": "Rating",
+    "title": "Title",
+    "body": "Your review",
+    "submit": "Submit review",
+    "alreadyReviewed": "You've already reviewed this purchase"
+  }
+}

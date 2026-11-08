@@ -1,0 +1,86 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Manage your store",
+    "stats": {
+      "products": "Products",
+      "orders": "Orders",
+      "revenue": "Revenue",
+      "lowStock": "Low stock items"
+    },
+    "sections": {
+      "recentOrders": "Recent orders",
+      "topSelling": "Top selling",
+      "lowStockAlerts": "Low stock alerts"
+    }
+  },
+  "storeProfile": {
+    "title": "Store profile",
+    "edit": "Edit store profile",
+    "fields": {
+      "storeName": "Store name",
+      "description": "Description",
+      "logo": "Logo",
+      "banner": "Banner",
+      "businessAddress": "Business address",
+      "contactEmail": "Contact email",
+      "contactPhone": "Contact phone",
+      "operatingHours": "Operating hours",
+      "storeOpen": "Store open"
+    }
+  },
+  "catalog": {
+    "title": "My Catalog",
+    "addInput": "Add input",
+    "editInput": "Edit input",
+    "empty": "Your catalog is empty",
+    "fields": {
+      "name": "Product name",
+      "category": "Category",
+      "inputType": "Input type",
+      "description": "Description",
+      "price": "Price (ETB)",
+      "unit": "Unit",
+      "stockQuantity": "Stock quantity",
+      "specifications": "Specifications",
+      "images": "Images"
+    },
+    "categories": {
+      "seeds": "Seeds",
+      "fertilizers": "Fertilizers",
+      "pesticides": "Pesticides",
+      "tools": "Tools",
+      "equipment": "Equipment"
+    }
+  },
+  "inventory": {
+    "title": "Inventory",
+    "stockIn": "Stock in",
+    "stockOut": "Stock out",
+    "adjustment": "Adjustment",
+    "lowStock": "Low stock",
+    "outOfStock": "Out of stock",
+    "movements": "Stock movements"
+  },
+  "orders": {
+    "title": "Orders",
+    "empty": "No orders yet",
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject",
+      "markProcessing": "Mark processing",
+      "markReady": "Mark ready",
+      "markCompleted": "Mark completed"
+    }
+  },
+  "finance": {
+    "title": "Payments & Finance",
+    "overview": "Overview",
+    "payments": "Payments",
+    "transactions": "Transactions",
+    "invoices": "Invoices",
+    "refunds": "Refunds",
+    "totalRevenue": "Total revenue",
+    "pendingPayouts": "Pending payouts"
+  }
+}

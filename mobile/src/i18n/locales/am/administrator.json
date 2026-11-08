@@ -1,0 +1,234 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "የመድረክ አጠቃላይ እይታ",
+    "stats": {
+      "totalUsers": "ጠቅላላ ተጠቃሚዎች",
+      "activeUsers": "ንቁ ተጠቃሚዎች",
+      "pendingApprovals": "በመጠባበቅ ላይ ያሉ ማጽደቆች",
+      "openDisputes": "ክፍት አከራካሪዎች",
+      "pendingListings": "በመጠባበቅ ላይ ያሉ ዝርዝሮች",
+      "assistedActions30d": "የእርዳታ እርምጃዎች (30 ቀናት)"
+    },
+    "sections": {
+      "pendingApprovals": "በመጠባበቅ ላይ ያሉ ማጽደቆች",
+      "moderationQueue": "የግምገማ ወረፋ",
+      "openDisputes": "ክፍት አከራካሪዎች",
+      "assistedActivity": "የእርዳታ እንቅስቃሴ",
+      "recentAdminActivity": "የቅርብ ጊዜ አስተዳዳሪ እንቅስቃሴ",
+      "securityAlerts": "የደህንነት ማንቂያዎች"
+    }
+  },
+  "assistedFarmerMonitoring": {
+    "title": "የተደገፈ ገበሬ አስተዳደር",
+    "subtitle": "የእርዳታ እርምጃዎችን እና የፈቃድ መዝገቦችን ይገምግሙ",
+    "actionDetails": "የእርዳታ እርምጃ ዝርዝሮች",
+    "farmer": "ገበሬ",
+    "supportAgent": "ደጋፊ ወኪል",
+    "consent": "ፈቃድ",
+    "action": "እርምጃ",
+    "timestamp": "የጊዜ ማህተም",
+    "result": "ውጤት",
+    "suspiciousActivity": "አጠራጣሪ እንቅስቃሴ",
+    "reviewRecord": "መዝገብ ይገምግሙ",
+    "reviewOutcome": "የግምገማ ውጤት",
+    "reviewOutcomes": {
+      "no_issue": "ችግር የለም",
+      "warning": "ማስጠንቀቂያ ተሰጥቷል",
+      "investigation_opened": "ምርመራ ተከፍቷል",
+      "escalated": "ወደላይ ተላልፏል",
+      "action_taken": "እርምጃ ተወስዷል"
+    },
+    "saveReview": "ግምገማ አስቀምጥ",
+    "reviewSaved": "ግምገማ ተመዝግቧል",
+    "sections": {
+      "consentRecords": "የፈቃድ መዝገቦች",
+      "supportAgentActivity": "የደጋፊ ወኪል እንቅስቃሴ",
+      "assistedListings": "የተደገፉ ዝርዝሮች",
+      "serviceReports": "የእርዳታ አገልግሎት ሪፖርቶች"
+    }
+  },
+  "userManagement": {
+    "title": "የተጠቃሚ አስተዳደር",
+    "search": "ተጠቃሚዎችን ፈልግ",
+    "filters": {
+      "all": "ሁሉም",
+      "farmers": "ገበሬዎች",
+      "buyers": "ገዢዎች",
+      "suppliers": "የግብዓት አቅራቢዎች",
+      "experts": "ባለሙያዎች",
+      "supportAgents": "ደጋፊ ወኪሎች",
+      "administrators": "አስተዳዳሪዎች"
+    },
+    "actions": {
+      "viewDetails": "ዝርዝሮችን ተመልከት",
+      "editUser": "ተጠቃሚ አስተካክል",
+      "suspend": "አግድ",
+      "reactivate": "እንደገና አንቃ",
+      "changeRole": "ሚና ቀይር"
+    }
+  },
+  "verification": {
+    "title": "የማረጋገጫ ወረፋ",
+    "pending": "በመጠባበቅ ላይ",
+    "approved": "ተፈቅዷል",
+    "rejected": "ተቀባይነት አላገኘም",
+    "empty": "በመጠባበቅ ላይ ያሉ የማረጋገጫ ማመልከቻዎች የሉም",
+    "actions": {
+      "approve": "ፍቀድ",
+      "reject": "አትፍቀድ",
+      "requestMoreInfo": "ተጨማሪ መረጃ ጠይቅ"
+    }
+  },
+  "listingModeration": {
+    "title": "የዝርዝር ግምገማ",
+    "pending": "በግምገማ ላይ",
+    "published": "ታትሟል",
+    "rejected": "ተቀባይነት አላገኘም",
+    "reported": "ሪፖርት ተደርጓል",
+    "empty": "ለግምገማ ዝርዝሮች የሉም",
+    "actions": {
+      "approve": "ፍቀድ",
+      "reject": "አትፍቀድ",
+      "requestChanges": "ለውጦችን ጠይቅ",
+      "remove": "ዝርዝር አስወግድ"
+    }
+  },
+  "contentModeration": {
+    "title": "የይዘት ግምገማ",
+    "reported": "ሪፖርት የተደረገበት ይዘት",
+    "empty": "ሪፖርት የተደረገበት ይዘት የለም",
+    "actions": {
+      "remove": "ይዘት አስወግድ",
+      "dismiss": "ሪፖርት አስወግድ"
+    }
+  },
+  "reviewModeration": {
+    "title": "የግምገማ ማስተካከያ",
+    "reported": "ሪፖርት የተደረገባቸው ግምገማዎች",
+    "empty": "ሪፖርት የተደረገባቸው ግምገማዎች የሉም",
+    "actions": {
+      "remove": "ግምገማ አስወግድ",
+      "dismiss": "ሪፖርት አስወግድ"
+    }
+  },
+  "disputes": {
+    "title": "አከራካሪዎች",
+    "open": "ክፍት",
+    "underReview": "በግምገማ ላይ",
+    "resolved": "ተፈትቷል",
+    "escalated": "ወደላይ ተላልፏል",
+    "empty": "አከራካሪዎች የሉም",
+    "actions": {
+      "assign": "ለእኔ መድብ",
+      "requestEvidence": "ማስረጃ ጠይቅ",
+      "resolve": "ፍታ",
+      "issueRefund": "ተመላሽ ስጥ",
+      "escalate": "ወደላይ አስተላልፍ"
+    }
+  },
+  "marketInfo": {
+    "title": "የገበያ ዋጋ አስተዳደር",
+    "create": "የገበያ ዋጋ ፍጠር",
+    "edit": "የገበያ ዋጋ አስተካክል",
+    "empty": "የታተመ የገበያ ዋጋ የለም",
+    "fields": {
+      "productName": "የምርት ስም",
+      "category": "ምድብ",
+      "marketLocation": "የገበያ ቦታ",
+      "region": "ክልል",
+      "unit": "መለኪያ",
+      "price": "ዋጋ (ብር)",
+      "source": "ምንጭ",
+      "observationDate": "የምልከታ ቀን",
+      "publish": "አትም"
+    }
+  },
+  "articles": {
+    "title": "ትምህርታዊ መጣጥፎች",
+    "create": "መጣጥፍ ፍጠር",
+    "edit": "መጣጥፍ አስተካክል",
+    "empty": "መጣጥፎች የሉም",
+    "fields": {
+      "titleEn": "ርዕስ (እንግሊዝኛ)",
+      "titleAm": "ርዕስ (አማርኛ)",
+      "contentEn": "ይዘት (እንግሊዝኛ)",
+      "contentAm": "ይዘት (አማርኛ)",
+      "category": "ምድብ",
+      "coverImage": "የሽፋን ምስል",
+      "status": "ሁኔታ"
+    }
+  },
+  "categoryManagement": {
+    "title": "የምድብ አስተዳደር",
+    "productCategories": "የምርት ምድቦች",
+    "inputCategories": "የግብዓት ምድቦች",
+    "addCategory": "ምድብ ጨምር",
+    "editCategory": "ምድብ አስተካክል",
+    "fields": {
+      "nameEn": "ስም (እንግሊዝኛ)",
+      "nameAm": "ስም (አማርኛ)",
+      "slug": "ስለግ",
+      "parent": "የወላጅ ምድብ",
+      "active": "ንቁ"
+    }
+  },
+  "reports": {
+    "title": "ሪፖርቶች እና ትንታኔዎች",
+    "userReports": "የተጠቃሚ ሪፖርቶች",
+    "marketplaceReports": "የገበያ ሪፖርቶች",
+    "financialReports": "የፋይናንስ ሪፖርቶች",
+    "moderationReports": "የግምገማ ሪፖርቶች",
+    "disputesReports": "የአከራካሪ ሪፖርቶች",
+    "assistedServiceReports": "የእርዳታ አገልግሎት ሪፖርቶች",
+    "customReport": "ብጁ ሪፖርት",
+    "export": "ሪፖርት ላክ",
+    "dateRange": "የቀን ክልል"
+  },
+  "auditLogs": {
+    "title": "የኦዲት መዝገቦች",
+    "empty": "የኦዲት መዝገቦች የሉም",
+    "filters": {
+      "actor": "ተዋናይ",
+      "action": "እርምጃ",
+      "entity": "አካል",
+      "dateRange": "የቀን ክልል"
+    }
+  },
+  "platformConfig": {
+    "title": "የመድረክ ቅንብሮች",
+    "general": "አጠቃላይ",
+    "policies": "የገበያ ፖሊሲዎች",
+    "regional": "የክልል ቅንብሮች",
+    "maintenance": "የጥገና ሁነታ",
+    "notifications": "የማሳወቂያ ቅንብሮች",
+    "save": "ቅንብሮችን አስቀምጥ",
+    "saved": "ቅንብሮች ተቀምጠዋል"
+  },
+  "supportTickets": {
+    "title": "የድጋፍ ቲኬት ቁጥጥር",
+    "empty": "የድጋፍ ቲኬቶች የሉም",
+    "actions": {
+      "assign": "ለወኪል መድብ",
+      "reassign": "እንደገና መድብ"
+    }
+  },
+  "orderOversight": {
+    "title": "የትዕዛዝ ቁጥጥር",
+    "empty": "ትዕዛዞች የሉም",
+    "readOnly": "ተነባቢ ብቻ እይታ"
+  },
+  "consultationOversight": {
+    "title": "የምክክር ቁጥጥር",
+    "empty": "ምክክሮች የሉም",
+    "readOnly": "ተነባቢ ብቻ እይታ"
+  },
+  "systemHealth": {
+    "title": "የስርዓት ጤና",
+    "serviceStatus": "የአገልግሎት ሁኔታ",
+    "backgroundJobs": "የዳራ ሥራዎች",
+    "healthy": "ጤናማ",
+    "degraded": "የተቀነሰ",
+    "down": "ወድቋል"
+  }
+}

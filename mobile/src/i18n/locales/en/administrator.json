@@ -1,0 +1,234 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Platform overview",
+    "stats": {
+      "totalUsers": "Total users",
+      "activeUsers": "Active users",
+      "pendingApprovals": "Pending approvals",
+      "openDisputes": "Open disputes",
+      "pendingListings": "Pending listings",
+      "assistedActions30d": "Assisted actions (30d)"
+    },
+    "sections": {
+      "pendingApprovals": "Pending approvals",
+      "moderationQueue": "Moderation queue",
+      "openDisputes": "Open disputes",
+      "assistedActivity": "Assisted activity",
+      "recentAdminActivity": "Recent admin activity",
+      "securityAlerts": "Security alerts"
+    }
+  },
+  "assistedFarmerMonitoring": {
+    "title": "Assisted Farmer Management",
+    "subtitle": "Review assisted actions and consent records",
+    "actionDetails": "Assisted action details",
+    "farmer": "Farmer",
+    "supportAgent": "Support agent",
+    "consent": "Consent",
+    "action": "Action",
+    "timestamp": "Timestamp",
+    "result": "Result",
+    "suspiciousActivity": "Suspicious activity",
+    "reviewRecord": "Review record",
+    "reviewOutcome": "Review outcome",
+    "reviewOutcomes": {
+      "no_issue": "No issue",
+      "warning": "Warning issued",
+      "investigation_opened": "Investigation opened",
+      "escalated": "Escalated",
+      "action_taken": "Action taken"
+    },
+    "saveReview": "Save review",
+    "reviewSaved": "Review recorded",
+    "sections": {
+      "consentRecords": "Consent records",
+      "supportAgentActivity": "Support agent activity",
+      "assistedListings": "Assisted listings",
+      "serviceReports": "Assisted service reports"
+    }
+  },
+  "userManagement": {
+    "title": "User Management",
+    "search": "Search users",
+    "filters": {
+      "all": "All",
+      "farmers": "Farmers",
+      "buyers": "Buyers",
+      "suppliers": "Input suppliers",
+      "experts": "Experts",
+      "supportAgents": "Support agents",
+      "administrators": "Administrators"
+    },
+    "actions": {
+      "viewDetails": "View details",
+      "editUser": "Edit user",
+      "suspend": "Suspend",
+      "reactivate": "Reactivate",
+      "changeRole": "Change role"
+    }
+  },
+  "verification": {
+    "title": "Verification Queue",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "empty": "No pending verification applications",
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestMoreInfo": "Request more info"
+    }
+  },
+  "listingModeration": {
+    "title": "Listing Moderation",
+    "pending": "Pending review",
+    "published": "Published",
+    "rejected": "Rejected",
+    "reported": "Reported",
+    "empty": "No listings to moderate",
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestChanges": "Request changes",
+      "remove": "Remove listing"
+    }
+  },
+  "contentModeration": {
+    "title": "Content Moderation",
+    "reported": "Reported content",
+    "empty": "No reported content",
+    "actions": {
+      "remove": "Remove content",
+      "dismiss": "Dismiss report"
+    }
+  },
+  "reviewModeration": {
+    "title": "Review Moderation",
+    "reported": "Reported reviews",
+    "empty": "No reported reviews",
+    "actions": {
+      "remove": "Remove review",
+      "dismiss": "Dismiss report"
+    }
+  },
+  "disputes": {
+    "title": "Disputes",
+    "open": "Open",
+    "underReview": "Under review",
+    "resolved": "Resolved",
+    "escalated": "Escalated",
+    "empty": "No disputes",
+    "actions": {
+      "assign": "Assign to me",
+      "requestEvidence": "Request evidence",
+      "resolve": "Resolve",
+      "issueRefund": "Issue refund",
+      "escalate": "Escalate"
+    }
+  },
+  "marketInfo": {
+    "title": "Market Price Management",
+    "create": "Create market price",
+    "edit": "Edit market price",
+    "empty": "No market prices published",
+    "fields": {
+      "productName": "Product name",
+      "category": "Category",
+      "marketLocation": "Market location",
+      "region": "Region",
+      "unit": "Unit",
+      "price": "Price (ETB)",
+      "source": "Source",
+      "observationDate": "Observation date",
+      "publish": "Publish"
+    }
+  },
+  "articles": {
+    "title": "Educational Articles",
+    "create": "Create article",
+    "edit": "Edit article",
+    "empty": "No articles",
+    "fields": {
+      "titleEn": "Title (English)",
+      "titleAm": "Title (Amharic)",
+      "contentEn": "Content (English)",
+      "contentAm": "Content (Amharic)",
+      "category": "Category",
+      "coverImage": "Cover image",
+      "status": "Status"
+    }
+  },
+  "categoryManagement": {
+    "title": "Category Management",
+    "productCategories": "Product categories",
+    "inputCategories": "Input categories",
+    "addCategory": "Add category",
+    "editCategory": "Edit category",
+    "fields": {
+      "nameEn": "Name (English)",
+      "nameAm": "Name (Amharic)",
+      "slug": "Slug",
+      "parent": "Parent category",
+      "active": "Active"
+    }
+  },
+  "reports": {
+    "title": "Reports & Analytics",
+    "userReports": "User reports",
+    "marketplaceReports": "Marketplace reports",
+    "financialReports": "Financial reports",
+    "moderationReports": "Moderation reports",
+    "disputesReports": "Dispute reports",
+    "assistedServiceReports": "Assisted service reports",
+    "customReport": "Custom report",
+    "export": "Export report",
+    "dateRange": "Date range"
+  },
+  "auditLogs": {
+    "title": "Audit Logs",
+    "empty": "No audit logs",
+    "filters": {
+      "actor": "Actor",
+      "action": "Action",
+      "entity": "Entity",
+      "dateRange": "Date range"
+    }
+  },
+  "platformConfig": {
+    "title": "Platform Settings",
+    "general": "General",
+    "policies": "Marketplace policies",
+    "regional": "Regional settings",
+    "maintenance": "Maintenance mode",
+    "notifications": "Notification settings",
+    "save": "Save settings",
+    "saved": "Settings saved"
+  },
+  "supportTickets": {
+    "title": "Support Ticket Oversight",
+    "empty": "No support tickets",
+    "actions": {
+      "assign": "Assign to agent",
+      "reassign": "Reassign"
+    }
+  },
+  "orderOversight": {
+    "title": "Order Oversight",
+    "empty": "No orders",
+    "readOnly": "Read-only view"
+  },
+  "consultationOversight": {
+    "title": "Consultation Oversight",
+    "empty": "No consultations",
+    "readOnly": "Read-only view"
+  },
+  "systemHealth": {
+    "title": "System Health",
+    "serviceStatus": "Service status",
+    "backgroundJobs": "Background jobs",
+    "healthy": "Healthy",
+    "degraded": "Degraded",
+    "down": "Down"
+  }
+}

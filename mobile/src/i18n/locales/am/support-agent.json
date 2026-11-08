@@ -1,0 +1,128 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "የእርዳታ አጠቃላይ እይታዎ",
+    "stats": {
+      "assignedTickets": "የተመደቡ ቲኬቶች",
+      "resolvedTickets": "ተፈትተዋል",
+      "assistedFarmers": "የተረዱ ገበሬዎች",
+      "avgResponseTime": "አማካይ ምላሽ ጊዜ"
+    },
+    "sections": {
+      "myTickets": "የእኔ ቲኬቶች",
+      "urgentCases": "አስቸኳይ ጉዳዮች",
+      "recentInteractions": "የቅርብ ጊዜ ገበሬ ግንኙነቶች",
+      "assistedActivity": "የቅርብ ጊዜ የእርዳታ እንቅስቃሴ"
+    }
+  },
+  "assistedFarmer": {
+    "title": "የተደገፈ ገበሬ አገልግሎት",
+    "search": {
+      "title": "ገበሬ ፈልግ",
+      "placeholder": "በስም፣ ስልክ ወይም ኢሜይል ፈልግ",
+      "noResults": "ገበሬዎች አልተገኙም",
+      "createNew": "አዲስ ገበሬ መዝግብ"
+    },
+    "register": {
+      "title": "ገበሬ መዝግብ",
+      "subtitle": "የገበሬውን ዝርዝር መረጃ ይሙሉ",
+      "fields": {
+        "fullName": "ሙሉ ስም",
+        "phone": "የስልክ ቁጥር",
+        "email": "ኢሜይል (አማራጭ)",
+        "region": "ክልል",
+        "zone": "ዞን",
+        "woreda": "ወረዳ",
+        "farmName": "የእርሻ ስም",
+        "farmSize": "የእርሻ መጠን (ሄክታር)",
+        "primaryCrops": "ዋና ሰብሎች"
+      },
+      "duplicateWarning": "በዚህ ስልክ/ኢሜይል ገበሬ አስቀድሞ አለ",
+      "submit": "ገበሬ መዝግብ"
+    },
+    "consent": {
+      "title": "ፈቃድ ይመዝግቡ",
+      "subtitle": "ከመቀጠልዎ በፊት የገበሬውን ፈቃድ መመዝገብ አለብዎት",
+      "type": "የፈቃድ ዓይነት",
+      "method": "የፈቃድ ዘዴ",
+      "scope": "ገበሬው ፈቃድ የሚሰጠው ለምንድን ነው",
+      "evidence": "ማስረጃ (አማራጭ)",
+      "types": {
+        "registration": "ምዝገባ",
+        "listing_create": "ዝርዝር መፍጠር",
+        "listing_update": "ዝርዝር ማዘመን",
+        "order_assist": "የትዕዛዝ እርዳታ",
+        "consultation_assist": "የምክክር እርዳታ"
+      },
+      "methods": {
+        "in_person": "በአካል",
+        "phone": "በስልክ",
+        "written": "በጽሑፍ",
+        "sms": "በኤስኤምኤስ"
+      },
+      "confirm": "ፈቃድ ይመዝግቡ",
+      "recorded": "ፈቃድ ተመዝግቧል"
+    },
+    "listing": {
+      "createTitle": "በ{{farmerName}} ስም ዝርዝር ፍጠር",
+      "editTitle": "የ{{farmerName}} ዝርዝር አስተካክል",
+      "ownerNotice": "{{farmerName}} የዚህ ዝርዝር ባለቤት ሆኖ ይቆያል",
+      "reviewPrompt": "ከማተምዎ በፊት ዝርዝሩን ከገበሬው ጋር ይገምግሙ",
+      "farmerConfirmed": "ገበሬው አረጋግጧል",
+      "submit": "ለግምገማ አስገባ",
+      "submitted": "ዝርዝር ለግምገማ ገብቷል"
+    },
+    "history": {
+      "title": "የእርዳታ ታሪክ",
+      "empty": "እስካሁን ምንም የእርዳታ እርምጃ የለም",
+      "columns": {
+        "farmer": "ገበሬ",
+        "action": "እርምጃ",
+        "consent": "ፈቃድ",
+        "date": "ቀን"
+      }
+    },
+    "correctionRequest": {
+      "title": "እርማት ጠይቅ",
+      "subtitle": "ገበሬው በእርዳታ ለተሰጡ መረጃዎች እርማት መጠየቅ ይችላል",
+      "submit": "ጥያቄ አስገባ"
+    },
+    "consentWithdrawal": {
+      "title": "ፈቃድ ሰርዝ",
+      "subtitle": "ገበሬው ለወደፊት የእርዳታ እርምጃዎች ፈቃዱን ሊያነሳ ይችላል",
+      "confirm": "ፈቃድ ሰርዝ",
+      "withdrawn": "ፈቃድ ተሰርዟል"
+    }
+  },
+  "requests": {
+    "title": "የድጋፍ ጥያቄዎች",
+    "assigned": "ለእኔ የተመደቡ",
+    "unassigned": "ያልተመደቡ",
+    "escalated": "ወደላይ የተላለፉ",
+    "empty": "ምንም ጥያቄዎች የሉም"
+  },
+  "tickets": {
+    "title": "ቲኬቶች",
+    "open": "ክፍት",
+    "pending": "በመጠባበቅ ላይ",
+    "resolved": "ተፈትቷል",
+    "closed": "ተዘግቷል",
+    "actions": {
+      "reply": "ምላሽ ስጥ",
+      "assign": "ለእኔ መድብ",
+      "resolve": "ተፈትቷል ብለው ምልክት ያድርጉ",
+      "close": "ዝጋ",
+      "escalate": "ወደላይ አስተላልፍ"
+    }
+  },
+  "communication": {
+    "title": "የገበሬ ግንኙነት",
+    "empty": "ምንም ውይይቶች የሉም"
+  },
+  "escalations": {
+    "title": "ወደላይ የተላለፉ",
+    "empty": "ምንም ወደላይ የተላለፉ የሉም",
+    "reason": "የማስተላለፍ ምክንያት",
+    "escalateTo": "ወደ አስተዳዳሪ አስተላልፍ"
+  }
+}

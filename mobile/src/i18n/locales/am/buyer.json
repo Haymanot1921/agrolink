@@ -1,0 +1,110 @@
+{
+  "dashboard": {
+    "greeting": "ሰላም, {{name}}",
+    "subGreeting": "በአቅራቢያዎ ትኩስ ምርቶችን ያግኙ",
+    "stats": {
+      "orders": "ትዕዛዞች",
+      "activeOrders": "ንቁ ትዕዛዞች",
+      "favorites": "ተወዳጆች",
+      "reviews": "ግምገማዎች"
+    },
+    "sections": {
+      "recentOrders": "የቅርብ ጊዜ ትዕዛዞች",
+      "recommended": "ለእርስዎ የሚመከሩ",
+      "featuredFarmers": "ተለይተው የቀረቡ ገበሬዎች"
+    }
+  },
+  "marketplace": {
+    "title": "ገበያ",
+    "searchPlaceholder": "ምርቶችን ፈልግ…",
+    "empty": "ምንም ምርት አልተገኘም",
+    "filters": {
+      "category": "ምድብ",
+      "location": "አካባቢ",
+      "priceRange": "የዋጋ ክልል",
+      "availability": "ተገኝነት",
+      "sortBy": "በደረጃ አስይዝ"
+    },
+    "sort": {
+      "newest": "አዲስ",
+      "priceLowHigh": "ዋጋ: ዝቅተኛ ወደ ከፍተኛ",
+      "priceHighLow": "ዋጋ: ከፍተኛ ወደ ዝቅተኛ",
+      "popular": "በጣም ተወዳጅ"
+    },
+    "product": {
+      "seller": "ሻጭ",
+      "location": "አካባቢ",
+      "quantity": "የሚገኝ መጠን",
+      "addToCart": "ወደ ጋሪ ጨምር",
+      "buyNow": "አሁን ግዛ",
+      "reportListing": "ዝርዝር ሪፖርት አድርግ",
+      "contactSeller": "ሻጭን ያግኙ"
+    }
+  },
+  "cart": {
+    "title": "ጋሪ",
+    "empty": "ጋሪዎ ባዶ ነው",
+    "emptyCta": "ገበያውን ያስሱ",
+    "subtotal": "ንዑስ ጠቅላላ",
+    "total": "ጠቅላላ",
+    "checkout": "ክፍያ ፈጽም",
+    "removeItem": "ዕቃ አስወግድ",
+    "quantityUpdated": "መጠን ተዘምኗል"
+  },
+  "checkout": {
+    "title": "ክፍያ",
+    "shippingInfo": "የማድረሻ መረጃ",
+    "paymentMethod": "የክፍያ ዘዴ",
+    "review": "ትዕዛዝን ይገምግሙ",
+    "confirm": "ትዕዛዝ ይስጡ",
+    "placing": "ትዕዛዝ በመስጠት ላይ…",
+    "success": "ትዕዛዝ በተሳካ ሁኔታ ተሰጥቷል",
+    "paymentRecordOnly": "ክፍያ ለማረጋገጫ ይመዘገባል።"
+  },
+  "orders": {
+    "title": "የእኔ ትዕዛዞች",
+    "empty": "እስካሁን ምንም ትዕዛዝ የለዎትም",
+    "actions": {
+      "viewDetails": "ዝርዝሮችን ተመልከት",
+      "cancelOrder": "ትዕዛዝ ሰርዝ",
+      "contactSeller": "ሻጭን ያግኙ",
+      "leaveReview": "ግምገማ ይስጡ",
+      "openDispute": "አከራካሪ ክፈት"
+    }
+  },
+  "disputes": {
+    "title": "አከራካሪዎች",
+    "empty": "ምንም አከራካሪ የለዎትም",
+    "create": "አከራካሪ ክፈት",
+    "fields": {
+      "reason": "ምክንያት",
+      "description": "ችግሩን ይግለጹ",
+      "evidence": "ማስረጃ (አማራጭ)"
+    },
+    "reasons": {
+      "product_quality": "የምርት ጥራት",
+      "wrong_item": "የተሳሳተ ዕቃ ተቀብሏል",
+      "not_received": "አልተቀበለም",
+      "payment_issue": "የክፍያ ችግር",
+      "other": "ሌላ"
+    },
+    "status": {
+      "open": "ክፍት",
+      "under_review": "በግምገማ ላይ",
+      "awaiting_evidence": "ማስረጃ በመጠባበቅ ላይ",
+      "resolved": "ተፈትቷል",
+      "closed": "ተዘግቷል",
+      "escalated": "ወደላይ ተላልፏል"
+    }
+  },
+  "reviews": {
+    "title": "ግምገማዎች",
+    "myReviews": "የእኔ ግምገማዎች",
+    "writeReview": "ግምገማ ይጻፉ",
+    "rating": "ደረጃ",
+    "title": "ርዕስ",
+    "body": "ግምገማዎ",
+    "submit": "ግምገማ አስገባ",
+    "alreadyReviewed": "ይህን ግዢ አስቀድመው ገምግመዋል"
+  }
+}

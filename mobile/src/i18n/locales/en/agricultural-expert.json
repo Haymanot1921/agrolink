@@ -1,0 +1,106 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Your consultation overview",
+    "stats": {
+      "pendingRequests": "Pending requests",
+      "upcomingConsultations": "Upcoming",
+      "completedConsultations": "Completed",
+      "earnings": "Earnings"
+    },
+    "sections": {
+      "upcomingConsultations": "Upcoming consultations",
+      "pendingRequests": "Pending requests",
+      "recentMessages": "Recent messages"
+    }
+  },
+  "expertProfile": {
+    "title": "Expert profile",
+    "edit": "Edit profile",
+    "fields": {
+      "biography": "Biography",
+      "education": "Education",
+      "experienceYears": "Years of experience",
+      "certifications": "Certifications",
+      "languages": "Languages spoken",
+      "consultationFee": "Consultation fee (ETB)",
+      "specializations": "Specializations"
+    }
+  },
+  "specializations": {
+    "title": "Specializations",
+    "add": "Add specialization",
+    "cropExpertise": "Crop expertise",
+    "livestockExpertise": "Livestock expertise",
+    "soilWater": "Soil and water",
+    "pestDisease": "Pest and disease",
+    "categories": {
+      "crop_protection": "Crop protection",
+      "soil_fertility": "Soil fertility",
+      "irrigation": "Irrigation",
+      "livestock_health": "Livestock health",
+      "post_harvest": "Post-harvest"
+    }
+  },
+  "requests": {
+    "title": "Consultation Requests",
+    "empty": "No pending requests",
+    "actions": {
+      "accept": "Accept",
+      "decline": "Decline",
+      "requestClarification": "Request clarification",
+      "reschedule": "Reschedule"
+    },
+    "details": {
+      "farmer": "Farmer",
+      "problem": "Problem",
+      "attachments": "Attachments",
+      "preferredTime": "Preferred time"
+    }
+  },
+  "consultations": {
+    "title": "Consultations",
+    "upcoming": "Upcoming",
+    "active": "Active",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "notes": "Notes",
+    "recordNotes": "Record consultation notes",
+    "diagnosis": "Diagnosis",
+    "recommendations": "Recommendations",
+    "followUp": "Follow-up"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "availability": "Availability",
+    "blockedTime": "Blocked time",
+    "upcoming": "Upcoming appointments"
+  },
+  "cases": {
+    "title": "Case Management",
+    "createCase": "Create case",
+    "empty": "No cases",
+    "fields": {
+      "subject": "Subject",
+      "problemType": "Problem type",
+      "description": "Description",
+      "crop": "Crop",
+      "attachments": "Attachments"
+    }
+  },
+  "advice": {
+    "title": "Expert Advice",
+    "createAdvice": "Create advice",
+    "history": "Advice history",
+    "recommendedActions": "Recommended actions",
+    "treatmentPlan": "Treatment plan",
+    "followUp": "Follow-up"
+  },
+  "earnings": {
+    "title": "Earnings & Payments",
+    "totalEarned": "Total earned",
+    "pendingPayouts": "Pending payouts",
+    "payoutHistory": "Payout history",
+    "requestPayout": "Request payout"
+  }
+}
