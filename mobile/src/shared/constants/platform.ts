@@ -17,6 +17,13 @@ export const APP_INFO = {
   WEBSITE: 'https://agrolink.et',
 } as const;
 
+export const PLATFORM = {
+  website: APP_INFO.WEBSITE,
+  supportEmail: APP_INFO.SUPPORT_EMAIL,
+  supportPhone: APP_INFO.SUPPORT_PHONE,
+  appVersion: APP_INFO.VERSION,
+} as const;
+
 /** Feature flags — all disabled by default in v1; enable per release. */
 export const FEATURES = {
   /** Live expert video consultations. */

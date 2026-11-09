@@ -43,7 +43,7 @@ Run Expo through `npm start`, `npm run web`, or `npx expo` from this directory s
 
 ## Troubleshooting
 
-The development environment sets `EXPO_OFFLINE=1`, so both `expo start` and `npm start` skip Expo's remote version lookup when the network is unavailable. To enable Expo's online features for a session, such as tunnel connections, set `$env:EXPO_OFFLINE = "0"` in PowerShell before starting Expo.
+The development environment sets `EXPO_OFFLINE=1`, so both `expo start` and `npm start` skip Expo's remote version lookup when the network is unavailable. The npm scripts use LAN mode. To open the app on a physical Android device, connect the phone and computer to the same network and use the LAN URL printed by Expo; `localhost` on the phone refers to the phone itself, not the computer. To enable Expo's online features for a session, such as tunnel connections, set `$env:EXPO_OFFLINE = "0"` in PowerShell before starting Expo.
 
 If Expo reports `Body is unusable: Body has already been read`, bypass its response cache and use the project-local CLI:
 

@@ -5,6 +5,7 @@
 // Examples:
 //   agrolink://home                         → Public / Home tab
 //   agrolink://marketplace                  → Public / Market tab
+//   agrolink://marketplace/list             → Standalone marketplace screen
 //   agrolink://marketplace/product/123      → Product details
 //   agrolink://articles                     → Articles list
 //   agrolink://articles/abc                 → Article detail
@@ -89,7 +90,7 @@ export const linkingConfig: LinkingOptions<RootStackParamList> = {
           Blog: 'blog',
 
           // ─────────── Marketplace ───────────
-          PublicMarketplace: 'marketplace',
+          PublicMarketplace: 'marketplace/list',
           PublicProductDetails: {
             path: 'marketplace/product/:productId',
             parse: { productId: (id: string) => id },
@@ -104,7 +105,7 @@ export const linkingConfig: LinkingOptions<RootStackParamList> = {
           },
 
           // ─────────── Articles ───────────
-          PublicArticles: 'articles',
+          PublicArticles: 'articles/list',
           PublicArticleDetails: {
             path: 'articles/:articleId',
             parse: { articleId: (id: string) => id },
@@ -122,7 +123,7 @@ export const linkingConfig: LinkingOptions<RootStackParamList> = {
           },
 
           // ─────────── Experts ───────────
-          PublicExperts: 'experts',
+          PublicExperts: 'experts/list',
           PublicExpertDetails: {
             path: 'experts/:expertId',
             parse: { expertId: (id: string) => id },
