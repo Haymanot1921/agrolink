@@ -1,7 +1,11 @@
 // mobile/src/app/RootNavigator.tsx
-// Root navigator — switches between Auth stack and the correct actor
-// stack based on the authenticated user's role + provider_type
-// (SRS §4.1, §4.1.3 — Service Provider has 2 types).
+// Root navigator — switches between public, auth, and 5 actor stacks.
+//
+// New behaviour (SRS §11.1):
+//   - Unauthenticated users land on `Public` (guest browsing enabled)
+//   - They can navigate into Auth when they tap Login/Register
+//   - Logged-in users land in their actor stack
+//   - Public screens remain reachable from any stack via deep links
 
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +16,7 @@ import { linkingConfig } from './linking';
 import { useAuth } from '@hooks/useAuth';
 import { useTheme } from '@styles/useTheme';
 
+import { PublicStack } from '@navigation/public/PublicStack';
 import { AuthStack } from '@navigation/auth/AuthStack';
 import { FarmerStack } from '@navigation/farmer/FarmerStackNavigator';
 import { BuyerStack } from '@navigation/buyer/BuyerStackNavigator';
@@ -28,8 +33,11 @@ export function RootNavigator(): React.ReactElement | null {
   const { user, isBootstrapping } = useAuth();
   const theme = useTheme();
 
-  // Keep splash visible until auth bootstrap completes
   if (isBootstrapping) return null;
+
+  // ⚠️ If not logged in → land on Public (guest mode)
+  //     Only go to Auth when the user explicitly taps Login.
+  const initialRoute: keyof RootStackParamList = !user ? 'Public' : resolveActorRoute(user);
 
   return (
     <NavigationContainer
@@ -47,26 +55,36 @@ export function RootNavigator(): React.ReactElement | null {
         },
       }}
     >
-      <RootStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-        {!user ? (
-          <RootStack.Screen name="Auth" component={AuthStack} />
-        ) : user.role === 'farmer' ? (
-          <RootStack.Screen name="Farmer" component={FarmerStack} />
-        ) : user.role === 'buyer' ? (
-          <RootStack.Screen name="Buyer" component={BuyerStack} />
-        ) : user.role === 'service_provider' && user.providerType === 'input_supplier' ? (
-          <RootStack.Screen name="InputSupplier" component={InputSupplierStack} />
-        ) : user.role === 'service_provider' && user.providerType === 'agricultural_expert' ? (
-          <RootStack.Screen name="AgriculturalExpert" component={ExpertStack} />
-        ) : user.role === 'support_agent' ? (
-          <RootStack.Screen name="SupportAgent" component={SupportAgentStack} />
-        ) : user.role === 'administrator' ? (
-          <RootStack.Screen name="Administrator" component={AdministratorStack} />
-        ) : (
-          // Fallback — unknown role/provider → force auth
-          <RootStack.Screen name="Auth" component={AuthStack} />
-        )}
+      <RootStack.Navigator
+        initialRouteName={initialRoute}
+        screenOptions={{ headerShown: false, animation: 'fade' }}
+      >
+        <RootStack.Screen name="Public" component={PublicStack} />
+        <RootStack.Screen name="Auth" component={AuthStack} />
+        <RootStack.Screen name="Farmer" component={FarmerStack} />
+        <RootStack.Screen name="Buyer" component={BuyerStack} />
+        <RootStack.Screen name="InputSupplier" component={InputSupplierStack} />
+        <RootStack.Screen name="AgriculturalExpert" component={ExpertStack} />
+        <RootStack.Screen name="SupportAgent" component={SupportAgentStack} />
+        <RootStack.Screen name="Administrator" component={AdministratorStack} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
+}
+
+function resolveActorRoute(user: {
+  role: string;
+  providerType?: string | null;
+}): keyof RootStackParamList {
+  if (user.role === 'farmer') return 'Farmer';
+  if (user.role === 'buyer') return 'Buyer';
+  if (user.role === 'service_provider' && user.providerType === 'input_supplier') {
+    return 'InputSupplier';
+  }
+  if (user.role === 'service_provider' && user.providerType === 'agricultural_expert') {
+    return 'AgriculturalExpert';
+  }
+  if (user.role === 'support_agent') return 'SupportAgent';
+  if (user.role === 'administrator') return 'Administrator';
+  return 'Public';
 }

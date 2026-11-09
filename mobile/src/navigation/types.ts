@@ -250,7 +250,134 @@ export type AdministratorStackParamList = {
 // ─────────────────────────────────────────────────────────────
 // ROOT STACK (aggregates all actor stacks)
 // ─────────────────────────────────────────────────────────────
+export type ActorRootStackParamList = {
+  Auth: NavigatorScreenParams<AuthStackParamList>;
+  Farmer: NavigatorScreenParams<FarmerStackParamList>;
+  Buyer: NavigatorScreenParams<BuyerStackParamList>;
+  InputSupplier: NavigatorScreenParams<InputSupplierStackParamList>;
+  AgriculturalExpert: NavigatorScreenParams<ExpertStackParamList>;
+  SupportAgent: NavigatorScreenParams<SupportAgentStackParamList>;
+  Administrator: NavigatorScreenParams<AdministratorStackParamList>;
+};
+
+  // mobile/src/navigation/types.ts
+// Central route param list. Includes: Auth, Public, and 5 actor stacks.
+// Every screen in `src/pages/` is registered here.
+
+// ─────────────────────────────────────────────────────────────
+// PUBLIC STACK (matches src/pages/)
+// ─────────────────────────────────────────────────────────────
+
+export type PublicStackParamList = {
+  // Main tabs
+  HomeTab: NavigatorScreenParams<PublicHomeTabParamList>;
+
+  // ─────────── PUBLIC — HOME ───────────
+  Home: undefined;
+  About: undefined;
+  HowItWorks: undefined;
+  Pricing: undefined;
+  Faq: undefined;
+  Contact: undefined;
+  HelpCenter: undefined;
+
+  // ─────────── PUBLIC — LEGAL ───────────
+  Terms: undefined;
+  Privacy: undefined;
+  Cookies: undefined;
+  Accessibility: undefined;
+
+  // ─────────── PUBLIC — COMPANY ───────────
+  Careers: undefined;
+  Press: undefined;
+  Blog: undefined;
+
+  // ─────────── PUBLIC — MARKETPLACE ───────────
+  PublicMarketplace: undefined;
+  PublicProductDetails: { productId: string };
+  PublicCategory: { categoryId: number; categoryName?: string };
+  PublicSearchResults: { query: string };
+
+  // ─────────── PUBLIC — ARTICLES ───────────
+  PublicArticles: undefined;
+  PublicArticleDetails: { articleId: string };
+  PublicArticleCategory: { slug: string; title?: string };
+
+  // ─────────── PUBLIC — MARKET PRICES ───────────
+  PublicMarketPrices: undefined;
+  PublicMarketPriceDetails: { priceId: string };
+
+  // ─────────── PUBLIC — EXPERTS ───────────
+  PublicExperts: undefined;
+  PublicExpertDetails: { expertId: string };
+
+  // ─────────── PUBLIC — ERRORS ───────────
+  Unauthorized: undefined;
+  Forbidden: undefined;
+  ServerError: undefined;
+  Maintenance: undefined;
+  NotFound: undefined;
+
+  // ─────────── AUTH (cross-navigated from public pages) ───────────
+  Login: undefined;
+  Register: {
+    role: 'farmer' | 'buyer' | 'service_provider' | 'support_agent' | 'administrator';
+    providerType?: 'input_supplier' | 'agricultural_expert';
+  };
+  RoleSelection: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: { token: string };
+  OtpVerification: { identifier: string; purpose: 'registration' | 'reset' };
+  Onboarding: undefined;
+};
+
+// ─────────────────────────────────────────────────────────────
+// PUBLIC HOME TABS (bottom nav for guests)
+// ─────────────────────────────────────────────────────────────
+
+export type PublicHomeTabParamList = {
+  Home: undefined;
+  Market: undefined;
+  Articles: undefined;
+  Experts: undefined;
+  More: undefined;
+};
+
+// ─────────────────────────────────────────────────────────────
+// PUBLIC "MORE" STACK (drawer sub-stack)
+// ─────────────────────────────────────────────────────────────
+
+export type PublicMoreStackParamList = {
+  MoreMenu: undefined;
+  About: undefined;
+  HowItWorks: undefined;
+  Pricing: undefined;
+  Faq: undefined;
+  Contact: undefined;
+  HelpCenter: undefined;
+  Terms: undefined;
+  Privacy: undefined;
+  Cookies: undefined;
+  Accessibility: undefined;
+  Careers: undefined;
+  Press: undefined;
+  Blog: undefined;
+};
+
+// ─────────────────────────────────────────────────────────────
+// AUTH STACK
+// ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// ACTOR STACKS (defined elsewhere; shown for completeness)
+// ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// ROOT STACK
+// ─────────────────────────────────────────────────────────────
+
 export type RootStackParamList = {
+  Public: NavigatorScreenParams<PublicStackParamList>;
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Farmer: NavigatorScreenParams<FarmerStackParamList>;
   Buyer: NavigatorScreenParams<BuyerStackParamList>;
@@ -263,6 +390,7 @@ export type RootStackParamList = {
 // ─────────────────────────────────────────────────────────────
 // GLOBAL type augmentation for useNavigation
 // ─────────────────────────────────────────────────────────────
+
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}

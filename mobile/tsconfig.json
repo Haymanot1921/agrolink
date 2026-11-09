@@ -47,6 +47,9 @@
       "@modules/*": [
         "src/modules/*"
       ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
       "@navigation/*": [
         "src/navigation/*"
       ],

@@ -19,6 +19,7 @@ module.exports = function (api) {
             '@styles': './src/shared/styles',
             '@modules': './src/modules',
             '@navigation': './src/navigation',
+            '@pages': './src/pages',
             '@layouts': './src/layouts',
             '@i18n': './src/i18n',
             '@app': './src/app'

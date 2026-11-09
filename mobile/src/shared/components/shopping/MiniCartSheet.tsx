@@ -86,14 +86,13 @@ export function MiniCartSheet({
           <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
             {items.map((item) => (
               <View key={item.id} style={styles.item}>
-                <Image
-                  source={
-                    item.imageUrl
-                      ? { uri: item.imageUrl }
-                      : require('@assets/images/products/placeholder-product.png')
-                  }
-                  style={styles.thumb}
-                />
+                {item.imageUrl ? (
+                  <Image source={{ uri: item.imageUrl }} style={styles.thumb} />
+                ) : (
+                  <View style={styles.thumbPlaceholder}>
+                    <Text style={styles.placeholderIcon}>🛒</Text>
+                  </View>
+                )}
                 <View style={styles.itemBody}>
                   <Text style={[styles.itemName, { fontFamily: bold }]} numberOfLines={1}>
                     {item.productName}
@@ -172,6 +171,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#eee',
   },
+  thumbPlaceholder: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  placeholderIcon: { fontSize: 24 },
   itemBody: { flex: 1, justifyContent: 'space-between' },
   itemName: { fontSize: typography.sm + 1, color: colors.text },
   seller: { fontSize: typography.xs, color: colors.textMuted, marginTop: 2 },

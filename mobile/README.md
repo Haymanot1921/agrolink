@@ -43,6 +43,8 @@ Run Expo through `npm start`, `npm run web`, or `npx expo` from this directory s
 
 ## Troubleshooting
 
+The development environment sets `EXPO_OFFLINE=1`, so both `expo start` and `npm start` skip Expo's remote version lookup when the network is unavailable. To enable Expo's online features for a session, such as tunnel connections, set `$env:EXPO_OFFLINE = "0"` in PowerShell before starting Expo.
+
 If Expo reports `Body is unusable: Body has already been read`, bypass its response cache and use the project-local CLI:
 
 ```powershell
@@ -99,4 +101,58 @@ mobile/
 
 ## License
 
-Proprietary — AgroLink Ethiopia Project, 2025.
+Proprietary — AgroLink Ethiopia Project, 2025.mobile/src/
+└── pages/                                   ← ⭐ NEW
+    ├── public/
+    │   ├── PrivacyScreen.tsx
+    │   ├── CookiesScreen.tsx
+    │   ├── AccessibilityScreen.tsx
+    │   ├── CareersScreen.tsx
+    │   ├── PressScreen.tsx
+    │
+    ├── auth/                                ← thin wrappers that point to navigation/auth
+    │   ├── LoginPageScreen.tsx
+    │   ├── RegisterPageScreen.tsx
+    │   ├── RoleSelectionPageScreen.tsx
+    │   ├── ForgotPasswordPageScreen.tsx
+    │   ├── ResetPasswordPageScreen.tsx
+    │   ├── VerifyEmailPageScreen.tsx
+    │   └── index.ts
+    │
+    ├── marketplace/
+    │   ├── PublicMarketplacePageScreen.tsx
+    │   ├── PublicProductDetailsPageScreen.tsx
+    │   ├── PublicCategoryPageScreen.tsx
+    │   ├── PublicSearchResultsPageScreen.tsx
+    │   └── index.ts
+    │
+    ├── articles/
+    │   ├── PublicArticlesPageScreen.tsx
+    │   ├── PublicArticleDetailsPageScreen.tsx
+    │   ├── PublicArticleCategoryPageScreen.tsx
+    │   └── index.ts
+    │
+    ├── market-prices/
+    │   ├── PublicMarketPricesPageScreen.tsx
+    │   ├── PublicMarketPriceDetailsPageScreen.tsx
+    │   └── index.ts
+    │
+    ├── experts/
+    │   ├── PublicExpertsPageScreen.tsx
+    │   ├── PublicExpertDetailsPageScreen.tsx
+    │   └── index.ts
+    │
+    ├── errors/
+    │   ├── UnauthorizedPageScreen.tsx
+    │   ├── ForbiddenPageScreen.tsx
+    │   ├── ServerErrorPageScreen.tsx
+    │   ├── MaintenancePageScreen.tsx
+    │   └── index.ts
+    │
+    ├── legal/
+    │   ├── TermsPageScreen.tsx
+    │   ├── PrivacyPageScreen.tsx
+    │   ├── CookiesPageScreen.tsx
+    │   └── index.ts
+    │
+    └── index.ts                            ← barrel for all pages
