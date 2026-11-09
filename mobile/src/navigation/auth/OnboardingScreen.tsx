@@ -8,7 +8,6 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
-  Image,
   TouchableOpacity,
   NativeSyntheticEvent,
   NativeScrollEvent,
@@ -20,7 +19,6 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from '@i18n/hooks/useTranslation';
 import { useLanguage } from '@i18n/hooks/useLanguage';
 import { Button } from '@components/ui/Button';
-import { OnboardingImages } from '@assets/assets';
 import { colors } from '@styles/colors';
 import { spacing } from '@styles/spacing';
 import type { AuthStackParamList } from '@navigation/types';
@@ -31,7 +29,7 @@ const { width } = Dimensions.get('window');
 
 interface Slide {
   key: string;
-  image: number;
+  icon: string;
   titleKey: string;
   bodyKey: string;
 }
@@ -39,31 +37,31 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     key: 'farmer',
-    image: OnboardingImages.step1,
+    icon: '🌱',
     titleKey: 'onboarding.step1Title',
     bodyKey: 'onboarding.step1Body',
   },
   {
     key: 'buyer',
-    image: OnboardingImages.step2,
+    icon: '🧺',
     titleKey: 'onboarding.step2Title',
     bodyKey: 'onboarding.step2Body',
   },
   {
     key: 'expert',
-    image: OnboardingImages.step3,
+    icon: '🌾',
     titleKey: 'onboarding.step3Title',
     bodyKey: 'onboarding.step3Body',
   },
   {
     key: 'agent',
-    image: OnboardingImages.step4,
+    icon: '🤝',
     titleKey: 'onboarding.step4Title',
     bodyKey: 'onboarding.step4Body',
   },
   {
     key: 'admin',
-    image: OnboardingImages.step5,
+    icon: '📊',
     titleKey: 'onboarding.step5Title',
     bodyKey: 'onboarding.step5Body',
   },
@@ -120,7 +118,9 @@ export function OnboardingScreen(): React.ReactElement {
         onMomentumScrollEnd={onScroll}
         renderItem={({ item }) => (
           <View style={[styles.slide, { width }]}>
-            <Image source={item.image} style={styles.image} resizeMode="contain" />
+            <Text style={styles.image} accessibilityLabel={item.key}>
+              {item.icon}
+            </Text>
             <Text style={styles.title}>{t(item.titleKey)}</Text>
             <Text style={styles.body}>{t(item.bodyKey)}</Text>
           </View>

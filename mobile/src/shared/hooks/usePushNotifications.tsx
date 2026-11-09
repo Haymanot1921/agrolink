@@ -8,6 +8,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
+  useState,
   ReactNode,
 } from 'react';
 import { Platform } from 'react-native';

@@ -17,27 +17,53 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["assets/*"],
-      "@components/*": ["src/shared/components/*"],
-      "@hooks/*": ["src/shared/hooks/*"],
-      "@services/*": ["src/shared/services/*"],
-      "@utils/*": ["src/shared/utils/*"],
-      "@constants/*": ["src/shared/constants/*"],
-      "@store/*": ["src/shared/store/*"],
-      "@styles/*": ["src/shared/styles/*"],
-      "@modules/*": ["src/modules/*"],
-      "@navigation/*": ["src/navigation/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@i18n/*": ["src/i18n/*"],
-      "@app/*": ["src/app/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@components/*": [
+        "src/shared/components/*"
+      ],
+      "@hooks/*": [
+        "src/shared/hooks/*"
+      ],
+      "@services/*": [
+        "src/shared/services/*"
+      ],
+      "@utils/*": [
+        "src/shared/utils/*"
+      ],
+      "@constants/*": [
+        "src/shared/constants/*"
+      ],
+      "@store/*": [
+        "src/shared/store/*"
+      ],
+      "@styles/*": [
+        "src/shared/styles/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@navigation/*": [
+        "src/navigation/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@i18n/*": [
+        "src/i18n/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ]
     }
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",

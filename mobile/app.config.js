@@ -22,6 +22,7 @@ export default ({ config }) => ({
   name: getAppName(),
   slug: 'agrolink-ethiopia',
   scheme: IS_DEV ? 'agrolink-dev' : IS_PREVIEW ? 'agrolink-preview' : 'agrolink',
+  plugins: [...(config.plugins ?? []), 'expo-localization'],
   ios: {
     ...config.ios,
     bundleIdentifier: getBundleId(),

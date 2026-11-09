@@ -15,7 +15,7 @@ Bilingual: **English + Amharic** (SRS FR-ACCESS-006).
 
 - Node.js **18 LTS** or higher
 - npm **9+**
-- Expo CLI (`npm install -g expo-cli`) — optional, `npx expo` works
+- Expo CLI is included with the project dependencies; do not install the legacy global `expo-cli`
 - EAS CLI (`npm install -g eas-cli`) — for builds
 - Android Studio (for Android dev) / Xcode 15+ (for iOS dev, macOS only)
 
@@ -34,6 +34,20 @@ npm run assets:verify
 
 # 4. Start the dev server
 npm start
+
+# Start the web app
+npm run web
+```
+
+Run Expo through `npm start`, `npm run web`, or `npx expo` from this directory so the app's SDK-pinned CLI is used.
+
+## Troubleshooting
+
+If Expo reports `Body is unusable: Body has already been read`, bypass its response cache and use the project-local CLI:
+
+```powershell
+$env:EXPO_NO_CACHE = "1"
+npx expo start --web
 ```
 
 ## Run on device

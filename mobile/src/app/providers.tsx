@@ -1,6 +1,6 @@
 // mobile/src/app/providers.tsx
 // Composes every provider the app needs: ErrorBoundary → SafeArea →
-// GestureHandler → Query → i18n → Theme → Network → Auth →
+// GestureHandler → Query → i18n → Auth → Theme → Network →
 // Notification → Socket → child (navigator).
 
 import React, { ReactNode } from 'react';
@@ -30,15 +30,15 @@ export function AppProviders({ children }: AppProvidersProps): React.ReactElemen
         <SafeAreaProvider>
           <QueryClientProvider client={queryClient}>
             <I18nextProvider i18n={i18n}>
-              <ThemeProvider>
-                <NetworkStatusProvider>
-                  <AuthProvider>
+              <AuthProvider>
+                <ThemeProvider>
+                  <NetworkStatusProvider>
                     <NotificationProvider>
                       <SocketProvider>{children}</SocketProvider>
                     </NotificationProvider>
-                  </AuthProvider>
-                </NetworkStatusProvider>
-              </ThemeProvider>
+                  </NetworkStatusProvider>
+                </ThemeProvider>
+              </AuthProvider>
             </I18nextProvider>
           </QueryClientProvider>
         </SafeAreaProvider>

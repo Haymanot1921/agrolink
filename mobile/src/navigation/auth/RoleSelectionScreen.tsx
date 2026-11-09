@@ -7,7 +7,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,7 +14,6 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTranslation } from '@i18n/hooks/useTranslation';
-import { ActorIcons } from '@assets/assets';
 import { colors } from '@styles/colors';
 import { spacing } from '@styles/spacing';
 import type { AuthStackParamList } from '@navigation/types';
@@ -24,7 +22,7 @@ type Nav = NativeStackNavigationProp<AuthStackParamList, 'RoleSelection'>;
 
 interface Role {
   key: 'farmer' | 'buyer' | 'service_provider' | 'support_agent' | 'administrator';
-  icon: number;
+  icon: string;
   labelKey: string;
   descriptionKey: string;
 }
@@ -32,31 +30,31 @@ interface Role {
 const ROLES: Role[] = [
   {
     key: 'farmer',
-    icon: ActorIcons.farmer,
+    icon: '🌱',
     labelKey: 'roleSelection.farmer',
     descriptionKey: 'roleSelection.farmerDescription',
   },
   {
     key: 'buyer',
-    icon: ActorIcons.buyer,
+    icon: '🧺',
     labelKey: 'roleSelection.buyer',
     descriptionKey: 'roleSelection.buyerDescription',
   },
   {
     key: 'service_provider',
-    icon: ActorIcons.inputSupplier,
+    icon: '🧰',
     labelKey: 'roleSelection.serviceProvider',
     descriptionKey: 'roleSelection.serviceProviderDescription',
   },
   {
     key: 'support_agent',
-    icon: ActorIcons.supportAgent,
+    icon: '🤝',
     labelKey: 'roleSelection.supportAgent',
     descriptionKey: 'roleSelection.supportAgentDescription',
   },
   {
     key: 'administrator',
-    icon: ActorIcons.administrator,
+    icon: '📊',
     labelKey: 'roleSelection.administrator',
     descriptionKey: 'roleSelection.administratorDescription',
   },
@@ -89,7 +87,9 @@ export function RoleSelectionScreen(): React.ReactElement {
               accessibilityRole="button"
               accessibilityLabel={t(role.labelKey)}
             >
-              <Image source={role.icon} style={styles.icon} />
+              <Text style={styles.icon} accessibilityElementsHidden>
+                {role.icon}
+              </Text>
               <View style={styles.cardText}>
                 <Text style={styles.cardTitle}>{t(role.labelKey)}</Text>
                 <Text style={styles.cardDescription}>{t(role.descriptionKey)}</Text>

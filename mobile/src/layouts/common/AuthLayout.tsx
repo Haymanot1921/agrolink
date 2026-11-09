@@ -12,13 +12,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTranslation } from '@i18n/hooks/useTranslation';
 import { useLanguage } from '@i18n/hooks/useLanguage';
-import { Icons } from '@assets/assets';
 import { colors } from '@styles/colors';
 import { spacing } from '@styles/spacing';
 import { OfflineBanner } from './OfflineBanner';
@@ -54,7 +52,9 @@ export function AuthLayout({
     <View style={styles.content}>
       {showLogo && (
         <View style={styles.logoWrap}>
-          <Image source={Icons.app} style={styles.logo} resizeMode="contain" />
+          <View style={styles.logo}>
+            <Text style={styles.logoMark}>A</Text>
+          </View>
           <Text style={styles.appName}>{t('appName')}</Text>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
@@ -150,7 +150,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.lg,
   },
-  logo: { width: 72, height: 72, borderRadius: 16, marginBottom: spacing.sm },
+  logo: {
+    width: 72,
+    height: 72,
+    borderRadius: 16,
+    marginBottom: spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
+  },
+  logoMark: { color: '#FFFFFF', fontSize: 40, fontWeight: '700' },
   appName: { fontSize: 20, fontWeight: '700', color: colors.text },
   subtitle: {
     fontSize: 14,
