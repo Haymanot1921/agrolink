@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5"
+    />
+
+    <!-- Title (updated by react-helmet at runtime) -->
+    <title>AgroLink Ethiopia</title>
+
+    <!-- Primary meta -->
+    <meta
+      name="description"
+      content="AgroLink Ethiopia — an inclusive agricultural marketplace and advisory platform connecting farmers, buyers, and agricultural experts."
+    />
+    <meta name="theme-color" content="#2E7D32" />
+    <meta name="application-name" content="AgroLink Ethiopia" />
+
+    <!-- Open Graph (social sharing) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AgroLink Ethiopia" />
+    <meta
+      property="og:description"
+      content="Inclusive agricultural marketplace and advisory platform for Ethiopia."
+    />
+    <meta property="og:image" content="/images/branding/og-image.png" />
+    <meta property="og:locale" content="en_ET" />
+    <meta property="og:locale:alternate" content="am_ET" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AgroLink Ethiopia" />
+    <meta
+      name="twitter:description"
+      content="Inclusive agricultural marketplace and advisory platform for Ethiopia."
+    />
+    <meta name="twitter:image" content="/images/branding/og-image.png" />
+
+    <!-- Favicon & PWA manifest (SRS §11.7) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Preconnect to API (speeds up first request) -->
+    <link rel="preconnect" href="http://localhost:5000" crossorigin />
+
+    <!-- Preload critical fonts (SRS FR-ACCESS-006 — EN + AM) -->
+    <link
+      rel="preload"
+      href="/fonts/NotoSans-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/NotoSans-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/NotoSansEthiopic-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/NotoSansEthiopic-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Analytics placeholder (only fires if VITE_ENABLE_ANALYTICS=true) -->
+    <!-- <script defer data-domain="agrolink.et" src="https://plausible.io/js/script.js"></script> -->
+  </head>
+  <body>
+    <noscript>
+      <div
+        style="
+          font-family: system-ui, sans-serif;
+          padding: 24px;
+          text-align: center;
+          background: #e8f5e9;
+          color: #1b5e20;
+        "
+      >
+        <h1>JavaScript Required</h1>
+        <p>
+          AgroLink Ethiopia requires JavaScript to run. Please enable it in
+          your browser settings.
+        </p>
+        <p>አግሮሊንክ ኢትዮጵያ ለመስራት ጃቫስክሪፕት ያስፈልጋል። እባክዎ በአሳሽዎ ቅንብሮች ውስጥ ያንቁት።</p>
+      </div>
+    </noscript>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
