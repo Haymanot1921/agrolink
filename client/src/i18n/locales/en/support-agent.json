@@ -1,0 +1,128 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subGreeting": "Your assistance overview",
+    "stats": {
+      "assignedTickets": "Assigned tickets",
+      "resolvedTickets": "Resolved",
+      "assistedFarmers": "Farmers assisted",
+      "avgResponseTime": "Avg. response time"
+    },
+    "sections": {
+      "myTickets": "My tickets",
+      "urgentCases": "Urgent cases",
+      "recentInteractions": "Recent farmer interactions",
+      "assistedActivity": "Recent assisted activity"
+    }
+  },
+  "assistedFarmer": {
+    "title": "Assisted Farmer Service",
+    "search": {
+      "title": "Search farmer",
+      "placeholder": "Search by name, phone, or email",
+      "noResults": "No farmers found",
+      "createNew": "Register new farmer"
+    },
+    "register": {
+      "title": "Register a farmer",
+      "subtitle": "Fill in the farmer's details",
+      "fields": {
+        "fullName": "Full name",
+        "phone": "Phone number",
+        "email": "Email (optional)",
+        "region": "Region",
+        "zone": "Zone",
+        "woreda": "Woreda",
+        "farmName": "Farm name",
+        "farmSize": "Farm size (hectares)",
+        "primaryCrops": "Primary crops"
+      },
+      "duplicateWarning": "A farmer with this phone/email already exists",
+      "submit": "Register farmer"
+    },
+    "consent": {
+      "title": "Record consent",
+      "subtitle": "You must record the farmer's consent before proceeding",
+      "type": "Consent type",
+      "method": "Consent method",
+      "scope": "What the farmer is consenting to",
+      "evidence": "Evidence (optional)",
+      "types": {
+        "registration": "Registration",
+        "listing_create": "Create listing",
+        "listing_update": "Update listing",
+        "order_assist": "Order assistance",
+        "consultation_assist": "Consultation assistance"
+      },
+      "methods": {
+        "in_person": "In person",
+        "phone": "By phone",
+        "written": "Written",
+        "sms": "By SMS"
+      },
+      "confirm": "Record consent",
+      "recorded": "Consent recorded"
+    },
+    "listing": {
+      "createTitle": "Create listing on behalf of {{farmerName}}",
+      "editTitle": "Edit listing for {{farmerName}}",
+      "ownerNotice": "{{farmerName}} remains the owner of this listing",
+      "reviewPrompt": "Review details with the farmer before publishing",
+      "farmerConfirmed": "Farmer confirmed",
+      "submit": "Submit for review",
+      "submitted": "Listing submitted for review"
+    },
+    "history": {
+      "title": "Assistance History",
+      "empty": "No assisted actions yet",
+      "columns": {
+        "farmer": "Farmer",
+        "action": "Action",
+        "consent": "Consent",
+        "date": "Date"
+      }
+    },
+    "correctionRequest": {
+      "title": "Request correction",
+      "subtitle": "Farmer can request a correction to their assisted information",
+      "submit": "Submit request"
+    },
+    "consentWithdrawal": {
+      "title": "Withdraw consent",
+      "subtitle": "Farmer can withdraw consent for future assisted actions",
+      "confirm": "Withdraw consent",
+      "withdrawn": "Consent withdrawn"
+    }
+  },
+  "requests": {
+    "title": "Support Requests",
+    "assigned": "Assigned to me",
+    "unassigned": "Unassigned",
+    "escalated": "Escalated",
+    "empty": "No requests"
+  },
+  "tickets": {
+    "title": "Tickets",
+    "open": "Open",
+    "pending": "Pending",
+    "resolved": "Resolved",
+    "closed": "Closed",
+    "actions": {
+      "reply": "Reply",
+      "assign": "Assign to me",
+      "resolve": "Mark resolved",
+      "close": "Close",
+      "escalate": "Escalate"
+    }
+  },
+  "communication": {
+    "title": "Farmer Communication",
+    "empty": "No conversations"
+  },
+  "escalations": {
+    "title": "Escalations",
+    "empty": "No escalations",
+    "reason": "Escalation reason",
+    "escalateTo": "Escalate to admin"
+  }
+}
