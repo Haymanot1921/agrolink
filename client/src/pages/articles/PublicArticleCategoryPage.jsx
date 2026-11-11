@@ -42,4 +42,46 @@ export function PublicArticleCategoryPage() {
         {error && <p role="alert">{t('messages.serverError')}</p>}
         {!isLoading && !error && items.length === 0 && (
           <p style={{ color: 'var(--color-text-muted, #5F6368)' }}>
-            {isAmharic ? 'ምንም መጣ
+            {isAmharic ? 'በዚህ ምድብ ውስጥ ምንም መጣጥፍ የለም' : 'No articles in this category yet'}
+          </p>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+          {items.map((article) => (
+            <Link
+              key={article.id}
+              to={`/articles/${article.id}`}
+              style={{
+                display: 'block',
+                border: '1px solid var(--color-border, #E0E0E0)',
+                borderRadius: 12,
+                overflow: 'hidden',
+                textDecoration: 'none',
+                color: 'var(--color-text, #1B1B1B)',
+              }}
+            >
+              {article.cover_image_url && (
+                <img src={article.cover_image_url} alt="" style={{ width: '100%', height: 160, objectFit: 'cover' }} />
+              )}
+              <div style={{ padding: 16 }}>
+                <h2 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>
+                  {isAmharic ? article.title_am ?? article.title_en : article.title_en}
+                </h2>
+                {article.excerpt_en && (
+                  <p style={{ fontSize: 13, color: 'var(--color-text-muted, #5F6368)', marginBottom: 8 }}>
+                    {article.excerpt_en}
+                  </p>
+                )}
+                {article.published_at && (
+                  <p style={{ fontSize: 11, color: 'var(--color-text-subtle, #9AA0A6)' }}>
+                    {formatDate(article.published_at)}
+                  </p>
+                )}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
