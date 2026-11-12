@@ -54,7 +54,7 @@ export class AppErrorBoundary extends React.Component {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '24px',
-          background: 'var(--color-background, #fff)',
+          background: 'var(--color-bg)',
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >

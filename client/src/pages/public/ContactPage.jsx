@@ -45,7 +45,7 @@ export function ContactPage() {
           </div>
         )}
         {status === 'error' && (
-          <div role="alert" style={{ padding: 12, background: '#FEF2F2', color: '#991B1B', borderRadius: 8, marginBottom: 16 }}>
+          <div role="alert" style={{ padding: 12, background: 'var(--color-danger-light)', color: 'var(--color-danger)', borderRadius: 8, marginBottom: 16 }}>
             {errorMsg}
           </div>
         )}
@@ -87,7 +87,7 @@ export function ContactPage() {
             style={{
               padding: '14px 24px',
               background: 'var(--color-primary, #2E7D32)',
-              color: '#fff',
+              color: 'var(--color-text-on-primary)',
               border: 'none',
               borderRadius: 10,
               fontSize: 15,

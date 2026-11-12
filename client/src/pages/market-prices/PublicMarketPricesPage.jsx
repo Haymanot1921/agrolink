@@ -139,7 +139,7 @@ export function PublicMarketPricesPage() {
         {/* States */}
         {isLoading && <p>{tc('messages.loading')}</p>}
         {error && (
-          <p role="alert" style={{ color: '#991B1B' }}>
+          <p role="alert" style={{ color: 'var(--color-danger)' }}>
             {tc('messages.serverError')}
           </p>
         )}

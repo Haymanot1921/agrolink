@@ -68,7 +68,7 @@ export function HomePage() {
                 padding: '14px 28px',
                 borderRadius: 10,
                 background: 'var(--color-primary, #2E7D32)',
-                color: '#fff',
+                color: 'var(--color-text-on-primary)',
                 textDecoration: 'none',
                 fontSize: 16,
                 fontWeight: 700,
@@ -160,7 +160,7 @@ export function HomePage() {
 
       {/* ─────────── HOW IT WORKS ─────────── */}
       <section
-        style={{ background: 'var(--color-background-alt, #F5F5F5)', padding: '64px 16px' }}
+        style={{ background: 'var(--color-surface-2)', padding: '64px 16px' }}
       >
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>
@@ -172,7 +172,7 @@ export function HomePage() {
               padding: '12px 24px',
               borderRadius: 8,
               background: 'var(--color-primary, #2E7D32)',
-              color: '#fff',
+              color: 'var(--color-text-on-primary)',
               textDecoration: 'none',
               fontSize: 15,
               fontWeight: 700,
