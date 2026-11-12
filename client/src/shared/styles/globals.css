@@ -1,139 +1,455 @@
-/* client/src/shared/styles/globals.css
- * Global resets, base element styles, keyframes.
- * SRS refs: §11.8, NFR-ACCESS-002 (readable typography), NFR-ACCESS-007.
+
+/*
+ * AgroLink Ethiopia
+ * File: client/src/shared/styles/globals.css
+ *
+ * Global CSS Foundation
+ * Enterprise Agricultural SaaS Platform
+ *
+ * Features:
+ * - CSS Reset
+ * - Global Typography
+ * - Amharic / Ethiopic Support
+ * - Light / Dark Theme
+ * - RTL / LTR Support
+ * - Accessibility
+ * - Global Element Styles
+ * - Animations
+ * - Print Support
+ *
+ * SRS References:
+ * §11.8 UI/UX Design
+ * NFR-ACCESS-002: Readable Typography
+ * NFR-ACCESS-003: Keyboard Accessibility
+ * NFR-ACCESS-007: Accessibility Support
  */
+
+
+/* =========================================
+   1. GLOBAL IMPORTS
+========================================= */
 
 @import './variables.css';
 @import './responsive.css';
 
-/* ───── Reset ───── */
+
+/* =========================================
+   2. CSS RESET
+========================================= */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+* {
+  margin: 0;
+}
+
 html {
+  min-height: 100%;
   font-size: 16px;
+
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--topbar-height) + var(--space-4));
+
+  background: var(--color-bg);
+  color: var(--color-text);
 }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+
+  margin: 0;
+
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+
+  line-height: var(--line-height-normal);
+
+  color: var(--color-text);
+  background: var(--color-bg);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+
+  transition:
+    background-color var(--duration-base) var(--easing-standard),
+    color var(--duration-base) var(--easing-standard);
+}
+
+#root {
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+
+/* =========================================
+   3. LANGUAGE SUPPORT
+========================================= */
+
+/* English and default LTR */
+
+html[dir='ltr'] {
+  direction: ltr;
+}
+
+/* Right-to-left language support */
 
 html[dir='rtl'] {
   direction: rtl;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-sans);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background: var(--color-bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+/* Amharic / Ethiopic typography */
 
-/* Ethiopian language support — Amharic block */
+:lang(am),
 [lang='am'],
 body[data-lang='am'] {
   font-family: var(--font-ethiopic);
   line-height: 1.7;
 }
 
-/* ───── Typography defaults ───── */
-h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 var(--space-3);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
+/* Ethiopic font for Amharic form elements */
+
+:lang(am) input,
+:lang(am) textarea,
+:lang(am) select,
+:lang(am) button {
+  font-family: var(--font-ethiopic);
 }
 
-h1 { font-size: var(--font-size-3xl); font-weight: var(--font-weight-extrabold); }
-h2 { font-size: var(--font-size-2xl); }
-h3 { font-size: var(--font-size-xl); }
-h4 { font-size: var(--font-size-lg); }
-h5 { font-size: var(--font-size-md); }
-h6 { font-size: var(--font-size-base); }
+/* Respect bidirectional text */
+
+[dir='auto'] {
+  unicode-bidi: plaintext;
+}
+
+
+/* =========================================
+   4. GLOBAL TYPOGRAPHY
+========================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 var(--space-3);
+
+  color: var(--color-text);
+
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+}
+
+h5 {
+  font-size: var(--font-size-md);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+}
 
 p {
   margin: 0 0 var(--space-4);
+  color: inherit;
 }
 
+small {
+  font-size: var(--font-size-xs);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+mark {
+  padding: 2px 4px;
+
+  border-radius: var(--radius-xs);
+
+  background: var(--color-warning-light);
+  color: var(--color-text);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+pre {
+  overflow-x: auto;
+  padding: var(--space-4);
+
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+}
+
+
+/* =========================================
+   5. LINKS
+========================================= */
+
 a {
-  color: var(--color-primary);
+  color: var(--color-link);
+
   text-decoration: none;
-  transition: color var(--duration-fast) var(--easing-standard);
+
+  transition:
+    color var(--duration-fast) var(--easing-standard);
 }
 
 a:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
+  color: var(--color-link-hover);
 }
 
 a:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 
-/* ───── Form controls reset ───── */
+a:disabled,
+a[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* =========================================
+   6. FORM CONTROLS
+========================================= */
+
+button,
 input,
 textarea,
-select,
-button {
-  font-family: inherit;
-  font-size: inherit;
+select {
+  font: inherit;
   color: inherit;
 }
 
 button {
   cursor: pointer;
+  border: none;
 }
 
-button:disabled {
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
-/* ───── Focus visible (global, NFR-ACCESS-003) ───── */
+input,
+textarea,
+select {
+  width: 100%;
+  min-width: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-subtle);
+  opacity: 1;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: auto;
+  accent-color: var(--color-primary);
+}
+
+input[type='range'] {
+  accent-color: var(--color-primary);
+}
+
+input[type='file'] {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+select {
+  cursor: pointer;
+}
+
+
+/* =========================================
+   7. ACCESSIBILITY — KEYBOARD FOCUS
+========================================= */
+
+:focus {
+  outline: none;
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 3px;
 }
 
-/* Remove default focus ring when :focus-visible is supported */
+/* Remove focus decoration for pointer users */
+
 :focus:not(:focus-visible) {
   outline: none;
 }
 
-/* ───── Media ───── */
+
+/* =========================================
+   8. MEDIA ELEMENTS
+========================================= */
+
 img,
-svg,
-video {
-  max-width: 100%;
-  height: auto;
+picture,
+video,
+canvas,
+svg {
   display: block;
+  max-width: 100%;
 }
 
-/* ───── Lists ───── */
-ul, ol {
-  margin: 0 0 var(--space-4);
-  padding-left: var(--space-6);
+img,
+video {
+  height: auto;
 }
 
-/* ───── Tables ───── */
+img {
+  object-fit: cover;
+}
+
+iframe {
+  max-width: 100%;
+  border: 0;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+
+/* =========================================
+   9. LISTS
+========================================= */
+
+ul,
+ol {
+  padding-inline-start: var(--space-6);
+  margin-block-end: var(--space-4);
+}
+
+li {
+  margin-block-end: var(--space-1);
+}
+
+ul[role='list'],
+ol[role='list'] {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+
+/* =========================================
+   10. TABLES
+========================================= */
+
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-/* ───── Scrollbars (subtle, consistent) ───── */
+th,
+td {
+  padding: var(--space-3);
+  text-align: start;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: var(--font-weight-semibold);
+}
+
+caption {
+  padding: var(--space-3);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+
+
+/* =========================================
+   11. HORIZONTAL RULE
+========================================= */
+
+hr {
+  height: 1px;
+  border: 0;
+
+  margin-block: var(--space-4);
+
+  background: var(--color-divider);
+}
+
+
+/* =========================================
+   12. SCROLLBARS
+========================================= */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--color-border-strong)
+    transparent;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -149,64 +465,272 @@ table {
   background: var(--color-border-strong);
 }
 
-/* ───── Selection ───── */
+
+/* =========================================
+   13. TEXT SELECTION
+========================================= */
+
 ::selection {
   background: var(--color-primary-light);
   color: var(--color-text);
 }
 
-/* ───── Utility keyframes ───── */
+
+/* =========================================
+   14. GLOBAL ANIMATIONS
+========================================= */
+
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
-/* ───── Skip-to-content (accessibility) ───── */
+
+/* =========================================
+   15. REUSABLE ANIMATION CLASSES
+========================================= */
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-slow) var(--easing-standard);
+}
+
+.animate-slide-up {
+  animation: slideUp var(--duration-slow) var(--easing-standard);
+}
+
+.animate-slide-in {
+  animation: slideIn var(--duration-slow) var(--easing-standard);
+}
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+
+/* =========================================
+   16. SKIP TO MAIN CONTENT
+========================================= */
+
 .skip-to-content {
-  position: absolute;
-  top: -100px;
+  position: fixed;
+
+  top: 0;
   left: 0;
-  padding: var(--space-2) var(--space-4);
+
+  z-index: var(--z-tooltip);
+
+  transform: translateY(-150%);
+
+  padding: var(--space-3) var(--space-5);
+
   background: var(--color-primary);
   color: var(--color-text-on-primary);
-  z-index: var(--z-modal);
+
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+
+  font-weight: var(--font-weight-semibold);
+
+  transition: transform var(--duration-fast) var(--easing-standard);
 }
 
 .skip-to-content:focus {
-  top: 0;
+  transform: translateY(0);
 }
 
-/* ───── Print reset ───── */
+html[dir='rtl'] .skip-to-content {
+  left: auto;
+  right: 0;
+}
+
+
+/* =========================================
+   17. HIDDEN / ACCESSIBILITY UTILITIES
+========================================= */
+
+.sr-only {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+
+  width: auto;
+  height: auto;
+
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+
+
+/* =========================================
+   18. THEME-AWARE ELEMENTS
+========================================= */
+
+::placeholder {
+  color: var(--color-text-subtle);
+}
+
+:disabled {
+  cursor: not-allowed;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================
+   19. PRINT STYLES
+========================================= */
+
 @media print {
+
+  html,
   body {
-    background: #fff;
-    color: #000;
+    min-height: auto;
+
+    background: #FFFFFF !important;
+    color: #000000 !important;
+
+    font-size: 12pt;
   }
-  .no-print {
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print,
+  .dashboard-sidebar,
+  .dashboard-topbar,
+  .dashboard-mobile-toggle,
+  .dashboard-sidebar-overlay {
     display: none !important;
+  }
+
+  .dashboard-shell {
+    display: block;
+    min-height: auto;
+  }
+
+  .dashboard-main,
+  .dashboard-content {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+
+  .stat-card,
+  .widget-card,
+  .table-card {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  table {
+    break-inside: auto;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 15mm;
+  }
+}
+
+
+/* =========================================
+   20. REDUCED MOTION ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
