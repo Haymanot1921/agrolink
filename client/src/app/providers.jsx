@@ -54,7 +54,7 @@ function RouteFallback() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'var(--color-bg)',
+        background: 'var(--color-background, #fff)',
       }}
     >
       <LoadingSpinner size="lg" caption="Loading…" />

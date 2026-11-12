@@ -67,7 +67,7 @@ export function NotFoundPage() {
               padding: '14px 28px',
               borderRadius: 10,
               background: 'var(--color-primary, #2E7D32)',
-              color: 'var(--color-text-on-primary)',
+              color: '#fff',
               textDecoration: 'none',
               fontSize: 15,
               fontWeight: 700,

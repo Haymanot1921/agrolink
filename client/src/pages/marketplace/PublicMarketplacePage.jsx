@@ -104,7 +104,7 @@ export function PublicMarketplacePage() {
 
         {/* States */}
         {isLoading && <p>{tc('messages.loading')}</p>}
-        {error && <p role="alert" style={{ color: 'var(--color-danger)' }}>{tc('messages.serverError')}</p>}
+        {error && <p role="alert" style={{ color: '#991B1B' }}>{tc('messages.serverError')}</p>}
         {!isLoading && !error && items.length === 0 && (
           <p style={{ textAlign: 'center', color: 'var(--color-text-muted, #5F6368)', padding: 40 }}>
             {t('marketplace.empty')}

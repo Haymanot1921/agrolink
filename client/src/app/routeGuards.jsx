@@ -119,7 +119,7 @@ function FullPageLoader() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'var(--color-bg)',
+        background: 'var(--color-background, #fff)',
         flexDirection: 'column',
         gap: '12px',
       }}

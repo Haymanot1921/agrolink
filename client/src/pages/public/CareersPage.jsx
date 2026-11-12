@@ -76,7 +76,7 @@ export function CareersPage() {
                 style={{
                   padding: '8px 16px',
                   background: 'var(--color-primary, #2E7D32)',
-                  color: 'var(--color-text-on-primary)',
+                  color: '#fff',
                   border: 'none',
                   borderRadius: 8,
                   fontSize: 13,

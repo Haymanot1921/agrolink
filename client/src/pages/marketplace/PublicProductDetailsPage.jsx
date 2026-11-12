@@ -87,7 +87,7 @@ export function PublicProductDetailsPage() {
                   <button
                     type="button"
                     onClick={() => navigate(`/buyer/marketplace`)}
-                    style={{ padding: 14, background: 'var(--color-primary, #2E7D32)', color: 'var(--color-text-on-primary)', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}
+                    style={{ padding: 14, background: 'var(--color-primary, #2E7D32)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}
                   >
                     {t('marketplace.product.addToCart')}
                   </button>
@@ -103,7 +103,7 @@ export function PublicProductDetailsPage() {
                 <button
                   type="button"
                   onClick={handleAuthAction}
-                  style={{ padding: 14, background: 'var(--color-primary, #2E7D32)', color: 'var(--color-text-on-primary)', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}
+                  style={{ padding: 14, background: 'var(--color-primary, #2E7D32)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}
                 >
                   {t('marketplace.product.buyNow')} · Login required
                 </button>

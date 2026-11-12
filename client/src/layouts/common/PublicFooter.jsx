@@ -47,7 +47,7 @@ export function PublicFooter() {
   return (
     <footer
       style={{
-        background: 'var(--color-surface-2)',
+        background: 'var(--color-background-alt, #F5F5F5)',
         borderTop: '1px solid var(--color-border, #E0E0E0)',
         marginTop: 48,
       }}

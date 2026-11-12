@@ -235,7 +235,7 @@ export function PublicExpertDetailsPage() {
             style={{
               padding: '14px 40px',
               background: 'var(--color-primary, #2E7D32)',
-              color: 'var(--color-text-on-primary)',
+              color: '#fff',
               border: 'none',
               borderRadius: 10,
               fontSize: 15,

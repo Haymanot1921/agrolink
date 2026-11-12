@@ -95,7 +95,7 @@ export function PublicExpertsPage() {
 
         {isLoading && <p>{tc('messages.loading')}</p>}
         {error && (
-          <p role="alert" style={{ color: 'var(--color-danger)' }}>
+          <p role="alert" style={{ color: '#991B1B' }}>
             {tc('messages.serverError')}
           </p>
         )}

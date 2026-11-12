@@ -27,7 +27,7 @@ export function PublicLayout() {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--color-bg)',
+        background: 'var(--color-background, #fff)',
       }}
     >
       {/* Offline banner */}
@@ -36,8 +36,8 @@ export function PublicLayout() {
           role="status"
           aria-live="polite"
           style={{
-            background: 'var(--color-warning)',
-            color: 'var(--color-text-on-accent)',
+            background: '#F9A825',
+            color: '#1B1B1B',
             padding: '8px 16px',
             textAlign: 'center',
             fontSize: 13,
