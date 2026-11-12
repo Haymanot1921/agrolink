@@ -167,22 +167,26 @@ export function PublicFooter() {
                 fontSize: 14,
               }}
             >
-              <li>
-                <a
-                  href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}
-                  style={{ color: 'var(--color-text, #1B1B1B)' }}
-                >
-                  ✉ {APP_INFO.SUPPORT_EMAIL}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`tel:${APP_INFO.SUPPORT_PHONE}`}
-                  style={{ color: 'var(--color-text, #1B1B1B)' }}
-                >
-                  ☎ {APP_INFO.SUPPORT_PHONE}
-                </a>
-              </li>
+              {APP_INFO.SUPPORT_EMAIL && (
+                <li>
+                  <a
+                    href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}
+                    style={{ color: 'var(--color-text, #1B1B1B)' }}
+                  >
+                    ✉ {APP_INFO.SUPPORT_EMAIL}
+                  </a>
+                </li>
+              )}
+              {APP_INFO.SUPPORT_PHONE && (
+                <li>
+                  <a
+                    href={`tel:${APP_INFO.SUPPORT_PHONE}`}
+                    style={{ color: 'var(--color-text, #1B1B1B)' }}
+                  >
+                    ☎ {APP_INFO.SUPPORT_PHONE}
+                  </a>
+                </li>
+              )}
               <li>
                 <Link
                   to="/contact"

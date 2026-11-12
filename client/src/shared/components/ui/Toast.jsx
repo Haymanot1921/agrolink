@@ -96,4 +96,4 @@ export function useToast() {
   return ctx;
 }
 
-export default Toast;
+export default ToastProvider;

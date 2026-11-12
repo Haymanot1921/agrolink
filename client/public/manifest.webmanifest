@@ -1,0 +1,9 @@
+{
+  "name": "AgroLink Ethiopia",
+  "short_name": "AgroLink",
+  "description": "An agricultural marketplace and advisory platform for Ethiopia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2e7d32"
+}

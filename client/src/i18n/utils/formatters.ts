@@ -19,7 +19,6 @@
 
 import {
   format as dfFormat,
-  formatDistanceToNow,
   parseISO,
   isToday,
   isYesterday,
@@ -27,7 +26,7 @@ import {
   isThisMonth,
   isThisYear,
 } from 'date-fns';
-import { enUS, amET } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 
 import i18n from '../index';
 import { DEFAULT_LANGUAGE, INTL_LOCALE, isSupportedLanguage, type SupportedLanguage } from '../config';
@@ -43,8 +42,40 @@ function currentLanguage(): SupportedLanguage {
   return isSupportedLanguage(lng) ? lng : DEFAULT_LANGUAGE;
 }
 
+const amharicDateLocale = {
+  ...enUS,
+  code: 'am-ET',
+  localize: {
+    ...enUS.localize,
+    month: (monthIndex: number, options?: { width?: string }) => {
+      const width =
+        options?.width === 'wide'
+          ? 'long'
+          : options?.width === 'narrow'
+            ? 'narrow'
+            : 'short';
+      return new Intl.DateTimeFormat('am-ET-u-ca-gregory', { month: width }).format(
+        new Date(Date.UTC(2020, monthIndex, 1)),
+      );
+    },
+    day: (dayIndex: number, options?: { width?: string }) => {
+      const width =
+        options?.width === 'wide'
+          ? 'long'
+          : options?.width === 'narrow'
+            ? 'narrow'
+            : 'short';
+      return new Intl.DateTimeFormat('am-ET-u-ca-gregory', {
+        weekday: width,
+      }).format(new Date(Date.UTC(2020, 0, 5 + dayIndex)));
+    },
+    dayPeriod: (period: string) =>
+      period === 'am' ? 'ጠዋት' : period === 'pm' ? 'ከሰዓት' : period,
+  },
+};
+
 function dateFnsLocale() {
-  return currentLanguage() === 'am' ? amET : enUS;
+  return currentLanguage() === 'am' ? amharicDateLocale : enUS;
 }
 
 function intlLocale(lang?: SupportedLanguage): string {
@@ -235,10 +266,25 @@ export function formatRelative(input: DateInput): string {
 }
 
 export function formatTimeAgo(input: DateInput): string {
-  return formatDistanceToNow(toDate(input), {
-    locale: dateFnsLocale(),
-    addSuffix: true,
-  });
+  const differenceInSeconds = (toDate(input).getTime() - Date.now()) / 1000;
+  const absoluteDifference = Math.abs(differenceInSeconds);
+  const [unit, secondsPerUnit] =
+    absoluteDifference < 60
+      ? ['second', 1]
+      : absoluteDifference < 3600
+        ? ['minute', 60]
+        : absoluteDifference < 86400
+          ? ['hour', 3600]
+          : absoluteDifference < 2_592_000
+            ? ['day', 86400]
+            : absoluteDifference < 31_536_000
+              ? ['month', 2_592_000]
+              : ['year', 31_536_000];
+
+  return new Intl.RelativeTimeFormat(intlLocale(), { numeric: 'auto' }).format(
+    Math.round(differenceInSeconds / secondsPerUnit),
+    unit as Intl.RelativeTimeFormatUnit,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────

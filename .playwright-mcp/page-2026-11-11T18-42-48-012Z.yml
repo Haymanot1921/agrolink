@@ -1,0 +1,169 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - status [ref=e4]: ⚠ የበይነመረብ ግንኙነት የለም
+    - banner [ref=e5]:
+      - navigation "Main navigation" [ref=e6]:
+        - link "አግሮሊንክ ኢትዮጵያ" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "ገበያ" [ref=e11] [cursor=pointer]:
+              - /url: /marketplace
+          - listitem [ref=e12]:
+            - link "መጣጥፎች" [ref=e13] [cursor=pointer]:
+              - /url: /articles
+          - listitem [ref=e14]:
+            - link "ተጨማሪ" [ref=e15] [cursor=pointer]:
+              - /url: /market-prices
+          - listitem [ref=e16]:
+            - link "ባለሙያዎች" [ref=e17] [cursor=pointer]:
+              - /url: /experts
+          - listitem [ref=e18]:
+            - link "እርዳታ" [ref=e19] [cursor=pointer]:
+              - /url: /help
+        - button "ቋንቋ" [ref=e21] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e22]: 🇪🇹
+          - generic [aria-hidden] [ref=e23]: ▼
+        - link "ግባ" [ref=e24] [cursor=pointer]:
+          - /url: /auth/login
+        - link "ተመዝገብ" [ref=e25] [cursor=pointer]:
+          - /url: /auth/role
+    - main [ref=e26]:
+      - generic [ref=e28]:
+        - heading "ከኢትዮጵያ ግብርና ጋር ይገናኙ" [level=1] [ref=e29]
+        - paragraph [ref=e30]: ትኩስ ምርቶችን ይግዙ፣ ምርትዎን ይሽጡ፣ እና የባለሙያ ምክር ያግኙ — ሁሉም በአንድ መድረክ።
+        - generic [ref=e31]:
+          - link "ገበያውን ያስሱ" [ref=e32] [cursor=pointer]:
+            - /url: /marketplace
+          - link "መለያ ይፍጠሩ" [ref=e33] [cursor=pointer]:
+            - /url: /auth/role
+      - generic [ref=e35]:
+        - heading "የሚያስፈልግዎ ሁሉ በአንድ ቦታ" [level=2] [ref=e36]
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [aria-hidden] [ref=e39]: 🌾
+            - heading "ምርትዎን ይሽጡ" [level=3] [ref=e40]
+            - paragraph [ref=e41]: ብዙ ገዢዎችን ያግኙ እና የራስዎን ዋጋ ያዘጋጁ።
+          - generic [ref=e42]:
+            - generic [aria-hidden] [ref=e43]: 🛒
+            - heading "ትኩስ ምርቶችን ይግዙ" [level=3] [ref=e44]
+            - paragraph [ref=e45]: ከመላው ኢትዮጵያ ገበሬዎች በቀጥታ ያዙ።
+          - generic [ref=e46]:
+            - generic [aria-hidden] [ref=e47]: 👨‍🌾
+            - heading "የባለሙያ ምክር ያግኙ" [level=3] [ref=e48]
+            - paragraph [ref=e49]: ከብቁ የእርሻ ባለሙያዎች ጋር ይገናኙ።
+      - generic [ref=e51]:
+        - heading "አግሮሊንክ እንዴት ይሰራል" [level=2] [ref=e52]
+        - link "ተጨማሪ ይማሩ" [ref=e53] [cursor=pointer]:
+          - /url: /how-it-works
+    - contentinfo [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - link "አግሮሊንክ ኢትዮጵያ" [ref=e58] [cursor=pointer]:
+              - /url: /
+            - paragraph [ref=e59]: ገበሬዎችን፣ ገዢዎችን እና ባለሙያዎችን ማገናኘት
+          - generic [ref=e60]:
+            - heading "ስለ አግሮሊንክ" [level=4] [ref=e61]
+            - list [ref=e62]:
+              - listitem [ref=e63]:
+                - link "ገበያ" [ref=e64] [cursor=pointer]:
+                  - /url: /marketplace
+              - listitem [ref=e65]:
+                - link "መጣጥፎች" [ref=e66] [cursor=pointer]:
+                  - /url: /articles
+              - listitem [ref=e67]:
+                - link "ባለሙያዎች" [ref=e68] [cursor=pointer]:
+                  - /url: /experts
+              - listitem [ref=e69]:
+                - link "እርዳታ" [ref=e70] [cursor=pointer]:
+                  - /url: /help
+          - generic [ref=e71]:
+            - heading "ኩባንያ" [level=4] [ref=e72]
+            - list [ref=e73]:
+              - listitem [ref=e74]:
+                - link "ስለ አግሮሊንክ" [ref=e75] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e76]:
+                - link "ስራዎች" [ref=e77] [cursor=pointer]:
+                  - /url: /careers
+              - listitem [ref=e78]:
+                - link "ፕሬስ እና ሚዲያ" [ref=e79] [cursor=pointer]:
+                  - /url: /press
+              - listitem [ref=e80]:
+                - link "ብሎግ" [ref=e81] [cursor=pointer]:
+                  - /url: /blog
+          - generic [ref=e82]:
+            - heading "ህጋዊ" [level=4] [ref=e83]
+            - list [ref=e84]:
+              - listitem [ref=e85]:
+                - link "የአገልግሎት ውል" [ref=e86] [cursor=pointer]:
+                  - /url: /terms
+              - listitem [ref=e87]:
+                - link "የግላዊነት መመሪያ" [ref=e88] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e89]:
+                - link "የኩኪ መመሪያ" [ref=e90] [cursor=pointer]:
+                  - /url: /cookies
+              - listitem [ref=e91]:
+                - link "የተደራሽነት መግለጫ" [ref=e92] [cursor=pointer]:
+                  - /url: /accessibility
+          - generic [ref=e93]:
+            - heading "ድጋፍ" [level=4] [ref=e94]
+            - list [ref=e95]:
+              - listitem [ref=e96]:
+                - link "→ ያግኙን" [ref=e97] [cursor=pointer]:
+                  - /url: /contact
+        - generic [ref=e98]:
+          - generic [ref=e99]: © 2026 አግሮሊንክ ኢትዮጵያ · ስሪት 2.0
+          - generic [ref=e100]:
+            - link "የአገልግሎት ውል" [ref=e101] [cursor=pointer]:
+              - /url: /terms
+            - link "የግላዊነት መመሪያ" [ref=e102] [cursor=pointer]:
+              - /url: /privacy
+            - link "የኩኪ መመሪያ" [ref=e103] [cursor=pointer]:
+              - /url: /cookies
+  - complementary "Tanstack query devtools" [ref=e104]:
+    - separator "Resize devtools panel"
+    - button "Close tanstack query devtools" [active] [ref=e105] [cursor=pointer]
+    - generic [ref=e108]:
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - button "Close Tanstack query devtools" [ref=e111] [cursor=pointer]:
+            - generic [ref=e112]: TANSTACK
+            - generic [ref=e113]: React Query v5
+          - radiogroup "Toggle between queries and mutations view" [ref=e114]:
+            - group [ref=e115]:
+              - radio "Queries" [checked] [ref=e116]
+              - generic "Toggle Queries View" [ref=e117] [cursor=pointer]: Queries
+            - group [ref=e118]:
+              - radio "Mutations" [ref=e119]
+              - generic "Toggle Mutations View" [ref=e120] [cursor=pointer]: Mutations
+        - generic [ref=e121]:
+          - 'button "Fresh: 0" [ref=e122] [cursor=pointer]':
+            - generic [ref=e124]: "0"
+          - 'button "Fetching: 0" [ref=e125] [cursor=pointer]':
+            - generic [ref=e127]: "0"
+          - 'button "Paused: 0" [ref=e128] [cursor=pointer]':
+            - generic [ref=e130]: "0"
+          - 'button "Stale: 0" [ref=e131] [cursor=pointer]':
+            - generic [ref=e133]: "0"
+          - 'button "Inactive: 0" [ref=e134] [cursor=pointer]':
+            - generic [ref=e136]: "0"
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - textbox "Filter queries by query key" [ref=e142]:
+              - /placeholder: Filter
+            - 'button "Filter scope: Key" [ref=e143] [cursor=pointer]': Key
+          - combobox "Sort queries by" [ref=e145]:
+            - option "Sort by status" [selected]
+            - option "Sort by query hash"
+            - option "Sort by last updated"
+          - button "Sort order ascending" [ref=e148] [cursor=pointer]:
+            - generic [ref=e149]: Asc
+        - generic [ref=e152]:
+          - button "Clear query cache" [ref=e153] [cursor=pointer]
+          - button "Mock offline behavior" [ref=e156] [cursor=pointer]
+          - button "Open in picture-in-picture mode" [ref=e160] [cursor=pointer]
+          - button "Open settings menu" [ref=e163] [cursor=pointer]

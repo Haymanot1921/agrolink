@@ -21,6 +21,8 @@ import { InputSupplierLayout } from '@layouts/input-supplier/InputSupplierLayout
 import { ExpertLayout } from '@layouts/agricultural-expert/ExpertLayout';
 import { SupportAgentLayout } from '@layouts/support-agent/SupportAgentLayout';
 import { AdministratorLayout } from '@layouts/administrator/AdministratorLayout';
+import FarmerDashboard from '@pages/dashboard/FarmerDashboard';
+import { FeatureUnavailablePage } from '@pages/errors/FeatureUnavailablePage';
 
 // ─────────────────────────────────────────────────────────────
 // Guards
@@ -34,275 +36,399 @@ import {
 // ─────────────────────────────────────────────────────────────
 // Public pages (lazy — guest-accessible)
 // ─────────────────────────────────────────────────────────────
-const HomePage = lazy(() => import('@pages/public/HomePage'));
-const AboutPage = lazy(() => import('@pages/public/AboutPage'));
-const HowItWorksPage = lazy(() => import('@pages/public/HowItWorksPage'));
-const PricingPage = lazy(() => import('@pages/public/PricingPage'));
-const FaqPage = lazy(() => import('@pages/public/FaqPage'));
-const ContactPage = lazy(() => import('@pages/public/ContactPage'));
-const HelpCenterPage = lazy(() => import('@pages/public/HelpCenterPage'));
-const TermsPage = lazy(() => import('@pages/public/TermsPage'));
-const PrivacyPage = lazy(() => import('@pages/public/PrivacyPage'));
-const CookiesPage = lazy(() => import('@pages/public/CookiesPage'));
-const AccessibilityPage = lazy(() => import('@pages/public/AccessibilityPage'));
-const CareersPage = lazy(() => import('@pages/public/CareersPage'));
-const PressPage = lazy(() => import('@pages/public/PressPage'));
-const BlogPage = lazy(() => import('@pages/public/BlogPage'));
-const NotFoundPage = lazy(() => import('@pages/public/NotFoundPage'));
+const lazyPage = (loadModule, exportName) =>
+  lazy(() =>
+    loadModule().then((module) => {
+      const component = module[exportName];
+      if (!component) {
+        throw new Error(`Route page does not export "${exportName}".`);
+      }
+      return { default: component };
+    }),
+  );
 
-const PublicMarketplacePage = lazy(() =>
-  import('@pages/marketplace/PublicMarketplacePage'),
+const HomePage = lazyPage(() => import('@pages/public/HomePage'), 'HomePage');
+const AboutPage = lazyPage(() => import('@pages/public/AboutPage'), 'AboutPage');
+const HowItWorksPage = lazyPage(
+  () => import('@pages/public/HowItWorksPage'),
+  'HowItWorksPage',
 );
-const PublicProductDetailsPage = lazy(() =>
-  import('@pages/marketplace/PublicProductDetailsPage'),
+const PricingPage = lazyPage(() => import('@pages/public/PricingPage'), 'PricingPage');
+const FaqPage = lazyPage(() => import('@pages/public/FaqPage'), 'FaqPage');
+const ContactPage = lazyPage(() => import('@pages/public/ContactPage'), 'ContactPage');
+const HelpCenterPage = lazyPage(
+  () => import('@pages/public/HelpCenterPage'),
+  'HelpCenterPage',
 );
-const PublicCategoryPage = lazy(() =>
-  import('@pages/marketplace/PublicCategoryPage'),
+const TermsPage = lazyPage(() => import('@pages/public/TermsPage'), 'TermsPage');
+const PrivacyPage = lazyPage(() => import('@pages/public/PrivacyPage'), 'PrivacyPage');
+const CookiesPage = lazyPage(() => import('@pages/public/CookiesPage'), 'CookiesPage');
+const AccessibilityPage = lazyPage(
+  () => import('@pages/public/AccessibilityPage'),
+  'AccessibilityPage',
 );
-const PublicSearchResultsPage = lazy(() =>
-  import('@pages/marketplace/PublicSearchResultsPage'),
+const CareersPage = lazyPage(
+  () => import('@pages/public/CareersPage'),
+  'CareersPage',
 );
-const PublicArticlesPage = lazy(() => import('@pages/articles/PublicArticlesPage'));
-const PublicArticleDetailsPage = lazy(() =>
-  import('@pages/articles/PublicArticleDetailsPage'),
+const PressPage = lazyPage(() => import('@pages/public/PressPage'), 'PressPage');
+const BlogPage = lazyPage(() => import('@pages/public/BlogPage'), 'BlogPage');
+const NotFoundPage = lazyPage(
+  () => import('@pages/public/NotFoundPage'),
+  'NotFoundPage',
 );
-const PublicArticleCategoryPage = lazy(() =>
-  import('@pages/articles/PublicArticleCategoryPage'),
+
+const PublicMarketplacePage = lazyPage(
+  () => import('@pages/marketplace/PublicMarketplacePage'),
+  'PublicMarketplacePage',
 );
-const PublicMarketPricesPage = lazy(() =>
-  import('@pages/market-prices/PublicMarketPricesPage'),
+const PublicProductDetailsPage = lazyPage(
+  () => import('@pages/marketplace/PublicProductDetailsPage'),
+  'PublicProductDetailsPage',
 );
-const PublicMarketPriceDetailsPage = lazy(() =>
-  import('@pages/market-prices/PublicMarketPriceDetailsPage'),
+const PublicCategoryPage = lazyPage(
+  () => import('@pages/marketplace/PublicCategoryPage'),
+  'PublicCategoryPage',
 );
-const PublicExpertsPage = lazy(() => import('@pages/experts/PublicExpertsPage'));
-const PublicExpertDetailsPage = lazy(() =>
-  import('@pages/experts/PublicExpertDetailsPage'),
+const PublicSearchResultsPage = lazyPage(
+  () => import('@pages/marketplace/PublicSearchResultsPage'),
+  'PublicSearchResultsPage',
+);
+const PublicArticlesPage = lazyPage(
+  () => import('@pages/articles/PublicArticlesPage'),
+  'PublicArticlesPage',
+);
+const PublicArticleDetailsPage = lazyPage(
+  () => import('@pages/articles/PublicArticleDetailsPage'),
+  'PublicArticleDetailsPage',
+);
+const PublicArticleCategoryPage = lazyPage(
+  () => import('@pages/articles/PublicArticleCategoryPage'),
+  'PublicArticleCategoryPage',
+);
+const PublicMarketPricesPage = lazyPage(
+  () => import('@pages/market-prices/PublicMarketPricesPage'),
+  'PublicMarketPricesPage',
+);
+const PublicMarketPriceDetailsPage = lazyPage(
+  () => import('@pages/market-prices/PublicMarketPriceDetailsPage'),
+  'PublicMarketPriceDetailsPage',
+);
+const PublicExpertsPage = lazyPage(
+  () => import('@pages/experts/PublicExpertsPage'),
+  'PublicExpertsPage',
+);
+const PublicExpertDetailsPage = lazyPage(
+  () => import('@pages/experts/PublicExpertDetailsPage'),
+  'PublicExpertDetailsPage',
 );
 
 // ─────────────────────────────────────────────────────────────
 // Auth pages
 // ─────────────────────────────────────────────────────────────
-const LoginPage = lazy(() => import('@pages/auth/LoginPage'));
-const RegisterPage = lazy(() => import('@pages/auth/RegisterPage'));
-const RoleSelectionPage = lazy(() => import('@pages/auth/RoleSelectionPage'));
-const ForgotPasswordPage = lazy(() => import('@pages/auth/ForgotPasswordPage'));
-const ResetPasswordPage = lazy(() => import('@pages/auth/ResetPasswordPage'));
-const VerifyEmailPage = lazy(() => import('@pages/auth/VerifyEmailPage'));
+const LoginPage = lazyPage(() => import('@pages/auth/LoginPage'), 'LoginPage');
+const RegisterPage = lazyPage(
+  () => import('@pages/auth/RegisterPage'),
+  'RegisterPage',
+);
+const RoleSelectionPage = lazyPage(
+  () => import('@pages/auth/RoleSelectionPage'),
+  'RoleSelectionPage',
+);
+const ForgotPasswordPage = lazyPage(
+  () => import('@pages/auth/ForgotPasswordPage'),
+  'ForgotPasswordPage',
+);
+const ResetPasswordPage = lazyPage(
+  () => import('@pages/auth/ResetPasswordPage'),
+  'ResetPasswordPage',
+);
+const VerifyEmailPage = lazyPage(
+  () => import('@pages/auth/VerifyEmailPage'),
+  'VerifyEmailPage',
+);
 
 // ─────────────────────────────────────────────────────────────
 // Errors
 // ─────────────────────────────────────────────────────────────
-const UnauthorizedPage = lazy(() => import('@pages/errors/UnauthorizedPage'));
-const ForbiddenPage = lazy(() => import('@pages/errors/ForbiddenPage'));
-const ServerErrorPage = lazy(() => import('@pages/errors/ServerErrorPage'));
-const MaintenancePage = lazy(() => import('@pages/errors/MaintenancePage'));
-
-// ─────────────────────────────────────────────────────────────
-// Farmer routes
-// ─────────────────────────────────────────────────────────────
-const FarmerDashboard = lazy(() =>
-  import('@modules/farmer/dashboard/pages/FarmerDashboard'),
+const UnauthorizedPage = lazyPage(
+  () => import('@pages/errors/UnauthorizedPage'),
+  'UnauthorizedPage',
 );
-const MyProducts = lazy(() =>
-  import('@modules/farmer/products/pages/MyProducts'),
+const ForbiddenPage = lazyPage(
+  () => import('@pages/errors/ForbiddenPage'),
+  'ForbiddenPage',
 );
-const AddProduct = lazy(() => import('@modules/farmer/products/pages/AddProduct'));
-const FarmerOrders = lazy(() =>
-  import('@modules/farmer/orders/pages/FarmerOrders'),
+const ServerErrorPage = lazyPage(
+  () => import('@pages/errors/ServerErrorPage'),
+  'ServerErrorPage',
 );
-const FarmerConsultations = lazy(() =>
-  import('@modules/farmer/consultations/pages/MyConsultations'),
-);
-const FarmerMessages = lazy(() =>
-  import('@modules/farmer/messages/pages/FarmerMessages'),
-);
-const FarmerMarketPrices = lazy(() =>
-  import('@modules/farmer/market-prices/pages/MarketPrices'),
-);
-const FarmerArticles = lazy(() =>
-  import('@modules/farmer/articles/pages/ArticlesResources'),
-);
-const FarmerNotifications = lazy(() =>
-  import('@modules/farmer/notifications/pages/FarmerNotifications'),
-);
-const FarmerProfile = lazy(() =>
-  import('@modules/farmer/profile-verification/pages/FarmerProfile'),
-);
-const FarmerSettings = lazy(() =>
-  import('@modules/farmer/settings/pages/FarmerSettings'),
+const MaintenancePage = lazyPage(
+  () => import('@pages/errors/MaintenancePage'),
+  'MaintenancePage',
 );
 
-// ─────────────────────────────────────────────────────────────
-// Buyer routes
-// ─────────────────────────────────────────────────────────────
-const BuyerDashboard = lazy(() =>
-  import('@modules/buyer/dashboard/pages/BuyerDashboard'),
-);
-const BuyerMarketplace = lazy(() =>
-  import('@modules/buyer/marketplace/pages/Marketplace'),
-);
-const ShoppingCart = lazy(() => import('@modules/buyer/cart/pages/ShoppingCart'));
-const Checkout = lazy(() => import('@modules/buyer/checkout/pages/Checkout'));
-const BuyerOrders = lazy(() =>
-  import('@modules/buyer/orders/pages/BuyerOrders'),
-);
-const BuyerMessages = lazy(() =>
-  import('@modules/buyer/messages/pages/BuyerMessages'),
-);
-const BuyerConsultations = lazy(() =>
-  import('@modules/buyer/consultations/pages/BuyerConsultations'),
-);
-const BuyerNotifications = lazy(() =>
-  import('@modules/buyer/notifications/pages/BuyerNotifications'),
-);
-const BuyerProfile = lazy(() =>
-  import('@modules/buyer/profile/pages/BuyerProfile'),
-);
-const BuyerSettings = lazy(() =>
-  import('@modules/buyer/settings/pages/BuyerSettings'),
-);
+// // ─────────────────────────────────────────────────────────────
+// // Farmer routes
+// // ─────────────────────────────────────────────────────────────
+// const FarmerDashboard = lazy(() =>
+//   import('@modules/farmer/dashboard/pages/FarmerDashboard'),
+// );
+// const MyProducts = lazy(() =>
+//   import('@modules/farmer/products/pages/MyProducts'),
+// );
+// const AddProduct = lazy(() => import('@modules/farmer/products/pages/AddProduct'));
+// const FarmerOrders = lazy(() =>
+//   import('@modules/farmer/orders/pages/FarmerOrders'),
+// );
+// const FarmerConsultations = lazy(() =>
+//   import('@modules/farmer/consultations/pages/MyConsultations'),
+// );
+// const FarmerMessages = lazy(() =>
+//   import('@modules/farmer/messages/pages/FarmerMessages'),
+// );
+// const FarmerMarketPrices = lazy(() =>
+//   import('@modules/farmer/market-prices/pages/MarketPrices'),
+// );
+// const FarmerArticles = lazy(() =>
+//   import('@modules/farmer/articles/pages/ArticlesResources'),
+// );
+// const FarmerNotifications = lazy(() =>
+//   import('@modules/farmer/notifications/pages/FarmerNotifications'),
+// );
+// const FarmerProfile = lazy(() =>
+//   import('@modules/farmer/profile-verification/pages/FarmerProfile'),
+// );
+// const FarmerSettings = lazy(() =>
+//   import('@modules/farmer/settings/pages/FarmerSettings'),
+// );
 
-// ─────────────────────────────────────────────────────────────
-// Input Supplier routes
-// ─────────────────────────────────────────────────────────────
-const SupplierDashboard = lazy(() =>
-  import('@modules/input-supplier/dashboard/pages/InputSupplierDashboard'),
-);
-const SupplierCatalog = lazy(() =>
-  import('@modules/input-supplier/input-catalog/pages/InputCatalogPage'),
-);
-const SupplierInventory = lazy(() =>
-  import('@modules/input-supplier/inventory/pages/InventoryOverviewPage'),
-);
-const SupplierOrders = lazy(() =>
-  import('@modules/input-supplier/supplier-orders/pages/SupplierOrdersPage'),
-);
-const SupplierMessages = lazy(() =>
-  import('@modules/input-supplier/messages/pages/SupplierMessagesPage'),
-);
-const SupplierNotifications = lazy(() =>
-  import('@modules/input-supplier/notifications/pages/SupplierNotificationsPage'),
-);
-const SupplierProfile = lazy(() =>
-  import('@modules/input-supplier/store-profile/pages/SupplierProfilePage'),
-);
-const SupplierSettings = lazy(() =>
-  import('@modules/input-supplier/settings/pages/SupplierSettingsPage'),
-);
+// // ─────────────────────────────────────────────────────────────
+// // Buyer routes
+// // ─────────────────────────────────────────────────────────────
+// const BuyerDashboard = lazy(() =>
+//   import('@modules/buyer/dashboard/pages/BuyerDashboard'),
+// );
+// const BuyerMarketplace = lazy(() =>
+//   import('@modules/buyer/marketplace/pages/Marketplace'),
+// );
+// const ShoppingCart = lazy(() => import('@modules/buyer/cart/pages/ShoppingCart'));
+// const Checkout = lazy(() => import('@modules/buyer/checkout/pages/Checkout'));
+// const BuyerOrders = lazy(() =>
+//   import('@modules/buyer/orders/pages/BuyerOrders'),
+// );
+// const BuyerMessages = lazy(() =>
+//   import('@modules/buyer/messages/pages/BuyerMessages'),
+// );
+// const BuyerConsultations = lazy(() =>
+//   import('@modules/buyer/consultations/pages/BuyerConsultations'),
+// );
+// const BuyerNotifications = lazy(() =>
+//   import('@modules/buyer/notifications/pages/BuyerNotifications'),
+// );
+// const BuyerProfile = lazy(() =>
+//   import('@modules/buyer/profile/pages/BuyerProfile'),
+// );
+// const BuyerSettings = lazy(() =>
+//   import('@modules/buyer/settings/pages/BuyerSettings'),
+// );
 
-// ─────────────────────────────────────────────────────────────
-// Agricultural Expert routes
-// ─────────────────────────────────────────────────────────────
-const ExpertDashboard = lazy(() =>
-  import('@modules/agricultural-expert/dashboard/pages/ExpertDashboard'),
-);
-const ExpertProfile = lazy(() =>
-  import('@modules/agricultural-expert/expert-profile/pages/ExpertProfilePage'),
-);
-const ExpertRequests = lazy(() =>
-  import(
-    '@modules/agricultural-expert/consultation-requests/pages/ConsultationRequestsPage'
-  ),
-);
-const ExpertConsultations = lazy(() =>
-  import('@modules/agricultural-expert/consultations/pages/ConsultationsPage'),
-);
-const ExpertSchedule = lazy(() =>
-  import(
-    '@modules/agricultural-expert/scheduling/pages/ConsultationCalendarPage'
-  ),
-);
-const ExpertMessages = lazy(() =>
-  import(
-    '@modules/agricultural-expert/messages-notifications/pages/ExpertMessagesPage'
-  ),
-);
-const ExpertNotifications = lazy(() =>
-  import(
-    '@modules/agricultural-expert/messages-notifications/pages/ExpertNotificationsPage'
-  ),
-);
-const ExpertSettings = lazy(() =>
-  import('@modules/agricultural-expert/settings/pages/ExpertSettingsPage'),
-);
+// // ─────────────────────────────────────────────────────────────
+// // Input Supplier routes
+// // ─────────────────────────────────────────────────────────────
+// const SupplierDashboard = lazy(() =>
+//   import('@modules/input-supplier/dashboard/pages/InputSupplierDashboard'),
+// );
+// const SupplierCatalog = lazy(() =>
+//   import('@modules/input-supplier/input-catalog/pages/InputCatalogPage'),
+// );
+// const SupplierInventory = lazy(() =>
+//   import('@modules/input-supplier/inventory/pages/InventoryOverviewPage'),
+// );
+// const SupplierOrders = lazy(() =>
+//   import('@modules/input-supplier/supplier-orders/pages/SupplierOrdersPage'),
+// );
+// const SupplierMessages = lazy(() =>
+//   import('@modules/input-supplier/messages/pages/SupplierMessagesPage'),
+// );
+// const SupplierNotifications = lazy(() =>
+//   import('@modules/input-supplier/notifications/pages/SupplierNotificationsPage'),
+// );
+// const SupplierProfile = lazy(() =>
+//   import('@modules/input-supplier/store-profile/pages/SupplierProfilePage'),
+// );
+// const SupplierSettings = lazy(() =>
+//   import('@modules/input-supplier/settings/pages/SupplierSettingsPage'),
+// );
 
-// ─────────────────────────────────────────────────────────────
-// Support Agent routes
-// ─────────────────────────────────────────────────────────────
-const SupportAgentDashboard = lazy(() =>
-  import('@modules/support-agent/dashboard/pages/SupportAgentDashboard'),
-);
-const AssistedFarmerPage = lazy(() =>
-  import(
-    '@modules/support-agent/assisted-farmer-onboarding/pages/AssistedFarmerManagementPage'
-  ),
-);
-const ConsentManagement = lazy(() =>
-  import('@modules/support-agent/consent-management/pages/FarmerConsentPage'),
-);
-const SupportTickets = lazy(() =>
-  import('@modules/support-agent/ticket-management/pages/TicketsPage'),
-);
-const SupportMessages = lazy(() =>
-  import(
-    '@modules/support-agent/farmer-communication/pages/FarmerConversationsPage'
-  ),
-);
-const SupportNotifications = lazy(() =>
-  import(
-    '@modules/support-agent/notifications/pages/SupportAgentNotificationsPage'
-  ),
-);
-const SupportSettings = lazy(() =>
-  import('@modules/support-agent/support-settings/pages/SupportSettingsPage'),
-);
+// // ─────────────────────────────────────────────────────────────
+// // Agricultural Expert routes
+// // ─────────────────────────────────────────────────────────────
+// const ExpertDashboard = lazy(() =>
+//   import('@modules/agricultural-expert/dashboard/pages/ExpertDashboard'),
+// );
+// const ExpertProfile = lazy(() =>
+//   import('@modules/agricultural-expert/expert-profile/pages/ExpertProfilePage'),
+// );
+// const ExpertRequests = lazy(() =>
+//   import(
+//     '@modules/agricultural-expert/consultation-requests/pages/ConsultationRequestsPage'
+//   ),
+// );
+// const ExpertConsultations = lazy(() =>
+//   import('@modules/agricultural-expert/consultations/pages/ConsultationsPage'),
+// );
+// const ExpertSchedule = lazy(() =>
+//   import(
+//     '@modules/agricultural-expert/scheduling/pages/ConsultationCalendarPage'
+//   ),
+// );
+// const ExpertMessages = lazy(() =>
+//   import(
+//     '@modules/agricultural-expert/messages-notifications/pages/ExpertMessagesPage'
+//   ),
+// );
+// const ExpertNotifications = lazy(() =>
+//   import(
+//     '@modules/agricultural-expert/messages-notifications/pages/ExpertNotificationsPage'
+//   ),
+// );
+// const ExpertSettings = lazy(() =>
+//   import('@modules/agricultural-expert/settings/pages/ExpertSettingsPage'),
+// );
 
-// ─────────────────────────────────────────────────────────────
-// Administrator routes
-// ─────────────────────────────────────────────────────────────
-const AdminDashboard = lazy(() =>
-  import('@modules/administrator/dashboard/pages/AdministratorDashboard'),
-);
-const AdminAssistedFarmer = lazy(() =>
-  import(
-    '@modules/administrator/assisted-farmer-monitoring/pages/AssistedFarmerManagementPage'
-  ),
-);
-const AdminUsers = lazy(() =>
-  import('@modules/administrator/user-management/pages/UsersPage'),
-);
-const AdminVerification = lazy(() =>
-  import(
-    '@modules/administrator/identity-verification/pages/VerificationQueuePage'
-  ),
-);
-const AdminListingModeration = lazy(() =>
-  import('@modules/administrator/listing-moderation/pages/ListingModerationPage'),
-);
-const AdminReviewModeration = lazy(() =>
-  import('@modules/administrator/review-moderation/pages/ReviewModerationPage'),
-);
-const AdminDisputes = lazy(() =>
-  import('@modules/administrator/disputes-management/pages/DisputesPage'),
-);
-const AdminReports = lazy(() =>
-  import('@modules/administrator/reports-analytics/pages/ReportsAnalyticsPage'),
-);
-const AdminAuditLogs = lazy(() =>
-  import('@modules/administrator/audit-logs/pages/AuditLogsPage'),
-);
-const AdminNotifications = lazy(() =>
-  import(
-    '@modules/administrator/notifications/pages/AdministratorNotificationsPage'
-  ),
-);
-const AdminProfile = lazy(() =>
-  import('@modules/administrator/administrator-profile/pages/AdministratorProfilePage'),
-);
-const AdminSettings = lazy(() =>
-  import('@modules/administrator/platform-configuration/pages/PlatformSettingsPage'),
-);
+// // ─────────────────────────────────────────────────────────────
+// // Support Agent routes
+// // ─────────────────────────────────────────────────────────────
+// const SupportAgentDashboard = lazy(() =>
+//   import('@modules/support-agent/dashboard/pages/SupportAgentDashboard'),
+// );
+// const AssistedFarmerPage = lazy(() =>
+//   import(
+//     '@modules/support-agent/assisted-farmer-onboarding/pages/AssistedFarmerManagementPage'
+//   ),
+// );
+// const ConsentManagement = lazy(() =>
+//   import('@modules/support-agent/consent-management/pages/FarmerConsentPage'),
+// );
+// const SupportTickets = lazy(() =>
+//   import('@modules/support-agent/ticket-management/pages/TicketsPage'),
+// );
+// const SupportMessages = lazy(() =>
+//   import(
+//     '@modules/support-agent/farmer-communication/pages/FarmerConversationsPage'
+//   ),
+// );
+// const SupportNotifications = lazy(() =>
+//   import(
+//     '@modules/support-agent/notifications/pages/SupportAgentNotificationsPage'
+//   ),
+// );
+// const SupportSettings = lazy(() =>
+//   import('@modules/support-agent/support-settings/pages/SupportSettingsPage'),
+// );
+
+// // ─────────────────────────────────────────────────────────────
+// // Administrator routes
+// // ─────────────────────────────────────────────────────────────
+// const AdminDashboard = lazy(() =>
+//   import('@modules/administrator/dashboard/pages/AdministratorDashboard'),
+// );
+// const AdminAssistedFarmer = lazy(() =>
+//   import(
+//     '@modules/administrator/assisted-farmer-monitoring/pages/AssistedFarmerManagementPage'
+//   ),
+// );
+// const AdminUsers = lazy(() =>
+//   import('@modules/administrator/user-management/pages/UsersPage'),
+// );
+// const AdminVerification = lazy(() =>
+//   import(
+//     '@modules/administrator/identity-verification/pages/VerificationQueuePage'
+//   ),
+// );
+// const AdminListingModeration = lazy(() =>
+//   import('@modules/administrator/listing-moderation/pages/ListingModerationPage'),
+// );
+// const AdminReviewModeration = lazy(() =>
+//   import('@modules/administrator/review-moderation/pages/ReviewModerationPage'),
+// );
+// const AdminDisputes = lazy(() =>
+//   import('@modules/administrator/disputes-management/pages/DisputesPage'),
+// );
+// const AdminReports = lazy(() =>
+//   import('@modules/administrator/reports-analytics/pages/ReportsAnalyticsPage'),
+// );
+// const AdminAuditLogs = lazy(() =>
+//   import('@modules/administrator/audit-logs/pages/AuditLogsPage'),
+// );
+// const AdminNotifications = lazy(() =>
+//   import(
+//     '@modules/administrator/notifications/pages/AdministratorNotificationsPage'
+//   ),
+// );
+// const AdminProfile = lazy(() =>
+//   import('@modules/administrator/administrator-profile/pages/AdministratorProfilePage'),
+// );
+// const AdminSettings = lazy(() =>
+//   import('@modules/administrator/platform-configuration/pages/PlatformSettingsPage'),
+// );
+
+const MyProducts = FeatureUnavailablePage;
+const AddProduct = FeatureUnavailablePage;
+const FarmerOrders = FeatureUnavailablePage;
+const FarmerConsultations = FeatureUnavailablePage;
+const FarmerMessages = FeatureUnavailablePage;
+const FarmerMarketPrices = FeatureUnavailablePage;
+const FarmerArticles = FeatureUnavailablePage;
+const FarmerNotifications = FeatureUnavailablePage;
+const FarmerProfile = FeatureUnavailablePage;
+const FarmerSettings = FeatureUnavailablePage;
+const BuyerDashboard = FeatureUnavailablePage;
+const BuyerMarketplace = FeatureUnavailablePage;
+const ShoppingCart = FeatureUnavailablePage;
+const Checkout = FeatureUnavailablePage;
+const BuyerOrders = FeatureUnavailablePage;
+const BuyerMessages = FeatureUnavailablePage;
+const BuyerConsultations = FeatureUnavailablePage;
+const BuyerNotifications = FeatureUnavailablePage;
+const BuyerProfile = FeatureUnavailablePage;
+const BuyerSettings = FeatureUnavailablePage;
+const SupplierDashboard = FeatureUnavailablePage;
+const SupplierCatalog = FeatureUnavailablePage;
+const SupplierInventory = FeatureUnavailablePage;
+const SupplierOrders = FeatureUnavailablePage;
+const SupplierMessages = FeatureUnavailablePage;
+const SupplierNotifications = FeatureUnavailablePage;
+const SupplierProfile = FeatureUnavailablePage;
+const SupplierSettings = FeatureUnavailablePage;
+const ExpertDashboard = FeatureUnavailablePage;
+const ExpertProfile = FeatureUnavailablePage;
+const ExpertRequests = FeatureUnavailablePage;
+const ExpertConsultations = FeatureUnavailablePage;
+const ExpertSchedule = FeatureUnavailablePage;
+const ExpertMessages = FeatureUnavailablePage;
+const ExpertNotifications = FeatureUnavailablePage;
+const ExpertSettings = FeatureUnavailablePage;
+const SupportAgentDashboard = FeatureUnavailablePage;
+const AssistedFarmerPage = FeatureUnavailablePage;
+const ConsentManagement = FeatureUnavailablePage;
+const SupportTickets = FeatureUnavailablePage;
+const SupportMessages = FeatureUnavailablePage;
+const SupportNotifications = FeatureUnavailablePage;
+const SupportSettings = FeatureUnavailablePage;
+const AdminDashboard = FeatureUnavailablePage;
+const AdminAssistedFarmer = FeatureUnavailablePage;
+const AdminUsers = FeatureUnavailablePage;
+const AdminVerification = FeatureUnavailablePage;
+const AdminListingModeration = FeatureUnavailablePage;
+const AdminReviewModeration = FeatureUnavailablePage;
+const AdminDisputes = FeatureUnavailablePage;
+const AdminReports = FeatureUnavailablePage;
+const AdminAuditLogs = FeatureUnavailablePage;
+const AdminNotifications = FeatureUnavailablePage;
+const AdminProfile = FeatureUnavailablePage;
+const AdminSettings = FeatureUnavailablePage;
 
 // ─────────────────────────────────────────────────────────────
 // Router

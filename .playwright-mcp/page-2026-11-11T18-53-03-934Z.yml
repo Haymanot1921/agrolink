@@ -1,0 +1,46 @@
+- generic [ref=f4e2]:
+  - status "በመጫን ላይ…" [ref=f4e4]
+  - complementary "Tanstack query devtools" [ref=f4e6]:
+    - separator "Resize devtools panel"
+    - button "Close tanstack query devtools" [active] [ref=f4e7] [cursor=pointer]
+    - generic [ref=f4e10]:
+      - generic [ref=f4e11]:
+        - generic [ref=f4e12]:
+          - button "Close Tanstack query devtools" [ref=f4e13] [cursor=pointer]:
+            - generic [ref=f4e14]: TANSTACK
+            - generic [ref=f4e15]: React Query v5
+          - radiogroup "Toggle between queries and mutations view" [ref=f4e16]:
+            - group [ref=f4e17]:
+              - radio "Queries" [checked] [ref=f4e18]
+              - generic "Toggle Queries View" [ref=f4e19] [cursor=pointer]: Queries
+            - group [ref=f4e20]:
+              - radio "Mutations" [ref=f4e21]
+              - generic "Toggle Mutations View" [ref=f4e22] [cursor=pointer]: Mutations
+        - generic [ref=f4e23]:
+          - 'button "Fresh: 0" [ref=f4e24] [cursor=pointer]':
+            - generic [ref=f4e26]: "0"
+          - 'button "Fetching: 0" [ref=f4e27] [cursor=pointer]':
+            - generic [ref=f4e29]: "0"
+          - 'button "Paused: 0" [ref=f4e30] [cursor=pointer]':
+            - generic [ref=f4e32]: "0"
+          - 'button "Stale: 0" [ref=f4e33] [cursor=pointer]':
+            - generic [ref=f4e35]: "0"
+          - 'button "Inactive: 0" [ref=f4e36] [cursor=pointer]':
+            - generic [ref=f4e38]: "0"
+      - generic [ref=f4e39]:
+        - generic [ref=f4e40]:
+          - generic [ref=f4e41]:
+            - textbox "Filter queries by query key" [ref=f4e44]:
+              - /placeholder: Filter
+            - 'button "Filter scope: Key" [ref=f4e45] [cursor=pointer]': Key
+          - combobox "Sort queries by" [ref=f4e47]:
+            - option "Sort by status" [selected]
+            - option "Sort by query hash"
+            - option "Sort by last updated"
+          - button "Sort order ascending" [ref=f4e50] [cursor=pointer]:
+            - generic [ref=f4e51]: Asc
+        - generic [ref=f4e54]:
+          - button "Clear query cache" [ref=f4e55] [cursor=pointer]
+          - button "Mock offline behavior" [ref=f4e58] [cursor=pointer]
+          - button "Open in picture-in-picture mode" [ref=f4e62] [cursor=pointer]
+          - button "Open settings menu" [ref=f4e65] [cursor=pointer]

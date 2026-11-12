@@ -100,10 +100,16 @@ export function ContactPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid var(--color-border, #E0E0E0)', fontSize: 14 }}>
-          <p>✉ <a href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}>{APP_INFO.SUPPORT_EMAIL}</a></p>
-          <p>☎ <a href={`tel:${APP_INFO.SUPPORT_PHONE}`}>{APP_INFO.SUPPORT_PHONE}</a></p>
-        </div>
+        {(APP_INFO.SUPPORT_EMAIL || APP_INFO.SUPPORT_PHONE) && (
+          <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid var(--color-border, #E0E0E0)', fontSize: 14 }}>
+            {APP_INFO.SUPPORT_EMAIL && (
+              <p>✉ <a href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}>{APP_INFO.SUPPORT_EMAIL}</a></p>
+            )}
+            {APP_INFO.SUPPORT_PHONE && (
+              <p>☎ <a href={`tel:${APP_INFO.SUPPORT_PHONE}`}>{APP_INFO.SUPPORT_PHONE}</a></p>
+            )}
+          </div>
+        )}
       </article>
     </>
   );

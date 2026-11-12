@@ -36,11 +36,13 @@ export function PrivacyPage() {
           </section>
         ))}
 
-        <section style={{ marginTop: 32, padding: 16, border: '1px solid var(--color-border, #E0E0E0)', borderRadius: 10 }}>
-          <p style={{ fontSize: 14 }}>
-            ✉ <a href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}>{APP_INFO.SUPPORT_EMAIL}</a>
-          </p>
-        </section>
+        {APP_INFO.SUPPORT_EMAIL && (
+          <section style={{ marginTop: 32, padding: 16, border: '1px solid var(--color-border, #E0E0E0)', borderRadius: 10 }}>
+            <p style={{ fontSize: 14 }}>
+              ✉ <a href={`mailto:${APP_INFO.SUPPORT_EMAIL}`}>{APP_INFO.SUPPORT_EMAIL}</a>
+            </p>
+          </section>
+        )}
       </article>
     </>
   );

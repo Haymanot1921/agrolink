@@ -4,15 +4,14 @@
 //   - AuthProvider (session, role, providerType)
 //   - I18nextProvider (EN + AM)
 //   - ThemeProvider (light/dark + actor accent)
-//   - SocketProvider (realtime — SRS §5.11, §5.12)
-//   - NotificationProvider (toasts + push)
+//   - NotificationProvider (toasts + realtime notifications)
 //   - NetworkStatusProvider (offline awareness)
 //
 // Order is deliberate:
-//   Query → Auth → i18n → Theme → Socket → Notification → Network
+//   Query → Auth → i18n → Theme → Network → Notification
 // (Network status is innermost so it can trigger Query refetches.)
 
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { I18nextProvider } from 'react-i18next';
@@ -20,7 +19,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '@i18n/index';
 import { AuthProvider } from '@hooks/useAuth';
 import { ThemeProvider } from '@styles/ThemeProvider';
-import { SocketProvider } from '@hooks/useRealtimeUpdates';
 import { NotificationProvider } from '@hooks/usePushNotifications';
 import { NetworkStatusProvider } from '@layouts/common/NetworkStatusProvider';
 import { LoadingSpinner } from '@components/ui/LoadingSpinner';
@@ -76,9 +74,7 @@ export function AppProviders({ children }) {
           <ThemeProvider>
             <NetworkStatusProvider>
               <NotificationProvider>
-                <SocketProvider>
-                  <Suspense fallback={<RouteFallback />}>{children}</Suspense>
-                </SocketProvider>
+                <Suspense fallback={<RouteFallback />}>{children}</Suspense>
               </NotificationProvider>
             </NetworkStatusProvider>
           </ThemeProvider>
