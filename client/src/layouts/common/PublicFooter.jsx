@@ -46,6 +46,7 @@ export function PublicFooter() {
 
   return (
     <footer
+      className="public-footer"
       style={{
         background: 'var(--color-background-alt, #F5F5F5)',
         borderTop: '1px solid var(--color-border, #E0E0E0)',
@@ -70,6 +71,7 @@ export function PublicFooter() {
           }}
         >
           {/* Brand column */}
+          <div           className="public-footer__brand"
           <div style={{ gridColumn: 'span 2' }}>
             <Link
               to="/"
@@ -201,6 +203,7 @@ export function PublicFooter() {
 
         {/* ─────────── Bottom bar ─────────── */}
         <div
+          className="public-footer__bottom"
           style={{
             borderTop: '1px solid var(--color-border, #E0E0E0)',
             paddingTop: 16,

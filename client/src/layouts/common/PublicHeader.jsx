@@ -32,6 +32,7 @@ export function PublicHeader() {
 
   return (
     <header
+      className="public-header"
       style={{
         position: 'sticky',
         top: 0,
@@ -64,6 +65,7 @@ export function PublicHeader() {
             fontWeight: 800,
             marginRight: 8,
           }}
+          className="public-header__brand"
         >
           <img src="/images/branding/logo.svg" alt="" width={28} height={28} />
           <span>{t('appName')}</span>
@@ -85,6 +87,7 @@ export function PublicHeader() {
             <li key={link.to}>
               <NavLink
                 to={link.to}
+                className="public-header__nav-link"
                 style={({ isActive }) => ({
                   display: 'block',
                   padding: '8px 12px',
@@ -115,6 +118,7 @@ export function PublicHeader() {
         {user ? (
           <Link
             to={defaultRouteFor(user)}
+            className="public-header__profile"
             style={{
               padding: '8px 16px',
               borderRadius: 8,
@@ -144,6 +148,7 @@ export function PublicHeader() {
             </Link>
             <Link
               to="/auth/role"
+              className="public-header__signup"
               style={{
                 padding: '8px 16px',
                 borderRadius: 8,
@@ -196,6 +201,7 @@ export function PublicHeader() {
             <li key={link.to} style={{ marginBottom: 4 }}>
               <NavLink
                 to={link.to}
+                className="public-header__nav-link"
                 style={({ isActive }) => ({
                   display: 'block',
                   padding: '12px 8px',

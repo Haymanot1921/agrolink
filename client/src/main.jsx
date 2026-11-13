@@ -18,6 +18,7 @@ import '@styles/globals.css';
 import '@styles/variables.css';
 import '@styles/dashboard.css';
 import '@styles/responsive.css';
+import '@styles/ati-theme.css';
 
 // ─────────────────────────────────────────────────────────────
 // i18n — initialize BEFORE rendering so translations are ready

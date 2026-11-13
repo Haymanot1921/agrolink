@@ -23,6 +23,7 @@ export function PublicLayout() {
 
   return (
     <div
+      className="public-layout"
       style={{
         minHeight: '100vh',
         display: 'flex',
