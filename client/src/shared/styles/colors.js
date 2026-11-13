@@ -30,20 +30,20 @@ export const colors = Object.freeze({
 
   /* Brand */
 
-  primary: '#246B3A',
-  primaryHover: '#1D572F',
-  primaryActive: '#17452B',
-  primaryLight: '#E8F3EA',
-  primarySubtle: '#F2F8F3',
-  primaryDark: '#17452B',
+  primary: '#176B45',
+  primaryHover: '#125638',
+  primaryActive: '#0D452D',
+  primaryLight: '#E8F2EB',
+  primarySubtle: '#F3F7F2',
+  primaryDark: '#124A32',
 
-  secondary: '#2878C8',
-  secondaryHover: '#1F65AA',
-  secondaryLight: '#EAF3FC',
+  secondary: '#245D78',
+  secondaryHover: '#1C4B62',
+  secondaryLight: '#EAF1F4',
 
-  accent: '#F2B544',
-  accentHover: '#DFA02C',
-  accentLight: '#FFF5DF',
+  accent: '#E9951A',
+  accentHover: '#C7770D',
+  accentLight: '#FFF3DF',
 
 
   /* Semantic: Danger */
@@ -55,9 +55,9 @@ export const colors = Object.freeze({
 
   /* Semantic: Warning */
 
-  warning: '#D99520',
-  warningHover: '#B97913',
-  warningLight: '#FFF3D9',
+  warning: '#B66A08',
+  warningHover: '#945407',
+  warningLight: '#FFF3DF',
 
 
   /* Semantic: Success */
@@ -76,19 +76,19 @@ export const colors = Object.freeze({
 
   /* Neutral surfaces */
 
-  bg: '#F5F8F4',
+  bg: '#F7F8F4',
   card: '#FFFFFF',
   surface: '#FFFFFF',
-  surface2: '#F0F4EF',
+  surface2: '#F1F4EF',
 
-  border: '#E1E8DF',
-  borderStrong: '#C7D2C5',
+  border: '#E1E7DE',
+  borderStrong: '#C7D2C4',
 
   /* Text */
 
-  text: '#19251C',
-  textMuted: '#657267',
-  textSubtle: '#879489',
+  text: '#1D2B22',
+  textMuted: '#667269',
+  textSubtle: '#879188',
 
   textOnPrimary: '#FFFFFF',
   textOnSecondary: '#FFFFFF',
@@ -98,29 +98,29 @@ export const colors = Object.freeze({
   /* Status colors */
 
   status: Object.freeze({
-    active: '#25834A',
-    pending: '#D99520',
+    active: '#176B45',
+    pending: '#B66A08',
     suspended: '#DC4545',
 
-    published: '#25834A',
+    published: '#176B45',
     rejected: '#DC4545',
 
-    completed: '#25834A',
+    completed: '#176B45',
     cancelled: '#DC4545',
 
-    disputed: '#D99520',
+    disputed: '#B66A08',
     draft: '#879489',
     inactive: '#879489',
-    processing: '#2878C8',
+    processing: '#245D78',
   }),
 
 
   /* Interaction states */
 
   interaction: Object.freeze({
-    focus: '#2878C8',
-    selected: '#E8F3EA',
-    hover: '#F0F4EF',
+    focus: '#245D78',
+    selected: '#E8F2EB',
+    hover: '#F1F4EF',
     disabled: '#A0AAA1',
   }),
 });
@@ -142,9 +142,9 @@ export const colors = Object.freeze({
  */
 
 export const chartPalette = Object.freeze([
-  '#246B3A', // Agricultural green
-  '#2878C8', // Technology blue
-  '#F2B544', // Harvest gold
+  '#176B45', // Agricultural green
+  '#245D78', // Technology blue
+  '#E9951A', // Harvest gold
   '#DC4545', // Red
   '#7956A8', // Purple
   '#168A91', // Teal
@@ -225,20 +225,20 @@ export const darkColors = Object.freeze({
 
   /* Brand */
 
-  primary: '#63B878',
-  primaryHover: '#79C88C',
-  primaryActive: '#4D9D64',
-  primaryLight: '#243D2C',
-  primarySubtle: '#1D3023',
-  primaryDark: '#4D9D64',
+  primary: '#70C091',
+  primaryHover: '#8BD2A7',
+  primaryActive: '#A4DEB8',
+  primaryLight: '#1D392A',
+  primarySubtle: '#192C21',
+  primaryDark: '#A4DEB8',
 
-  secondary: '#65A9ED',
-  secondaryHover: '#85BBF2',
-  secondaryLight: '#24384E',
+  secondary: '#74B5D0',
+  secondaryHover: '#93C7DB',
+  secondaryLight: '#203642',
 
-  accent: '#F5C566',
-  accentHover: '#F8D48A',
-  accentLight: '#44371F',
+  accent: '#F1B448',
+  accentHover: '#F5C66D',
+  accentLight: '#3C301C',
 
 
   /* Semantic */
@@ -247,35 +247,35 @@ export const darkColors = Object.freeze({
   dangerHover: '#F58C8C',
   dangerLight: '#492B2B',
 
-  warning: '#F0BD5D',
-  warningHover: '#F5CC7D',
-  warningLight: '#44391F',
+  warning: '#F1B448',
+  warningHover: '#F5C66D',
+  warningLight: '#3C301C',
 
-  success: '#63B878',
-  successHover: '#79C88C',
-  successLight: '#243D2C',
+  success: '#70C091',
+  successHover: '#8BD2A7',
+  successLight: '#1D392A',
 
-  info: '#65A9ED',
-  infoHover: '#85BBF2',
-  infoLight: '#24384E',
+  info: '#74B5D0',
+  infoHover: '#93C7DB',
+  infoLight: '#203642',
 
 
   /* Surfaces */
 
-  bg: '#111713',
-  card: '#1A221C',
-  surface: '#1E2821',
-  surface2: '#263129',
+  bg: '#121915',
+  card: '#1B241E',
+  surface: '#1F2A22',
+  surface2: '#27332B',
 
-  border: '#303D33',
-  borderStrong: '#465649',
+  border: '#314035',
+  borderStrong: '#4B5A4D',
 
 
   /* Text */
 
-  text: '#EDF4EE',
-  textMuted: '#B0BDB2',
-  textSubtle: '#89998D',
+  text: '#EDF3EE',
+  textMuted: '#B1BDB3',
+  textSubtle: '#89978C',
 
   textOnPrimary: '#102416',
   textOnSecondary: '#102033',
@@ -285,26 +285,26 @@ export const darkColors = Object.freeze({
   /* Statuses */
 
   status: Object.freeze({
-    active: '#63B878',
-    pending: '#F0BD5D',
+    active: '#70C091',
+    pending: '#F1B448',
     suspended: '#F07878',
 
-    published: '#63B878',
+    published: '#70C091',
     rejected: '#F07878',
 
-    completed: '#63B878',
+    completed: '#70C091',
     cancelled: '#F07878',
 
-    disputed: '#F0BD5D',
+    disputed: '#F1B448',
     draft: '#89998D',
     inactive: '#89998D',
-    processing: '#65A9ED',
+    processing: '#74B5D0',
   }),
 
   interaction: Object.freeze({
-    focus: '#65A9ED',
-    selected: '#243D2C',
-    hover: '#263129',
+    focus: '#74B5D0',
+    selected: '#1D392A',
+    hover: '#27332B',
     disabled: '#657267',
   }),
 });
