@@ -71,8 +71,10 @@ export function PublicFooter() {
           }}
         >
           {/* Brand column */}
-          <div           className="public-footer__brand"
-          <div style={{ gridColumn: 'span 2' }}>
+          <div
+            className="public-footer__brand"
+            style={{ gridColumn: 'span 2' }}
+          >
             <Link
               to="/"
               style={{

@@ -320,6 +320,10 @@ select:focus {
   .public-footer__brand {
     grid-column: span 2;
   }
+
+  .public-footer__bottom {
+    flex-direction: row !important;
+  }
 }
 
 @media (max-width: 767px) {
