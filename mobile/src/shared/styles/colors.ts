@@ -89,64 +89,64 @@ export interface ColorPalette {
 }
 
 // ─────────────────────────────────────────────────────────────
-// LIGHT PALETTE (primary brand — AgroLink green)
+// LIGHT PALETTE (ATI-inspired agricultural green with harvest-gold accents)
 // ─────────────────────────────────────────────────────────────
 
 export const lightColors: ColorPalette = {
   // Brand
-  primary: '#2E7D32',
-  primaryLight: '#E8F5E9',
-  primaryDark: '#1B5E20',
-  primaryMuted: '#A5D6A7',
-  secondary: '#F9A825',
-  secondaryLight: '#FFF8E1',
-  secondaryDark: '#F57F17',
+  primary: '#176B45',
+  primaryLight: '#E8F2EB',
+  primaryDark: '#124A32',
+  primaryMuted: '#A6CCB2',
+  secondary: '#E9951A',
+  secondaryLight: '#FFF3DF',
+  secondaryDark: '#B96A0A',
 
   // Semantic
-  success: '#2E7D32',
-  successLight: '#E8F5E9',
-  successDark: '#1B5E20',
-  warning: '#F9A825',
-  warningLight: '#FFF8E1',
-  warningDark: '#F57F17',
+  success: '#176B45',
+  successLight: '#E8F2EB',
+  successDark: '#124A32',
+  warning: '#B66A08',
+  warningLight: '#FFF3DF',
+  warningDark: '#945407',
   danger: '#C62828',
   dangerLight: '#FFEBEE',
   dangerDark: '#8E0000',
-  info: '#1976D2',
-  infoLight: '#E3F2FD',
-  infoDark: '#0D47A1',
+  info: '#245D78',
+  infoLight: '#EAF1F4',
+  infoDark: '#1C4B62',
 
   // Surfaces
   background: '#FFFFFF',
-  backgroundAlt: '#F5F5F5',
+  backgroundAlt: '#F7F8F4',
   card: '#FFFFFF',
   cardElevated: '#FFFFFF',
   overlay: 'rgba(0,0,0,0.45)',
   overlayHeavy: 'rgba(0,0,0,0.7)',
 
   // Text
-  text: '#1B1B1B',
-  textMuted: '#5F6368',
-  textSubtle: '#9AA0A6',
+  text: '#1D2B22',
+  textMuted: '#667269',
+  textSubtle: '#879188',
   textOnPrimary: '#FFFFFF',
   textOnDark: '#FFFFFF',
 
   // Borders & dividers
-  border: '#E0E0E0',
-  borderStrong: '#BDBDBD',
-  divider: '#EEEEEE',
+  border: '#E1E7DE',
+  borderStrong: '#C7D2C4',
+  divider: '#EBEFE9',
 
   // Inputs
   inputBackground: '#FFFFFF',
   inputBorder: '#E0E0E0',
-  inputBorderFocused: '#2E7D32',
+  inputBorderFocused: '#176B45',
   inputBorderError: '#C62828',
   inputPlaceholder: '#9AA0A6',
 
   // Status
-  statusPending: '#F9A825',
-  statusActive: '#1976D2',
-  statusCompleted: '#2E7D32',
+  statusPending: '#B66A08',
+  statusActive: '#245D78',
+  statusCompleted: '#176B45',
   statusCancelled: '#757575',
   statusDisputed: '#C62828',
   statusEscalated: '#6A1B9A',
@@ -156,21 +156,21 @@ export const lightColors: ColorPalette = {
   notificationText: '#FFFFFF',
 
   // Chart series
-  chart1: '#2E7D32',
+  chart1: '#176B45',
   chart2: '#7B1FA2',
-  chart3: '#F9A825',
-  chart4: '#1976D2',
+  chart3: '#E9951A',
+  chart4: '#245D78',
   chart5: '#C2185B',
-  chart6: '#00796B',
+  chart6: '#3B8A72',
 
   // Shadows
   shadow: '#000000',
 
   // Actor accents
-  actorFarmer: '#2E7D32',
-  actorBuyer: '#1976D2',
-  actorInputSupplier: '#F57C00',
-  actorAgriculturalExpert: '#00796B',
+  actorFarmer: '#176B45',
+  actorBuyer: '#245D78',
+  actorInputSupplier: '#D78111',
+  actorAgriculturalExpert: '#3B8A72',
   actorSupportAgent: '#7B1FA2',
   actorAdministrator: '#37474F',
 };
@@ -181,59 +181,59 @@ export const lightColors: ColorPalette = {
 
 export const darkColors: ColorPalette = {
   // Brand
-  primary: '#66BB6A',
-  primaryLight: '#1B5E20',
-  primaryDark: '#A5D6A7',
-  primaryMuted: '#2E7D32',
-  secondary: '#FFCA28',
-  secondaryLight: '#F57F17',
-  secondaryDark: '#FFE082',
+  primary: '#70C091',
+  primaryLight: '#1D392A',
+  primaryDark: '#A4DEB8',
+  primaryMuted: '#3A7953',
+  secondary: '#F1B448',
+  secondaryLight: '#3C301C',
+  secondaryDark: '#F5C66D',
 
   // Semantic
-  success: '#66BB6A',
-  successLight: '#1B5E20',
-  successDark: '#A5D6A7',
-  warning: '#FFCA28',
-  warningLight: '#F57F17',
-  warningDark: '#FFE082',
+  success: '#70C091',
+  successLight: '#1D392A',
+  successDark: '#A4DEB8',
+  warning: '#F1B448',
+  warningLight: '#3C301C',
+  warningDark: '#F5C66D',
   danger: '#EF5350',
   dangerLight: '#8E0000',
   dangerDark: '#FFCDD2',
-  info: '#64B5F6',
-  infoLight: '#0D47A1',
-  infoDark: '#BBDEFB',
+  info: '#74B5D0',
+  infoLight: '#203642',
+  infoDark: '#B8DCE9',
 
   // Surfaces
-  background: '#121212',
-  backgroundAlt: '#1E1E1E',
-  card: '#1E1E1E',
-  cardElevated: '#2C2C2C',
+  background: '#121915',
+  backgroundAlt: '#1B241E',
+  card: '#1F2A22',
+  cardElevated: '#27332B',
   overlay: 'rgba(0,0,0,0.7)',
   overlayHeavy: 'rgba(0,0,0,0.85)',
 
   // Text
-  text: '#F5F5F5',
-  textMuted: '#B0B0B0',
-  textSubtle: '#757575',
-  textOnPrimary: '#0D0D0D',
+  text: '#EDF3EE',
+  textMuted: '#B1BDB3',
+  textSubtle: '#89978C',
+  textOnPrimary: '#102419',
   textOnDark: '#FFFFFF',
 
   // Borders & dividers
-  border: '#2C2C2C',
-  borderStrong: '#424242',
-  divider: '#1F1F1F',
+  border: '#314035',
+  borderStrong: '#4B5A4D',
+  divider: '#2A382E',
 
   // Inputs
-  inputBackground: '#1E1E1E',
-  inputBorder: '#424242',
-  inputBorderFocused: '#66BB6A',
+  inputBackground: '#1F2A22',
+  inputBorder: '#4B5A4D',
+  inputBorderFocused: '#70C091',
   inputBorderError: '#EF5350',
   inputPlaceholder: '#757575',
 
   // Status
-  statusPending: '#FFCA28',
-  statusActive: '#64B5F6',
-  statusCompleted: '#66BB6A',
+  statusPending: '#F1B448',
+  statusActive: '#74B5D0',
+  statusCompleted: '#70C091',
   statusCancelled: '#9E9E9E',
   statusDisputed: '#EF5350',
   statusEscalated: '#BA68C8',
@@ -243,21 +243,21 @@ export const darkColors: ColorPalette = {
   notificationText: '#FFFFFF',
 
   // Chart series
-  chart1: '#66BB6A',
+  chart1: '#70C091',
   chart2: '#BA68C8',
-  chart3: '#FFCA28',
-  chart4: '#64B5F6',
+  chart3: '#F1B448',
+  chart4: '#74B5D0',
   chart5: '#F06292',
-  chart6: '#4DB6AC',
+  chart6: '#66B6A0',
 
   // Shadows
   shadow: '#000000',
 
   // Actor accents
-  actorFarmer: '#66BB6A',
-  actorBuyer: '#64B5F6',
-  actorInputSupplier: '#FFB74D',
-  actorAgriculturalExpert: '#4DB6AC',
+  actorFarmer: '#70C091',
+  actorBuyer: '#74B5D0',
+  actorInputSupplier: '#F1B448',
+  actorAgriculturalExpert: '#66B6A0',
   actorSupportAgent: '#BA68C8',
   actorAdministrator: '#90A4AE',
 };
@@ -270,4 +270,4 @@ export const darkColors: ColorPalette = {
 export const colors = lightColors;
 
 /** Primary brand color for use in native contexts (map style, splash). */
-export const PRIMARY_BRAND = '#2E7D32';
+export const PRIMARY_BRAND = '#176B45';
