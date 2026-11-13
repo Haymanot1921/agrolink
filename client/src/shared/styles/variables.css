@@ -19,31 +19,31 @@
   color-scheme: light;
 
   /* BRAND COLORS */
-  --color-primary: #246B3A;
-  --color-primary-hover: #1D572F;
-  --color-primary-active: #17452B;
-  --color-primary-light: #E8F3EA;
-  --color-primary-subtle: #F2F8F3;
-  --color-primary-dark: #17452B;
+  --color-primary: #176B45;
+  --color-primary-hover: #125638;
+  --color-primary-active: #0D452D;
+  --color-primary-light: #E8F2EB;
+  --color-primary-subtle: #F3F7F2;
+  --color-primary-dark: #124A32;
 
   /* SECONDARY COLORS */
-  --color-secondary: #2878C8;
-  --color-secondary-hover: #1D65AC;
-  --color-secondary-light: #EAF3FC;
+  --color-secondary: #245D78;
+  --color-secondary-hover: #1C4B62;
+  --color-secondary-light: #EAF1F4;
 
   /* ACCENT / HARVEST */
-  --color-accent: #F2B544;
-  --color-accent-hover: #D99A26;
-  --color-accent-light: #FFF6E3;
+  --color-accent: #E9951A;
+  --color-accent-hover: #C7770D;
+  --color-accent-light: #FFF3DF;
 
   /* SEMANTIC COLORS */
   --color-danger: #DC4545;
   --color-danger-hover: #BC3030;
   --color-danger-light: #FDECEC;
 
-  --color-warning: #D99520;
-  --color-warning-hover: #B77912;
-  --color-warning-light: #FFF4D9;
+  --color-warning: #B66A08;
+  --color-warning-hover: #945407;
+  --color-warning-light: #FFF3DF;
 
   --color-success: #25834A;
   --color-success-hover: #196B39;
@@ -54,37 +54,37 @@
   --color-info-light: #EAF3FC;
 
   /* BACKGROUNDS */
-  --color-bg: #F5F8F4;
+  --color-bg: #F7F8F4;
   --color-card: #FFFFFF;
   --color-surface: #FFFFFF;
-  --color-surface-2: #F0F4EF;
-  --color-surface-3: #E8EEE7;
+  --color-surface-2: #F1F4EF;
+  --color-surface-3: #E6ECE5;
 
   /* BORDERS */
-  --color-border: #E1E8DF;
-  --color-border-strong: #C8D4C6;
-  --color-divider: #EDF1EB;
+  --color-border: #E1E7DE;
+  --color-border-strong: #C7D2C4;
+  --color-divider: #EBEFE9;
 
   /* TEXT */
-  --color-text: #19251C;
-  --color-text-muted: #657267;
-  --color-text-subtle: #929D93;
+  --color-text: #1D2B22;
+  --color-text-muted: #667269;
+  --color-text-subtle: #879188;
   --color-text-on-primary: #FFFFFF;
   --color-text-inverse: #FFFFFF;
   --color-text-on-accent: #35270C;
 
   /* LINKS */
-  --color-link: #246B3A;
-  --color-link-hover: #17452B;
+  --color-link: #176B45;
+  --color-link-hover: #0D452D;
 
   /* STATUS */
   --color-online: #25834A;
   --color-offline: #929D93;
-  --color-pending: #D99520;
-  --color-verified: #247A45;
+  --color-pending: #B66A08;
+  --color-verified: #176B45;
 
   /* OVERLAY */
-  --color-overlay: rgba(15, 35, 20, 0.48);
+  --color-overlay: rgba(17, 39, 27, 0.52);
 
   /* =====================================
      SPACING — 4PX BASE SYSTEM
@@ -215,69 +215,69 @@
   color-scheme: dark;
 
   /* BRAND */
-  --color-primary: #63B878;
-  --color-primary-hover: #7BCB8D;
-  --color-primary-active: #91D9A0;
-  --color-primary-light: #1D3827;
-  --color-primary-subtle: #192B20;
-  --color-primary-dark: #A1E0AE;
+  --color-primary: #70C091;
+  --color-primary-hover: #8BD2A7;
+  --color-primary-active: #A4DEB8;
+  --color-primary-light: #1D392A;
+  --color-primary-subtle: #192C21;
+  --color-primary-dark: #A4DEB8;
 
   /* SECONDARY */
-  --color-secondary: #65A9ED;
-  --color-secondary-hover: #83B9F1;
-  --color-secondary-light: #1B3047;
+  --color-secondary: #74B5D0;
+  --color-secondary-hover: #93C7DB;
+  --color-secondary-light: #203642;
 
   /* ACCENT */
-  --color-accent: #F5C566;
-  --color-accent-hover: #F8D487;
-  --color-accent-light: #3A301C;
+  --color-accent: #F1B448;
+  --color-accent-hover: #F5C66D;
+  --color-accent-light: #3C301C;
 
   /* SEMANTIC */
   --color-danger: #F16B6B;
   --color-danger-hover: #F58A8A;
   --color-danger-light: #402323;
 
-  --color-warning: #F5BD55;
-  --color-warning-hover: #F7CD7C;
-  --color-warning-light: #3D301B;
+  --color-warning: #F1B448;
+  --color-warning-hover: #F5C66D;
+  --color-warning-light: #3C301C;
 
-  --color-success: #63C584;
-  --color-success-hover: #83D59D;
-  --color-success-light: #1D3828;
+  --color-success: #70C091;
+  --color-success-hover: #8BD2A7;
+  --color-success-light: #1D392A;
 
-  --color-info: #65B7E8;
-  --color-info-hover: #86C9F0;
-  --color-info-light: #1A3040;
+  --color-info: #74B5D0;
+  --color-info-hover: #93C7DB;
+  --color-info-light: #203642;
 
   /* BACKGROUNDS */
-  --color-bg: #111713;
-  --color-card: #1A221C;
-  --color-surface: #1E2821;
-  --color-surface-2: #263129;
-  --color-surface-3: #303C33;
+  --color-bg: #121915;
+  --color-card: #1B241E;
+  --color-surface: #1F2A22;
+  --color-surface-2: #27332B;
+  --color-surface-3: #344136;
 
   /* BORDERS */
-  --color-border: #303D33;
-  --color-border-strong: #465649;
-  --color-divider: #29352C;
+  --color-border: #314035;
+  --color-border-strong: #4B5A4D;
+  --color-divider: #2A382E;
 
   /* TEXT */
-  --color-text: #EDF4EE;
-  --color-text-muted: #B0BDB2;
-  --color-text-subtle: #829185;
+  --color-text: #EDF3EE;
+  --color-text-muted: #B1BDB3;
+  --color-text-subtle: #89978C;
   --color-text-on-primary: #102016;
   --color-text-inverse: #FFFFFF;
   --color-text-on-accent: #35270C;
 
   /* LINKS */
-  --color-link: #80D394;
-  --color-link-hover: #A1E0AE;
+  --color-link: #8BD2A7;
+  --color-link-hover: #A4DEB8;
 
   /* STATUS */
-  --color-online: #63C584;
-  --color-offline: #829185;
-  --color-pending: #F5BD55;
-  --color-verified: #63C584;
+  --color-online: #70C091;
+  --color-offline: #89978C;
+  --color-pending: #F1B448;
+  --color-verified: #70C091;
 
   /* OVERLAY */
   --color-overlay: rgba(0, 0, 0, 0.68);
