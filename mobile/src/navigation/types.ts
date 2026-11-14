@@ -325,6 +325,7 @@ export type PublicStackParamList = {
     providerType?: 'input_supplier' | 'agricultural_expert';
   };
   RoleSelection: undefined;
+  ServiceProviderType: { role: 'service_provider' };
   ForgotPassword: undefined;
   ResetPassword: { token: string };
   OtpVerification: { identifier: string; purpose: 'registration' | 'reset' };

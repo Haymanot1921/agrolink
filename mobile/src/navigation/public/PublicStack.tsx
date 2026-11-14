@@ -72,6 +72,7 @@ import {
 import { LoginScreen } from '@navigation/auth/LoginScreen';
 import { RegisterScreen } from '@navigation/auth/RegisterScreen';
 import { RoleSelectionScreen } from '@navigation/auth/RoleSelectionScreen';
+import { ServiceProviderTypeScreen } from '@navigation/auth/ServiceProviderTypeScreen';
 import { ForgotPasswordScreen } from '@navigation/auth/ForgotPasswordScreen';
 import { ResetPasswordScreen } from '@navigation/auth/ResetPasswordScreen';
 import { OtpVerificationScreen } from '@navigation/auth/OtpVerificationScreen';
@@ -164,6 +165,11 @@ export function PublicStack(): React.ReactElement {
       <Stack.Screen
         name="RoleSelection"
         component={RoleSelectionScreen}
+        options={{ animation: 'slide_from_bottom' }}
+      />
+      <Stack.Screen
+        name="ServiceProviderType"
+        component={ServiceProviderTypeScreen}
         options={{ animation: 'slide_from_bottom' }}
       />
       <Stack.Screen

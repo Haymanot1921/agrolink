@@ -19,6 +19,7 @@ import { useTranslation } from '@i18n/hooks/useTranslation';
 import { useAuth } from '@hooks/useAuth';
 import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
+import { Form } from '@components/ui/Form';
 import { Alert } from '@components/feedback/Alert';
 import { PasswordStrengthMeter } from '@components/ui/PasswordStrengthMeter';
 import { colors } from '@styles/colors';
@@ -91,72 +92,74 @@ export function RegisterScreen(): React.ReactElement {
             <Alert type="error" message={localError ?? error?.message ?? ''} />
           )}
 
-          <Input
-            label={t('register.fullName')}
-            placeholder={t('register.fullNamePlaceholder')}
-            value={fullName}
-            onChangeText={setFullName}
-            autoCapitalize="words"
-          />
+          <Form onSubmit={handleRegister}>
+            <Input
+              label={t('register.fullName')}
+              placeholder={t('register.fullNamePlaceholder')}
+              value={fullName}
+              onChangeText={setFullName}
+              autoCapitalize="words"
+            />
 
-          <Input
-            label={t('register.email')}
-            placeholder={t('register.emailPlaceholder')}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoComplete="email"
-          />
+            <Input
+              label={t('register.email')}
+              placeholder={t('register.emailPlaceholder')}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+            />
 
-          <Input
-            label={t('register.phone')}
-            placeholder={t('register.phonePlaceholder')}
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-          />
+            <Input
+              label={t('register.phone')}
+              placeholder={t('register.phonePlaceholder')}
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+            />
 
-          <Input
-            label={t('register.password')}
-            placeholder={t('register.passwordPlaceholder')}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoComplete="new-password"
-          />
-          <PasswordStrengthMeter password={password} />
+            <Input
+              label={t('register.password')}
+              placeholder={t('register.passwordPlaceholder')}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoComplete="new-password"
+            />
+            <PasswordStrengthMeter password={password} />
 
-          <Input
-            label={t('register.confirmPassword')}
-            placeholder={t('register.confirmPasswordPlaceholder')}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            autoComplete="new-password"
-          />
+            <Input
+              label={t('register.confirmPassword')}
+              placeholder={t('register.confirmPasswordPlaceholder')}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+              autoComplete="new-password"
+            />
 
-          <TouchableOpacity
-            style={styles.checkRow}
-            onPress={() => setAgreeTerms((v) => !v)}
-            accessibilityRole="checkbox"
-            accessibilityState={{ checked: agreeTerms }}
-          >
-            <View style={[styles.checkbox, agreeTerms && styles.checkboxOn]}>
-              {agreeTerms && <Text style={styles.checkmark}>✓</Text>}
-            </View>
-            <Text style={styles.checkLabel}>{t('register.agreeToTerms')}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.checkRow}
+              onPress={() => setAgreeTerms((v) => !v)}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: agreeTerms }}
+            >
+              <View style={[styles.checkbox, agreeTerms && styles.checkboxOn]}>
+                {agreeTerms && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <Text style={styles.checkLabel}>{t('register.agreeToTerms')}</Text>
+            </TouchableOpacity>
 
-          <Button
-            title={isSigningUp ? t('register.registering') : t('register.submit')}
-            onPress={handleRegister}
-            loading={isSigningUp}
-            disabled={isSigningUp}
-            variant="primary"
-            fullWidth
-          />
+            <Button
+              title={isSigningUp ? t('register.registering') : t('register.submit')}
+              onPress={handleRegister}
+              loading={isSigningUp}
+              disabled={isSigningUp}
+              variant="primary"
+              fullWidth
+            />
+          </Form>
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>{t('register.haveAccount')} </Text>
