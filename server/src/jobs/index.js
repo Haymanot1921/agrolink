@@ -3,9 +3,6 @@
 
 const cron = require('node-cron');
 const logger = require('../config/logger');
-const lockService = require('./_runtime/lockService');
-const { mongoose } = require('../config/database');
-
 const JOBS = [
   require('./verificationReminder.job'),
   require('./staleListingReview.job'),
@@ -22,7 +19,6 @@ let started = false;
 
 function start() {
   if (started) return tasks;
-  if (mongoose.connection.db) lockService.attachMongo(mongoose.connection.db);
 
   for (const job of JOBS) {
     const task = cron.schedule(job.schedule, () => {

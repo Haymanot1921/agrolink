@@ -13,7 +13,7 @@ support agents.
 ## Requirements
 
 - Node.js ≥ 18.17 (LTS recommended)
-- MongoDB ≥ 6.0 (replica set in production — required for transactions)
+- MySQL ≥ 8.0
 - Redis (optional; used only for distributed rate limiting)
 - A Cloudinary account (uploads) — optional in dev (uploads disabled if unset)
 - An email provider (SMTP/SendGrid/SES) — optional in dev
@@ -23,18 +23,21 @@ support agents.
 
 ## Quick start
 
-```bash
+```powershell
 # 1. Install dependencies
 cd server
 npm install
 
-# 2. Copy environment file and fill in the blanks
-cp .env.example .env
-#    Minimum required for local dev:
-#      MONGODB_URI, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET
+# 2. Create the local environment file
+Copy-Item .env.example .env
+#    Set MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, and MYSQL_DATABASE
+#    for your MySQL server. Replace the example JWT secrets before using real data.
 
-# 3. Seed roles, permissions, crop/input categories, and (optionally) a superadmin
+# 3. Create the configured database in MySQL, then apply its schema
+npm run migrate
+
+# 4. Seed roles, permissions, crop/input categories, and (optionally) a superadmin
 npm run seed
 
-# 4. Start dev server (with hot reload)
+# 5. Start dev server (with hot reload)
 npm run dev

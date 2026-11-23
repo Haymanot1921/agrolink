@@ -1,5 +1,5 @@
 // server/src/jobs/systemHealthCheck.job.js
-// Periodic infrastructure health probe — Mongo, Redis (if configured),
+// Periodic infrastructure health probe — MySQL, Redis (if configured),
 // Cloudinary, disk space, and background job failure rate.
 // Emits system alerts on the admin socket channel + notifications.
 // Schedule: every 5 minutes.
@@ -8,12 +8,9 @@
 
 const os = require('os');
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
-const env = require('../config/environment');
 const database = require('../config/database');
 const cloudinary = require('../config/cloudinary');
 const { emitSystemAlert } = require('../sockets/adminNotifications.socket');
-const { NOTIFICATION_TYPES } = require('../shared/constants/notificationTypes');
 
 const NAME = 'systemHealthCheck';
 const SCHEDULE = '*/5 * * * *';
@@ -24,7 +21,7 @@ const JOB_FAILURE_WARN_RATE = 0.1; // 10%
 async function run({ log, now }) {
   const report = {
     checkedAt: now.toISOString(),
-    mongo: null,
+    mysql: null,
     cloudinary: null,
     disk: null,
     jobs: null,
@@ -33,21 +30,21 @@ async function run({ log, now }) {
   let critical = 0;
   let warned = 0;
 
-  // 1. Mongo
+  // 1. MySQL
   try {
-    report.mongo = await database.healthCheck();
-    if (report.mongo.status !== 'up') {
+    report.mysql = await database.healthCheck();
+    if (report.mysql.status !== 'up') {
       critical += 1;
       emitSystemAlert({
-        title: 'MongoDB unhealthy',
-        body: `Status: ${report.mongo.status}`,
+        title: 'MySQL unhealthy',
+        body: `Status: ${report.mysql.status}`,
         severity: 'critical',
-        data: report.mongo,
+        data: report.mysql,
       });
     }
   } catch (err) {
     critical += 1;
-    report.mongo = { status: 'down', error: err.message };
+    report.mysql = { status: 'down', error: err.message };
   }
 
   // 2. Cloudinary (only if enabled)
@@ -108,13 +105,16 @@ async function run({ log, now }) {
 
   // 5. Job failure rate (last 24h)
   try {
-    // eslint-disable-next-line global-require
-    const BackgroundJobLog = require('../modules/administrator/system-health/backgroundJobLog.model');
     const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const [total, failed] = await Promise.all([
-      BackgroundJobLog.countDocuments({ startedAt: { $gte: since } }),
-      BackgroundJobLog.countDocuments({ startedAt: { $gte: since }, status: 'failed' }),
-    ]);
+    const [[counts]] = await database.query(
+      `SELECT COUNT(*) AS total,
+              SUM(status = 'failed') AS failed
+       FROM background_job_logs
+       WHERE started_at >= ?`,
+      [since],
+    );
+    const total = Number(counts.total);
+    const failed = Number(counts.failed || 0);
     const rate = total > 0 ? failed / total : 0;
     report.jobs = { total, failed, failureRate: Number(rate.toFixed(3)) };
     if (rate >= JOB_FAILURE_WARN_RATE && total >= 10) {

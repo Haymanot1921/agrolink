@@ -35,7 +35,7 @@ function baseFields(user) {
  * Self-service profile for the authenticated user.
  * Includes verification + contact details the user already owns.
  *
- * @param {Object} user — populated mongoose doc OR lean object
+ * @param {Object} user — plain row mapped by the users repository
  * @param {Object} [deps]
  * @param {Function} [deps.getListingStats]       — (userId) => { total, published, pending }
  * @param {Function} [deps.getOrderStats]         — (userId) => { total, completed }

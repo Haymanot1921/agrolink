@@ -35,9 +35,9 @@ function attach(io) {
     // Admin can request current unread count on connect.
     socket.on('admin:notifications:badge', async (_, ack) => {
       try {
-        // Lazy require to avoid loading mongoose at boot.
+        // Lazy require to avoid loading notification routing at boot.
         // eslint-disable-next-line global-require
-        const notificationsService = require('../modules/administrator/notifications/notifications.service');
+        const notificationsService = require('../modules/notifications/notifications.service');
         const count = await notificationsService.unreadCount(userId);
         if (typeof ack === 'function') ack({ count });
         socket.emit(NOTIFICATION_SOCKET_EVENTS.BADGE_COUNT, { count });
@@ -50,7 +50,7 @@ function attach(io) {
     socket.on('admin:notifications:mark_read', async ({ notificationId }, ack) => {
       try {
         // eslint-disable-next-line global-require
-        const notificationsService = require('../modules/administrator/notifications/notifications.service');
+        const notificationsService = require('../modules/notifications/notifications.service');
         await notificationsService.markRead(userId, notificationId);
         socket.emit(NOTIFICATION_SOCKET_EVENTS.MARKED_READ, { notificationId });
         if (typeof ack === 'function') ack({ ok: true });
@@ -63,7 +63,7 @@ function attach(io) {
     socket.on('admin:notifications:read_all', async (_, ack) => {
       try {
         // eslint-disable-next-line global-require
-        const notificationsService = require('../modules/administrator/notifications/notifications.service');
+        const notificationsService = require('../modules/notifications/notifications.service');
         await notificationsService.markAllRead(userId);
         socket.emit(NOTIFICATION_SOCKET_EVENTS.READ_ALL, { at: new Date().toISOString() });
         if (typeof ack === 'function') ack({ ok: true });

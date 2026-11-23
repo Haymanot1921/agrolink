@@ -8,9 +8,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const env = require('../../config/environment');
 const logger = require('../../config/logger');
-const { ApiError } = require('../../shared/utils/ApiError');
 
-// Refresh tokens are stored hashed in the user document (`refreshTokens[]`).
+// Refresh tokens are stored as hashes in the SQL refresh_tokens table.
 const REFRESH_TOKEN_BYTES = 48;
 
 function signAccessToken(user) {
@@ -33,12 +32,14 @@ function signAccessToken(user) {
 function signRefreshToken(user, meta = {}) {
   const raw = crypto.randomBytes(REFRESH_TOKEN_BYTES).toString('hex');
   const hash = hashRefresh(raw);
+  const createdAt = new Date();
   return {
-    raw,
+    raw: `${user._id}.${raw}`,
     hash,
     record: {
       hash,
-      createdAt: new Date(),
+      createdAt,
+      expiresAt: new Date(createdAt.getTime() + refreshLifetimeMs(env.jwt.refreshExpiresIn)),
       deviceFingerprint: meta.deviceFingerprint || null,
       userAgent: meta.userAgent || null,
       ip: meta.ip || null,
@@ -93,7 +94,9 @@ function signMfaToken(user, scope) {
  */
 function matchRefreshToken(user, raw) {
   if (!user || !Array.isArray(user.refreshTokens)) return null;
-  const hash = hashRefresh(raw);
+  const tokenParts = String(raw).split('.');
+  if (tokenParts.length !== 2 || tokenParts[0] !== String(user._id)) return null;
+  const hash = hashRefresh(tokenParts[1]);
   const match = user.refreshTokens.find((t) => t.hash === hash);
   return match || null;
 }
@@ -116,6 +119,13 @@ function revokeAllTokens(user) {
   user.tokenVersion = (user.tokenVersion || 0) + 1;
   logger.info('[auth:token] all tokens revoked', { userId: String(user._id) });
   return user;
+}
+
+function refreshLifetimeMs(value) {
+  const match = /^(\d+)(s|m|h|d|w)$/.exec(String(value));
+  if (!match) throw new Error(`Unsupported JWT_REFRESH_EXPIRES_IN value: ${value}`);
+  const units = { s: 1000, m: 60_000, h: 3_600_000, d: 86_400_000, w: 604_800_000 };
+  return Number(match[1]) * units[match[2]];
 }
 
 module.exports = {

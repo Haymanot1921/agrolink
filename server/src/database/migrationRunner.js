@@ -1,35 +1,15 @@
-// server/src/database/migrationRunner.js
-// Ordered, idempotent, lock-protected MongoDB migration runner.
-// Usage (CLI — src/database/migrate.js is a thin wrapper):
-//     node src/database/migrate.js up
-//     node src/database/migrate.js down [--force]
-//     node src/database/migrate.js status
-//
-// Migration file contract:
-//   module.exports = {
-//     name: '001-initial-role-seed',      // must match filename prefix
-//     up:   async ({ db, mongoose }) => { ... },
-//     down: async ({ db, mongoose }) => { ... }, // optional
-//   };
-//
-// Filenames must be `NNN-name.js` so ordering is deterministic and future
-// additions can't collide. The `name` field must match the filename (without
-// `.js`) — the runner enforces this to keep the ledger honest.
+// Ordered, lock-protected runner for the SQL migrations in database/migrations.
 'use strict';
 
 const fs = require('fs').promises;
 const path = require('path');
-const mongoose = require('mongoose');
+const database = require('../config/database');
 const env = require('../config/environment');
 const logger = require('../config/logger');
 
 const MIGRATIONS_DIR = path.resolve(__dirname, 'migrations');
-const LEDGER_COLLECTION = '_migrations';
-const LOCK_COLLECTION = '_migration_lock';
-const LOCK_ID = 'runner';
-const LOCK_TTL_MS = 5 * 60 * 1000;
-
-// ─── Utilities ─────────────────────────────────────────────────────────────
+const LEDGER_TABLE = 'schema_migrations';
+const LOCK_NAME = 'agrolink_schema_migrations';
 
 async function listMigrationFiles() {
   let entries;
@@ -40,240 +20,183 @@ async function listMigrationFiles() {
     throw err;
   }
   return entries
-    .filter((f) => /^\d{3}-[a-z0-9-]+\.js$/i.test(f))
+    .filter((file) => /^\d{3}_[a-z0-9_]+\.sql$/i.test(file))
     .sort((a, b) => a.localeCompare(b));
 }
 
-async function loadMigration(fileName) {
-  const fullPath = path.join(MIGRATIONS_DIR, fileName);
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  const migration = require(fullPath);
-  if (!migration || typeof migration.up !== 'function') {
-    throw new Error(`Migration ${fileName} missing 'up' function`);
-  }
-  const expected = fileName.replace(/\.js$/, '');
-  if (migration.name && migration.name !== expected) {
-    throw new Error(
-      `Migration ${fileName}: 'name' (${migration.name}) must match filename (${expected})`,
-    );
-  }
-  return { ...migration, name: expected, fileName };
+async function ensureLedger(connection) {
+  await connection.execute(`
+    CREATE TABLE IF NOT EXISTS ${LEDGER_TABLE} (
+      name VARCHAR(120) NOT NULL PRIMARY KEY,
+      applied_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
 }
 
-async function ensureCollections(db) {
-  const existing = new Set((await db.listCollections().toArray()).map((c) => c.name));
-  if (!existing.has(LEDGER_COLLECTION)) {
-    await db.createCollection(LEDGER_COLLECTION);
-    await db.collection(LEDGER_COLLECTION).createIndex({ name: 1 }, { unique: true });
-    await db.collection(LEDGER_COLLECTION).createIndex({ appliedAt: -1 });
-  }
-  if (!existing.has(LOCK_COLLECTION)) {
-    await db.createCollection(LOCK_COLLECTION);
-  }
-}
-
-async function acquireLock(db) {
-  const now = new Date();
-  const expiresAt = new Date(now.getTime() + LOCK_TTL_MS);
-  const holder = `${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  try {
-    const result = await db.collection(LOCK_COLLECTION).findOneAndUpdate(
-      { _id: LOCK_ID, $or: [{ expiresAt: { $lt: now } }, { expiresAt: null }] },
-      { $set: { holder, acquiredAt: now, expiresAt } },
-      { upsert: true, returnDocument: 'after' },
-    );
-    const doc = result.value || result;
-    if (doc && doc.holder === holder) {
-      return async function release() {
-        await db
-          .collection(LOCK_COLLECTION)
-          .deleteOne({ _id: LOCK_ID, holder })
-          .catch(() => {});
-      };
-    }
-  } catch (err) {
-    if (err.code === 11000) {
-      const err2 = new Error('Another migration is currently running');
-      err2.code = 'MIGRATION_LOCKED';
-      throw err2;
-    }
+async function acquireLock(connection) {
+  const [rows] = await connection.execute('SELECT GET_LOCK(?, 0) AS acquired', [LOCK_NAME]);
+  if (rows[0].acquired !== 1) {
+    const err = new Error('Another migration is currently running');
+    err.code = 'MIGRATION_LOCKED';
     throw err;
   }
-  const err = new Error('Another migration is currently running');
-  err.code = 'MIGRATION_LOCKED';
-  throw err;
 }
 
-async function appliedMigrations(db) {
-  const rows = await db
-    .collection(LEDGER_COLLECTION)
-    .find({})
-    .sort({ appliedAt: 1 })
-    .toArray();
-  return new Map(rows.map((r) => [r.name, r]));
+async function releaseLock(connection) {
+  await connection.execute('SELECT RELEASE_LOCK(?)', [LOCK_NAME]);
 }
 
-function resolveDb() {
-  if (!mongoose.connection || !mongoose.connection.db) {
-    throw new Error('MongoDB is not connected — call database.connect() first');
+async function readApplied(connection) {
+  const [rows] = await connection.execute(
+    `SELECT name, applied_at AS appliedAt FROM ${LEDGER_TABLE} ORDER BY applied_at, name`,
+  );
+  return new Map(rows.map((row) => [row.name, row]));
+}
+
+function splitSqlStatements(sql) {
+  const statements = [];
+  let statement = '';
+  let quote = null;
+  let lineComment = false;
+  let blockComment = false;
+
+  for (let i = 0; i < sql.length; i += 1) {
+    const char = sql[i];
+    const next = sql[i + 1];
+
+    if (lineComment) {
+      if (char === '\n') {
+        lineComment = false;
+        statement += '\n';
+      }
+      continue;
+    }
+
+    if (blockComment) {
+      if (char === '*' && next === '/') {
+        blockComment = false;
+        i += 1;
+      }
+      continue;
+    }
+
+    if (quote) {
+      statement += char;
+      if (char === '\\' && next) {
+        statement += next;
+        i += 1;
+      } else if (char === quote) {
+        if (next === quote) {
+          statement += next;
+          i += 1;
+        } else {
+          quote = null;
+        }
+      }
+      continue;
+    }
+
+    if ((char === '-' && next === '-' && (i + 2 === sql.length || /\s/.test(sql[i + 2])))
+      || char === '#') {
+      lineComment = true;
+      if (char === '-') i += 1;
+      continue;
+    }
+    if (char === '/' && next === '*') {
+      blockComment = true;
+      i += 1;
+      continue;
+    }
+    if (char === "'" || char === '"' || char === '`') {
+      quote = char;
+      statement += char;
+      continue;
+    }
+    if (char === ';') {
+      if (statement.trim()) statements.push(statement.trim());
+      statement = '';
+      continue;
+    }
+    statement += char;
   }
-  return mongoose.connection.db;
+
+  if (statement.trim()) statements.push(statement.trim());
+  return statements;
 }
 
-// ─── Public API ────────────────────────────────────────────────────────────
-
-/**
- * Run all pending migrations in filename order.
- * @param {{ dryRun?: boolean, context?: object }} [opts]
- * @returns {Promise<Array<{ name, status, durationMs }>>}
- */
-async function up(opts = {}) {
-  const { dryRun = false, context = {} } = opts;
-  const db = resolveDb();
-  await ensureCollections(db);
-  const release = await acquireLock(db);
-
+async function up({ dryRun = false } = {}) {
   const files = await listMigrationFiles();
-  const applied = await appliedMigrations(db);
-  const results = [];
+  if (dryRun) return files.map((file) => ({ name: file.replace(/\.sql$/, ''), status: 'pending' }));
 
+  const connection = await database.getConnection();
   try {
+    await ensureLedger(connection);
+    await acquireLock(connection);
+    const applied = await readApplied(connection);
+    const results = [];
+
     for (const fileName of files) {
-      const migration = await loadMigration(fileName);
-      if (applied.has(migration.name)) {
-        results.push({ name: migration.name, status: 'skipped' });
+      const name = fileName.replace(/\.sql$/, '');
+      if (applied.has(name)) {
+        results.push({ name, status: 'skipped' });
         continue;
       }
 
-      if (dryRun) {
-        results.push({ name: migration.name, status: 'pending' });
-        continue;
-      }
-
+      const sql = await fs.readFile(path.join(MIGRATIONS_DIR, fileName), 'utf8');
       const startedAt = Date.now();
-      logger.info('[migration] applying', { name: migration.name });
-      try {
-        await migration.up({ db, mongoose, env, context });
-        await db.collection(LEDGER_COLLECTION).insertOne({
-          name: migration.name,
-          fileName,
-          appliedAt: new Date(),
-          durationMs: Date.now() - startedAt,
-        });
-        const durationMs = Date.now() - startedAt;
-        logger.info('[migration] applied', { name: migration.name, durationMs });
-        results.push({ name: migration.name, status: 'applied', durationMs });
-      } catch (err) {
-        logger.error('[migration] failed', {
-          name: migration.name,
-          message: err.message,
-          stack: err.stack,
-        });
-        results.push({ name: migration.name, status: 'failed', error: err.message });
-        throw err;
+      logger.info('[migration] applying', { name });
+      for (const statement of splitSqlStatements(sql)) {
+        await connection.query(statement);
       }
+      await connection.execute(`INSERT INTO ${LEDGER_TABLE} (name) VALUES (?)`, [name]);
+      const durationMs = Date.now() - startedAt;
+      logger.info('[migration] applied', { name, durationMs });
+      results.push({ name, status: 'applied', durationMs });
     }
-  } finally {
-    await release();
-  }
 
-  return results;
-}
-
-/**
- * Revert the last `steps` applied migrations (or a specific one by name).
- * In production, requires { force: true } — prevents accidental rollbacks.
- */
-async function down({ steps = 1, name = null, force = false, context = {} } = {}) {
-  if (env.isProduction && !force) {
-    const err = new Error('Rollbacks are disabled in production without { force: true }');
-    err.code = 'PROD_ROLLBACK_FORBIDDEN';
+    return results;
+  } catch (err) {
+    logger.error('[migration] failed', { message: err.message, stack: err.stack });
     throw err;
-  }
-
-  const db = resolveDb();
-  await ensureCollections(db);
-  const release = await acquireLock(db);
-
-  const files = await listMigrationFiles();
-  const applied = await appliedMigrations(db);
-  const results = [];
-
-  try {
-    let toRevert;
-    if (name) {
-      if (!applied.has(name)) throw new Error(`Migration '${name}' not applied`);
-      const m = await loadMigration(files.find((f) => f.replace(/\.js$/, '') === name));
-      toRevert = [m];
-    } else {
-      const pending = files
-        .map((f) => f.replace(/\.js$/, ''))
-        .filter((n) => applied.has(n));
-      const lastN = pending.slice(-steps);
-      toRevert = [];
-      for (const n of lastN) {
-        // eslint-disable-next-line no-await-in-loop
-        toRevert.push(await loadMigration(files.find((f) => f.replace(/\.js$/, '') === n)));
-      }
-      toRevert.reverse(); // revert newest first
-    }
-
-    for (const migration of toRevert) {
-      if (typeof migration.down !== 'function') {
-        logger.warn('[migration] no down function — skipping', { name: migration.name });
-        results.push({ name: migration.name, status: 'skipped_no_down' });
-        continue;
-      }
-      const startedAt = Date.now();
-      logger.info('[migration] reverting', { name: migration.name });
-      try {
-        await migration.down({ db, mongoose, env, context });
-        await db.collection(LEDGER_COLLECTION).deleteOne({ name: migration.name });
-        const durationMs = Date.now() - startedAt;
-        logger.info('[migration] reverted', { name: migration.name, durationMs });
-        results.push({ name: migration.name, status: 'reverted', durationMs });
-      } catch (err) {
-        logger.error('[migration] revert failed', {
-          name: migration.name,
-          message: err.message,
-          stack: err.stack,
-        });
-        results.push({ name: migration.name, status: 'failed', error: err.message });
-        throw err;
-      }
-    }
   } finally {
-    await release();
+    try {
+      await releaseLock(connection);
+    } catch (err) {
+      if (err.code !== 'ER_SP_DOES_NOT_EXIST') {
+        logger.warn('[migration] lock release failed', { message: err.message });
+      }
+    }
+    connection.release();
   }
-
-  return results;
 }
 
-/**
- * Report pending + applied migrations.
- */
-async function status() {
-  const db = resolveDb();
-  await ensureCollections(db);
-  const files = await listMigrationFiles();
-  const applied = await appliedMigrations(db);
+async function down() {
+  throw new Error('SQL migrations are forward-only; no down migrations are defined.');
+}
 
-  return files.map((fileName) => {
-    const name = fileName.replace(/\.js$/, '');
-    const rec = applied.get(name);
-    return {
-      name,
-      status: rec ? 'applied' : 'pending',
-      appliedAt: rec ? rec.appliedAt : null,
-      durationMs: rec ? rec.durationMs : null,
-    };
-  });
+async function status() {
+  const files = await listMigrationFiles();
+  const connection = await database.getConnection();
+  try {
+    await ensureLedger(connection);
+    const applied = await readApplied(connection);
+    return files.map((fileName) => {
+      const name = fileName.replace(/\.sql$/, '');
+      const record = applied.get(name);
+      return {
+        name,
+        status: record ? 'applied' : 'pending',
+        appliedAt: record ? record.appliedAt : null,
+      };
+    });
+  } finally {
+    connection.release();
+  }
 }
 
 module.exports = {
   up,
   down,
   status,
-  // exposed for tests
-  _internals: { listMigrationFiles, loadMigration, MIGRATIONS_DIR, LEDGER_COLLECTION },
+  _internals: { listMigrationFiles, splitSqlStatements, MIGRATIONS_DIR, LEDGER_TABLE, env },
 };

@@ -1,7 +1,7 @@
 // server/src/shared/validators/commonSchemas.js
 // Reusable Joi primitives. Modules compose these into their own validators.
 // Every primitive matches the platform's canonical rules:
-//   - Mongo ObjectId (24-hex)
+//   - MySQL auto-increment IDs
 //   - Ethiopia phone (+251 / 0-prefix)
 //   - ETB amounts in integer minor units (santim)
 //   - ISO dates / date ranges
@@ -73,10 +73,10 @@ const {
 
 // --- Primitive schemas ------------------------------------------------------
 
-// Mongo ObjectId (24 hex chars)
+// MySQL BIGINT UNSIGNED ID serialized as a decimal string.
 const objectId = Joi.string()
-  .pattern(/^[0-9a-fA-F]{24}$/)
-  .message('Must be a valid ObjectId');
+  .pattern(/^[1-9]\d{0,19}$/)
+  .message('Must be a valid MySQL ID');
 
 // Simple alphanumeric slug (for categories, article slugs)
 const slug = Joi.string()
@@ -209,7 +209,7 @@ const multiEnum = (enumSchema) =>
 
 // --- Composite schemas ------------------------------------------------------
 
-// Mongo ObjectId path param (req.params.id)
+// MySQL ID path param (req.params.id)
 const objectIdParam = Joi.object({
   id: objectId.required(),
 });

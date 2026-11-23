@@ -4,6 +4,7 @@
 const service = require('./users.service');
 const { ApiResponse } = require('../../shared/utils/ApiResponse');
 const { parsePagination } = require('../../shared/utils/pagination');
+const database = require('../../config/database');
 
 // --- Self-service ----------------------------------------------------------
 
@@ -118,57 +119,58 @@ async function adminChangeRole(req, res) {
 function buildProfileDeps() {
   return {
     getListingStats: async (farmerId) => {
-      // eslint-disable-next-line global-require
-      const Listing = require('../farmer/listings/listing.model');
-      const [total, published, pending] = await Promise.all([
-        Listing.countDocuments({ farmerId }),
-        Listing.countDocuments({ farmerId, status: 'published' }),
-        Listing.countDocuments({ farmerId, status: 'pending_review' }),
-      ]);
-      return { total, published, pending };
+      const [[stats]] = await database.query(
+        `SELECT COUNT(*) AS total,
+                SUM(status = 'published') AS published,
+                SUM(status = 'pending_review') AS pending
+         FROM listings WHERE farmer_id = ? AND deleted_at IS NULL`,
+        [farmerId],
+      );
+      return {
+        total: Number(stats.total),
+        published: Number(stats.published || 0),
+        pending: Number(stats.pending || 0),
+      };
     },
     getOrderStats: async (userId) => {
-      // eslint-disable-next-line global-require
-      const Order = require('../buyer/buyer-orders/order.model');
-      const [total, completed] = await Promise.all([
-        Order.countDocuments({ $or: [{ buyerId: userId }, { farmerId: userId }] }),
-        Order.countDocuments({
-          $or: [{ buyerId: userId }, { farmerId: userId }],
-          status: 'completed',
-        }),
-      ]);
-      return { total, completed };
+      const [[stats]] = await database.query(
+        `SELECT COUNT(*) AS total, SUM(status = 'completed') AS completed
+         FROM orders WHERE buyer_id = ? OR farmer_id = ?`,
+        [userId, userId],
+      );
+      return { total: Number(stats.total), completed: Number(stats.completed || 0) };
     },
     getConsultationStats: async (expertId) => {
-      // eslint-disable-next-line global-require
-      const Consultation = require('../buyer/buyer-consultations/consultation.model');
       const now = new Date();
-      const [total, upcoming] = await Promise.all([
-        Consultation.countDocuments({ expertId }),
-        Consultation.countDocuments({ expertId, status: 'scheduled', scheduledAt: { $gte: now } }),
-      ]);
-      return { total, upcoming };
+      const [[stats]] = await database.query(
+        `SELECT COUNT(*) AS total,
+                SUM(status = 'scheduled' AND scheduled_at >= ?) AS upcoming
+         FROM consultations WHERE expert_id = ?`,
+        [now, expertId],
+      );
+      return { total: Number(stats.total), upcoming: Number(stats.upcoming || 0) };
     },
     getReviewSummary: async (subjectId) => {
-      // eslint-disable-next-line global-require
-      const Review = require('../buyer/buyer-reviews/review.model');
-      const agg = await Review.aggregate([
-        { $match: { subjectId: new (require('mongoose').Types.ObjectId)(String(subjectId)), status: 'published' } },
-        { $group: { _id: null, averageRating: { $avg: '$rating' }, count: { $sum: 1 } } },
-      ]);
-      const r = agg[0] || { averageRating: 0, count: 0 };
-      return { averageRating: Math.round((r.averageRating || 0) * 10) / 10, count: r.count };
+      const [[stats]] = await database.query(
+        `SELECT AVG(rating) AS averageRating, COUNT(*) AS count
+         FROM reviews WHERE subject_id = ? AND status = 'published'`,
+        [subjectId],
+      );
+      return {
+        averageRating: Math.round(Number(stats.averageRating || 0) * 10) / 10,
+        count: Number(stats.count),
+      };
     },
     getConsentSummary: async (farmerId) => {
-      // eslint-disable-next-line global-require
-      const Consent = require('../administrator/assisted-farmer-monitoring/consentRecordReview.model');
       const now = new Date();
       const warn = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      const [active, expiring] = await Promise.all([
-        Consent.countDocuments({ farmerId, status: 'active' }),
-        Consent.countDocuments({ farmerId, status: 'active', expiresAt: { $lte: warn, $gt: now } }),
-      ]);
-      return { active, expiring };
+      const [[stats]] = await database.query(
+        `SELECT COUNT(*) AS active,
+                SUM(expires_at > ? AND expires_at <= ?) AS expiring
+         FROM consent_records WHERE farmer_id = ? AND status = 'active'`,
+        [now, warn, farmerId],
+      );
+      return { active: Number(stats.active), expiring: Number(stats.expiring || 0) };
     },
   };
 }

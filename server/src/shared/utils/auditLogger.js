@@ -6,6 +6,7 @@
 'use strict';
 
 const logger = require('../../config/logger');
+const database = require('../../config/database');
 
 // Actions are namespaced: 'admin.user.suspend', 'admin.listing.remove', etc.
 // Kept open so new sub-modules don't need a schema change.
@@ -87,9 +88,32 @@ async function writeAudit({
   };
 
   try {
-    // eslint-disable-next-line global-require
-    const AuditLog = require('../../modules/administrator/audit-logs/auditLog.model');
-    await AuditLog.create(entry);
+    await database.query(
+      `INSERT INTO audit_logs
+       (actor_id, actor_role, action, category, severity, outcome, target_type,
+        target_id, changes_json, metadata_json, reason, ip, user_agent, request_id,
+        mfa_verified, consent_id, timestamp)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        actor.id,
+        actor.role,
+        action,
+        category,
+        severity,
+        outcome,
+        entry.targetType,
+        entry.targetId,
+        changes ? JSON.stringify(changes) : null,
+        entry.metadata ? JSON.stringify(entry.metadata) : null,
+        entry.reason,
+        entry.ip,
+        entry.userAgent,
+        entry.requestId,
+        entry.mfaVerified ? 1 : 0,
+        entry.consentId,
+        entry.timestamp,
+      ],
+    );
     logger.info('[audit] written', {
       action,
       actorId: actor.id,
@@ -102,7 +126,7 @@ async function writeAudit({
     // Never let an audit failure block the business action silently:
     // log loudly so ops can backfill, but rethrow in non-prod to surface bugs.
     logger.error('[audit] write failed', { action, message: err.message });
-    if (!process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       throw err;
     }
   }

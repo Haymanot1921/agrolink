@@ -6,6 +6,7 @@
 
 const { acquire } = require('./lockService');
 const logger = require('../../config/logger');
+const database = require('../../config/database');
 
 /**
  * Execute a job with lock + logging.
@@ -62,21 +63,25 @@ async function execute(jobDef, context = {}) {
 
   // Persist to background_job_log for the system-health dashboard.
   try {
-    // eslint-disable-next-line global-require
-    const BackgroundJobLog = require('../../modules/administrator/system-health/backgroundJobLog.model');
-    await BackgroundJobLog.create({
-      jobName: name,
-      status,
-      startedAt,
-      finishedAt,
-      durationMs,
-      processed: summary.processed,
-      skipped: summary.skipped,
-      failed: summary.failed,
-      notes: summary.notes,
-      errorMessage: error ? error.message : null,
-      triggeredBy: context.actorId || 'scheduler',
-    });
+    await database.query(
+      `INSERT INTO background_job_logs
+       (job_name, status, started_at, finished_at, duration_ms, processed,
+        skipped, failed, notes_json, error_message, triggered_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        name,
+        status,
+        startedAt,
+        finishedAt,
+        durationMs,
+        summary.processed,
+        summary.skipped,
+        summary.failed,
+        summary.notes === null ? null : JSON.stringify(summary.notes),
+        error ? error.message : null,
+        context.actorId || 'scheduler',
+      ],
+    );
   } catch (err) {
     logger.warn('[job] could not persist job log', { name, message: err.message });
   }

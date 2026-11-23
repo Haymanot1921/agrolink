@@ -6,7 +6,6 @@
 //   - seeding admin dashboards with realistic activity
 'use strict';
 
-const mongoose = require('mongoose');
 const {
   AUDIT_EVENT_TYPES,
   AUDIT_CATEGORIES,
@@ -66,7 +65,7 @@ function build(overrides = {}) {
   const actor = overrides.actor || SAMPLE_ACTORS[randomIndex(SAMPLE_ACTORS.length)];
   const target = overrides.target || {
     type: pickTargetType(action),
-    id: new mongoose.Types.ObjectId().toString(),
+    id: randomHex(24),
   };
   const reason =
     overrides.reason !== undefined

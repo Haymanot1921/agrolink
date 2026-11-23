@@ -6,11 +6,11 @@
 'use strict';
 
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
 const { LISTING_STATUSES } = require('../shared/constants/listingStatuses');
 const { NOTIFICATION_TYPES } = require('../shared/constants/notificationTypes');
 const { emitModerationEvent } = require('../sockets/moderationQueue.socket');
 const { MODERATION_SOCKET_EVENTS, MODERATION_TARGETS } = require('../shared/events/moderationEvents');
+const database = require('../config/database');
 
 const NAME = 'staleListingReview';
 const SCHEDULE = '0 * * * *'; // hourly
@@ -18,9 +18,7 @@ const PENDING_ESCALATE_HOURS = 24;
 
 async function run({ log, now }) {
   // eslint-disable-next-line global-require
-  const Listing = require('../modules/farmer/listings/listing.model');
-  // eslint-disable-next-line global-require
-  const notificationsService = require('../modules/administrator/notifications/notifications.service');
+  const notificationsService = require('../modules/notifications/notifications.service');
 
   const pendingCutoff = new Date(now.getTime() - PENDING_ESCALATE_HOURS * 60 * 60 * 1000);
   let processed = 0;
@@ -29,20 +27,24 @@ async function run({ log, now }) {
 
   // 1. Auto-expire published listings past their expiry date
   try {
-    const expiredIds = await Listing.find({
-      status: LISTING_STATUSES.PUBLISHED,
-      expiresAt: { $lte: now },
-    })
-      .select('_id farmerId')
-      .limit(1000)
-      .lean();
+    const [expiredIds] = await database.query(
+      `SELECT id AS _id, farmer_id AS farmerId FROM listings
+       WHERE status = ? AND expires_at <= ? AND deleted_at IS NULL
+       ORDER BY expires_at ASC LIMIT 1000`,
+      [LISTING_STATUSES.PUBLISHED, now],
+    );
 
     for (const listing of expiredIds) {
       try {
-        await Listing.updateOne(
-          { _id: listing._id, status: LISTING_STATUSES.PUBLISHED },
-          { $set: { status: LISTING_STATUSES.EXPIRED, expiredAt: new Date() } },
+        const [result] = await database.query(
+          `UPDATE listings SET status = ?, updated_at = NOW()
+           WHERE id = ? AND status = ? AND deleted_at IS NULL`,
+          [LISTING_STATUSES.EXPIRED, listing._id, LISTING_STATUSES.PUBLISHED],
         );
+        if (!result.affectedRows) {
+          skipped += 1;
+          continue;
+        }
 
         emitModerationEvent(
           MODERATION_SOCKET_EVENTS.LISTING_REMOVED,
@@ -78,10 +80,11 @@ async function run({ log, now }) {
 
   // 2. Escalate stale pending reviews to admin queue alerts
   try {
-    const staleCount = await Listing.countDocuments({
-      status: LISTING_STATUSES.PENDING_REVIEW,
-      createdAt: { $lte: pendingCutoff },
-    });
+    const [[countRow]] = await database.query(
+      'SELECT COUNT(*) AS total FROM listings WHERE status = ? AND created_at <= ?',
+      [LISTING_STATUSES.PENDING_REVIEW, pendingCutoff],
+    );
+    const staleCount = Number(countRow.total);
 
     if (staleCount > 0) {
       // eslint-disable-next-line global-require

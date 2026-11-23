@@ -5,7 +5,6 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
-const env = require('../../config/environment');
 const { ROLES } = require('../../shared/constants/roles');
 const { ACCOUNT_STATUSES } = require('../../shared/constants/accountStatuses');
 const { getDefaultPermissionsForRole } = require('../../shared/constants/permissions');
@@ -137,8 +136,7 @@ function defaultCropsForRole(role) {
 }
 
 /**
- * Convert a fixture object into a proper Mongoose document body.
- * Strips `_id` so mongoose generates it (or the caller can override).
+ * Convert a fixture into a plain user record suitable for persistence.
  */
 function toDocument(overrides = {}) {
   const doc = build(overrides);

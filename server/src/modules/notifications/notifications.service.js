@@ -54,11 +54,7 @@ async function dispatch(params) {
  * Used for ADMIN_SYSTEM_ALERT, verification SLA breach, dispute opened, etc.
  */
 async function dispatchToRole(role, params) {
-  // eslint-disable-next-line global-require
-  const User = require('../auth/user.model');
-  const recipients = await User.find({ role, status: 'active', deletedAt: null })
-    .select('_id email phone language notificationPreferences')
-    .lean();
+  const recipients = await usersRepository.findActiveByRole(role);
 
   if (!recipients.length) {
     logger.debug('[notifications] no recipients for role', { role });
@@ -82,7 +78,7 @@ async function dispatchOne(params) {
   } = params;
 
   // 1. Load recipient (single DB read per notification).
-  const user = await usersRepository.findById(userId).lean();
+  const user = await usersRepository.findById(userId);
   if (!user || user.deletedAt) {
     logger.warn('[notifications] recipient not found', { userId, type });
     return null;
@@ -208,7 +204,7 @@ async function stats(userId) {
  * User opt-outs. Mandatory types always use their defaults.
  * Default (undefined) preferences = all channels allowed.
  */
-function filterChannelsForUser({ user, type, requested, mandatory }) {
+function filterChannelsForUser({ user, requested, mandatory }) {
   const prefs = user.notificationPreferences || {};
   const allowed = new Set();
 

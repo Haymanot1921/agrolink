@@ -9,11 +9,9 @@ const tokenService = require('./token.service');
 const otpService = require('./otp.service');
 const { ApiError } = require('../../shared/utils/ApiError');
 const { ACCOUNT_STATUSES } = require('../../shared/constants/accountStatuses');
-const { ROLES } = require('../../shared/constants/roles');
 const { getDefaultPermissionsForRole } = require('../../shared/constants/permissions');
 const { writeAudit } = require('../../shared/utils/auditLogger');
 const { AUDIT_EVENT_TYPES } = require('../../shared/constants/auditEventTypes');
-const { NOTIFICATION_TYPES } = require('../../shared/constants/notificationTypes');
 
 // --- Registration -----------------------------------------------------------
 
@@ -110,13 +108,11 @@ async function login({ payload, req }) {
   }
 
   // First successful verification promotes PENDING -> ACTIVE.
-  if (user.status === ACCOUNT_STATUSES.PENDING && (user.isEmailVerified || user.isPhoneVerified)) {
-    user.status = ACCOUNT_STATUSES.ACTIVE;
-  }
-
-  if (language && language !== user.language) {
-    user.language = language;
-  }
+  const updatedStatus = user.status === ACCOUNT_STATUSES.PENDING
+    && (user.isEmailVerified || user.isPhoneVerified)
+    ? ACCOUNT_STATUSES.ACTIVE
+    : user.status;
+  const updatedLanguage = language || user.language;
 
   const meta = {
     ip: req.ip,
@@ -128,11 +124,9 @@ async function login({ payload, req }) {
 
   await repository.pushRefreshToken(user._id, refreshRecord);
   await repository.recordLogin(user._id, meta);
-  if (user.isModified && user.isModified('status')) {
-    await repository.updateUser(user._id, { status: user.status, language: user.language });
-  } else {
-    await repository.updateUser(user._id, { language: user.language });
-  }
+  await repository.updateUser(user._id, { status: updatedStatus, language: updatedLanguage });
+  user.status = updatedStatus;
+  user.language = updatedLanguage;
 
   await writeAudit({
     req,
@@ -202,7 +196,7 @@ function safeDecodeRefresh(refreshToken) {
   const dot = refreshToken.indexOf('.');
   if (dot < 1) return null;
   const userId = refreshToken.slice(0, dot);
-  if (!/^[0-9a-fA-F]{24}$/.test(userId)) return null;
+  if (!/^[1-9]\d{0,19}$/.test(userId)) return null;
   return { userId };
 }
 

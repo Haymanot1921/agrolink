@@ -7,12 +7,11 @@
 'use strict';
 
 const fs = require('fs').promises;
-const path = require('path');
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
 const env = require('../config/environment');
 const { buildExport, saveExport } = require('../shared/utils/exportUtils');
 const { parseDateRange } = require('../shared/utils/dateTime');
+const database = require('../config/database');
 
 const NAME = 'reportGeneration';
 const SCHEDULE = '0 2 * * *';
@@ -38,9 +37,21 @@ const REPORTS = [
     key: 'daily-orders',
     title: 'Daily orders + GMV',
     getRows: async ({ from, to }) => {
-      // eslint-disable-next-line global-require
-      const Order = require('../modules/buyer/buyer-orders/order.model');
-      return Order.aggregateDailyOrders({ from, to });
+      const [rows] = await database.query(
+        `SELECT DATE_FORMAT(created_at, '%Y-%m-%d') AS day,
+                COUNT(*) AS orderCount,
+                COALESCE(SUM(total_minor), 0) AS gmvMinor,
+                SUM(status = 'cancelled') AS cancelled
+         FROM orders WHERE created_at BETWEEN ? AND ?
+         GROUP BY DATE(created_at) ORDER BY DATE(created_at)`,
+        [from, to],
+      );
+      return rows.map((row) => ({
+        ...row,
+        orderCount: Number(row.orderCount),
+        gmvMinor: Number(row.gmvMinor),
+        cancelled: Number(row.cancelled || 0),
+      }));
     },
     columns: [
       { key: 'day', label: 'Day', width: 14 },
@@ -53,9 +64,23 @@ const REPORTS = [
     key: 'daily-moderation',
     title: 'Moderation activity',
     getRows: async ({ from, to }) => {
-      // eslint-disable-next-line global-require
-      const ListingReview = require('../modules/administrator/listing-moderation/listingReview.model');
-      return ListingReview.aggregateDailyActivity({ from, to });
+      const [rows] = await database.query(
+        `SELECT DATE_FORMAT(h.created_at, '%Y-%m-%d') AS day,
+                SUM(h.to_status = 'published') AS approved,
+                SUM(h.to_status = 'rejected') AS rejected,
+                (SELECT COUNT(*) FROM listings l
+                 WHERE l.status = 'pending_review' AND DATE(l.created_at) = DATE(h.created_at)) AS pending
+         FROM listing_moderation_history h
+         WHERE h.created_at BETWEEN ? AND ?
+         GROUP BY DATE(h.created_at) ORDER BY DATE(h.created_at)`,
+        [from, to],
+      );
+      return rows.map((row) => ({
+        ...row,
+        approved: Number(row.approved || 0),
+        rejected: Number(row.rejected || 0),
+        pending: Number(row.pending || 0),
+      }));
     },
     columns: [
       { key: 'day', label: 'Day', width: 14 },

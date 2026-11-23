@@ -8,10 +8,10 @@
 'use strict';
 
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
 const { NOTIFICATION_TYPES } = require('../shared/constants/notificationTypes');
 const { VERIFICATION_STATUSES } = require('../shared/constants/verificationStatuses');
 const { emitAdminNotification } = require('../sockets/adminNotifications.socket');
+const database = require('../config/database');
 
 const NAME = 'verificationReminder';
 const SCHEDULE = '0 */6 * * *'; // every 6 hours
@@ -20,9 +20,7 @@ const SLA_ADMIN_HOURS = 48;
 
 async function run({ log, now }) {
   // eslint-disable-next-line global-require
-  const VerificationApplication = require('../modules/administrator/identity-verification/verificationApplication.model');
-  // eslint-disable-next-line global-require
-  const notificationsService = require('../modules/administrator/notifications/notifications.service');
+  const notificationsService = require('../modules/notifications/notifications.service');
 
   const slaCutoff = new Date(now.getTime() - SLA_ADMIN_HOURS * 60 * 60 * 1000);
   const staleCutoff = new Date(now.getTime() - STALE_APPLICANT_DAYS * 24 * 60 * 60 * 1000);
@@ -33,10 +31,12 @@ async function run({ log, now }) {
 
   // 1. Admin SLA nudge — count pending older than 48h
   try {
-    const slaCount = await VerificationApplication.countDocuments({
-      status: { $in: [VERIFICATION_STATUSES.PENDING, VERIFICATION_STATUSES.UNDER_REVIEW] },
-      createdAt: { $lte: slaCutoff },
-    });
+    const [[countRow]] = await database.query(
+      `SELECT COUNT(*) AS total FROM verification_applications
+       WHERE status IN (?, ?) AND created_at <= ?`,
+      [VERIFICATION_STATUSES.PENDING, VERIFICATION_STATUSES.UNDER_REVIEW, slaCutoff],
+    );
+    const slaCount = Number(countRow.total);
 
     if (slaCount > 0) {
       // Notify all admins via role room (single event, not per-admin).
@@ -58,13 +58,15 @@ async function run({ log, now }) {
   // 2. Applicant reminders — awaiting additional info
   let staleApplicants = [];
   try {
-    staleApplicants = await VerificationApplication.find({
-      status: VERIFICATION_STATUSES.ADDITIONAL_INFO_REQUESTED,
-      infoRequestedAt: { $lte: staleCutoff },
-    })
-      .select('_id applicantId infoRequestedAt reminderCount')
-      .limit(500)
-      .lean();
+    const [rows] = await database.query(
+      `SELECT id AS _id, applicant_id AS applicantId,
+              info_requested_at AS infoRequestedAt, reminder_count AS reminderCount
+       FROM verification_applications
+       WHERE status = ? AND info_requested_at <= ?
+       ORDER BY info_requested_at ASC LIMIT 500`,
+      [VERIFICATION_STATUSES.ADDITIONAL_INFO_REQUESTED, staleCutoff],
+    );
+    staleApplicants = rows;
   } catch (err) {
     failed += 1;
     log.error('stale applicant query failed', { message: err.message });
@@ -81,9 +83,11 @@ async function run({ log, now }) {
         continue;
       }
 
-      await VerificationApplication.updateOne(
-        { _id: app._id },
-        { $inc: { reminderCount: 1 }, $set: { lastReminderAt: new Date() } },
+      await database.query(
+        `UPDATE verification_applications
+         SET reminder_count = reminder_count + 1, last_reminder_at = NOW()
+         WHERE id = ?`,
+        [app._id],
       );
 
       await notificationsService.dispatch({

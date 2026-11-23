@@ -6,11 +6,11 @@
 'use strict';
 
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
 const { DISPUTE_STATUSES, DISPUTE_SLA_HOURS } = require('../shared/constants/disputeStatuses');
 const { NOTIFICATION_TYPES } = require('../shared/constants/notificationTypes');
 const { emitDisputeEvent } = require('../sockets/disputeUpdates.socket');
 const { DISPUTE_SOCKET_EVENTS } = require('../shared/events/disputeEvents');
+const database = require('../config/database');
 
 const NAME = 'disputeDeadlineReminder';
 const SCHEDULE = '0 */2 * * *';
@@ -18,12 +18,10 @@ const EVIDENCE_OVERDUE_HOURS = 48;
 
 async function run({ log, now }) {
   // eslint-disable-next-line global-require
-  const Dispute = require('../modules/administrator/disputes-management/dispute.model');
-  // eslint-disable-next-line global-require
-  const notificationsService = require('../modules/administrator/notifications/notifications.service');
+  const notificationsService = require('../modules/notifications/notifications.service');
 
   let processed = 0;
-  let skipped = 0;
+  const skipped = 0;
   let failed = 0;
 
   // 1. First-response SLA — admin hasn't touched it
@@ -32,13 +30,13 @@ async function run({ log, now }) {
   );
 
   try {
-    const open = await Dispute.find({
-      status: DISPUTE_STATUSES.OPEN,
-      createdAt: { $lte: firstResponseCutoff },
-    })
-      .select('_id buyerId farmerId orderId createdAt')
-      .limit(500)
-      .lean();
+    const [open] = await database.query(
+      `SELECT id AS _id, buyer_id AS buyerId, farmer_id AS farmerId,
+              order_id AS orderId, created_at AS createdAt
+       FROM disputes WHERE status = ? AND created_at <= ?
+       ORDER BY created_at ASC LIMIT 500`,
+      [DISPUTE_STATUSES.OPEN, firstResponseCutoff],
+    );
 
     for (const dispute of open) {
       try {
@@ -74,13 +72,13 @@ async function run({ log, now }) {
   // 2. Evidence overdue — awaiting_evidence past 48h
   const evidenceCutoff = new Date(now.getTime() - EVIDENCE_OVERDUE_HOURS * 60 * 60 * 1000);
   try {
-    const awaiting = await Dispute.find({
-      status: DISPUTE_STATUSES.AWAITING_EVIDENCE,
-      evidenceRequestedAt: { $lte: evidenceCutoff },
-    })
-      .select('_id buyerId farmerId evidenceRequestedAt')
-      .limit(500)
-      .lean();
+    const [awaiting] = await database.query(
+      `SELECT id AS _id, buyer_id AS buyerId, farmer_id AS farmerId,
+              evidence_requested_at AS evidenceRequestedAt
+       FROM disputes WHERE status = ? AND evidence_requested_at <= ?
+       ORDER BY evidence_requested_at ASC LIMIT 500`,
+      [DISPUTE_STATUSES.AWAITING_EVIDENCE, evidenceCutoff],
+    );
 
     for (const dispute of awaiting) {
       try {

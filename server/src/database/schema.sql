@@ -26,11 +26,11 @@ SET time_zone = '+03:00';           -- Africa/Addis_Ababa
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-DROP DATABASE IF EXISTS agrolink_ethiopia;
-CREATE DATABASE agrolink_ethiopia
+DROP DATABASE IF EXISTS agrolink_ethiopia2;
+CREATE DATABASE agrolink_ethiopia2
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_0900_ai_ci;
-USE agrolink_ethiopia;
+USE agrolink_ethiopia2;
 
 -- =====================================================================
 -- SECTION 1: ROLES & PERMISSIONS  (SRS §4.1, §4.3, §14.2)

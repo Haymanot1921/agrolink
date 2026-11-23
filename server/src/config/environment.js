@@ -24,7 +24,6 @@ const REQUIRED = [
   'NODE_ENV',
   'PORT',
   'API_PREFIX',
-  'MONGODB_URI',
   'JWT_ACCESS_SECRET',
   'JWT_REFRESH_SECRET',
   'JWT_ACCESS_EXPIRES_IN',
@@ -69,12 +68,15 @@ const env = Object.freeze({
   },
 
   database: {
-    uri: process.env.MONGODB_URI,
-    dbName: process.env.MONGODB_DB_NAME || 'agrolink',
+    host: process.env.MYSQL_HOST || '127.0.0.1',
+    port: toInt(process.env.MYSQL_PORT, 3306),
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PASSWORD || '',
+    name: process.env.MYSQL_DATABASE || 'agrolink',
     options: {
-      autoIndex: !process.env.NODE_ENV === 'production',
-      maxPoolSize: toInt(process.env.MONGODB_POOL_SIZE, 20),
-      serverSelectionTimeoutMS: toInt(process.env.MONGODB_SERVER_SELECTION_TIMEOUT, 10000),
+      connectionLimit: toInt(process.env.MYSQL_CONNECTION_LIMIT, 20),
+      connectTimeout: toInt(process.env.MYSQL_CONNECT_TIMEOUT, 10000),
+      timezone: process.env.MYSQL_TIMEZONE || 'Z',
     },
   },
 

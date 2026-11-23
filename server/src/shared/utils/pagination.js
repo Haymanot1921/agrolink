@@ -1,6 +1,5 @@
 // server/src/shared/utils/pagination.js
-// Shared pagination + sorting helpers used across every module.
-// Works with Mongo queries and plain arrays.
+// Shared pagination helpers used by SQL-backed repositories and plain arrays.
 
 'use strict';
 
@@ -63,40 +62,8 @@ function paginateArray(items, { page, limit }) {
   };
 }
 
-/**
- * Execute a Mongoose query with pagination.
- * Expects `query` to already have filters/sort applied; this only
- * applies skip/limit and runs countDocuments in parallel.
- */
-async function paginateMongoose(model, filter = {}, { page, limit, sort, projection, populate } = {}) {
-  const safePage = page || DEFAULTS.page;
-  const safeLimit = Math.min(limit || DEFAULTS.limit, DEFAULTS.maxLimit);
-  const skip = (safePage - 1) * safeLimit;
-
-  const [data, total] = await Promise.all([
-    (async () => {
-      let q = model.find(filter, projection || undefined).skip(skip).limit(safeLimit);
-      if (sort) q = q.sort(sort);
-      if (populate) q = q.populate(populate);
-      return q.lean();
-    })(),
-    model.countDocuments(filter),
-  ]);
-
-  return {
-    data,
-    pagination: {
-      page: safePage,
-      limit: safeLimit,
-      total,
-      totalPages: Math.max(1, Math.ceil(total / safeLimit)),
-    },
-  };
-}
-
 module.exports = {
   DEFAULTS,
   parsePagination,
   paginateArray,
-  paginateMongoose,
 };

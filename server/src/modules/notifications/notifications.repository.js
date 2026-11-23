@@ -1,162 +1,232 @@
-// server/src/modules/notifications/notifications.repository.js
-// All Notification reads/writes go through here — including those used by
-// the jobs/notificationDispatch.job.js pipeline.
+// All notification reads and writes use the MySQL notifications table.
 'use strict';
 
-const mongoose = require('mongoose');
-const Notification = require('./notification.model');
+const database = require('../../config/database');
 
-// --- Writes ----------------------------------------------------------------
+const CHANNELS = new Set(['email', 'sms', 'push']);
+
+function parseJson(value, fallback) {
+  if (value === null || value === undefined) return fallback;
+  if (typeof value !== 'string') return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
+function mapNotification(row) {
+  if (!row) return null;
+  return {
+    _id: String(row.id),
+    id: String(row.id),
+    userId: String(row.userId),
+    type: row.type,
+    priority: row.priority,
+    title: row.title,
+    body: row.body,
+    data: parseJson(row.dataJson, {}),
+    channels: parseJson(row.channelsJson, []),
+    channelStatus: parseJson(row.channelStatusJson, {}),
+    recipientEmail: row.recipientEmail,
+    recipientPhone: row.recipientPhone,
+    isMandatory: Boolean(row.isMandatory),
+    language: row.language,
+    readAt: row.readAt,
+    readBy: row.readBy === null ? null : String(row.readBy),
+    deletedAt: row.deletedAt,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+const SELECT_NOTIFICATION = `
+  SELECT id, user_id AS userId, type, priority, title, body,
+         data_json AS dataJson, channels_json AS channelsJson,
+         channel_status_json AS channelStatusJson, recipient_email AS recipientEmail,
+         recipient_phone AS recipientPhone, is_mandatory AS isMandatory,
+         language, read_at AS readAt, read_by AS readBy, deleted_at AS deletedAt,
+         created_at AS createdAt, created_at AS updatedAt
+  FROM notifications
+`;
 
 async function create(record) {
-  const doc = new Notification(record);
-  await doc.save();
-  return doc;
+  const [result] = await database.query(
+    `INSERT INTO notifications
+     (user_id, type, priority, title, body, data_json, channels_json,
+      channel_status_json, recipient_email, recipient_phone, is_mandatory,
+      language, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      record.userId,
+      record.type,
+      record.priority || 'normal',
+      record.title || null,
+      record.body || null,
+      JSON.stringify(record.data || {}),
+      JSON.stringify(record.channels || ['in_app']),
+      JSON.stringify(record.channelStatus || {}),
+      record.recipientEmail || null,
+      record.recipientPhone || null,
+      record.isMandatory ? 1 : 0,
+      record.language || 'en',
+      record.createdAt || new Date(),
+    ],
+  );
+  const [rows] = await database.query(`${SELECT_NOTIFICATION} WHERE id = ? LIMIT 1`, [result.insertId]);
+  return mapNotification(rows[0]);
 }
 
 async function markRead(userId, notificationId) {
-  const result = await Notification.updateOne(
-    { _id: notificationId, userId, readAt: null },
-    { $set: { readAt: new Date(), readBy: userId } },
+  const [result] = await database.query(
+    `UPDATE notifications SET read_at = NOW(), read_by = ?
+     WHERE id = ? AND user_id = ? AND read_at IS NULL AND deleted_at IS NULL`,
+    [userId, notificationId, userId],
   );
-  return result.modifiedCount > 0;
+  return result.affectedRows > 0;
 }
 
 async function markAllRead(userId) {
-  const result = await Notification.updateMany(
-    { userId, readAt: null, deletedAt: null },
-    { $set: { readAt: new Date(), readBy: userId } },
+  const [result] = await database.query(
+    `UPDATE notifications SET read_at = NOW(), read_by = ?
+     WHERE user_id = ? AND read_at IS NULL AND deleted_at IS NULL`,
+    [userId, userId],
   );
-  return result.modifiedCount;
+  return result.affectedRows;
 }
 
 async function softDelete(userId, notificationId) {
-  const result = await Notification.updateOne(
-    { _id: notificationId, userId },
-    { $set: { deletedAt: new Date() } },
+  const [result] = await database.query(
+    'UPDATE notifications SET deleted_at = NOW() WHERE id = ? AND user_id = ? AND deleted_at IS NULL',
+    [notificationId, userId],
   );
-  return result.modifiedCount > 0;
+  return result.affectedRows > 0;
 }
 
-/**
- * Called by the notificationDispatch job after a channel send attempt.
- * `state` is one of: sending | sent | retrying | failed | skipped
- */
 async function updateChannelState(id, channel, state, extra = {}) {
-  const set = { [`channelStatus.${channel}.state`]: state };
-  if (extra.lastError !== undefined) {
-    set[`channelStatus.${channel}.lastError`] = extra.lastError;
+  if (!CHANNELS.has(channel)) throw new Error(`Unsupported notification channel: ${channel}`);
+  const assignments = [];
+  const params = [];
+  const setJson = (key, value) => {
+    assignments.push('?, CAST(? AS JSON)');
+    params.push(`$.${channel}.${key}`, JSON.stringify(value));
+  };
+
+  setJson('state', state);
+  if (extra.lastError !== undefined) setJson('lastError', extra.lastError);
+  if (state === 'sent') setJson('sentAt', new Date());
+  if (state === 'retrying' || state === 'failed') setJson('lastAttemptAt', new Date());
+
+  let expression = 'COALESCE(channel_status_json, JSON_OBJECT())';
+  for (let i = 0; i < assignments.length; i += 1) {
+    expression = `JSON_SET(${expression}, ${assignments[i]})`;
   }
-  if (state === 'sent') {
-    set[`channelStatus.${channel}.sentAt`] = new Date();
-  }
-  if (state === 'retrying' || state === 'failed') {
-    set[`channelStatus.${channel}.lastAttemptAt`] = new Date();
+  if (extra.attempts !== undefined) {
+    expression = `JSON_SET(${expression}, ?, COALESCE(
+      CAST(JSON_UNQUOTE(JSON_EXTRACT(channel_status_json, ?)) AS UNSIGNED), 0) + ?)`;
+    params.push(
+      `$.${channel}.attempts`,
+      `$.${channel}.attempts`,
+      extra.attempts,
+    );
   }
 
-  const update = { $set: set };
-  if (extra.attempts !== undefined) {
-    update.$inc = { [`channelStatus.${channel}.attempts`]: extra.attempts };
-  }
-  await Notification.updateOne({ _id: id }, update);
+  await database.query(
+    `UPDATE notifications SET channel_status_json = ${expression} WHERE id = ?`,
+    [...params, id],
+  );
 }
 
-// --- Reads -----------------------------------------------------------------
-
-/**
- * Paginated inbox listing.
- * @param {string} userId
- * @param {Object} opts
- * @param {{ page, limit, sort }} opts
- * @param {Object} [opts.filter] — { unread?, types?, priority?, from?, to? }
- */
-async function listForUser(userId, { filter = {}, page, limit, sort }) {
-  const query = { userId, deletedAt: null };
-
-  if (filter.unread === true) query.readAt = null;
-  if (filter.unread === false) query.readAt = { $ne: null };
-  if (Array.isArray(filter.types) && filter.types.length) query.type = { $in: filter.types };
-  if (filter.priority) query.priority = filter.priority;
-  if (filter.from || filter.to) {
-    query.createdAt = {};
-    if (filter.from) query.createdAt.$gte = filter.from;
-    if (filter.to) query.createdAt.$lte = filter.to;
+async function listForUser(userId, { filter = {}, page = 1, limit = 20, sort } = {}) {
+  const conditions = ['user_id = ?', 'deleted_at IS NULL'];
+  const params = [userId];
+  if (filter.unread === true) conditions.push('read_at IS NULL');
+  if (filter.unread === false) conditions.push('read_at IS NOT NULL');
+  if (Array.isArray(filter.types) && filter.types.length) {
+    conditions.push(`type IN (${filter.types.map(() => '?').join(', ')})`);
+    params.push(...filter.types);
+  }
+  if (filter.priority) {
+    conditions.push('priority = ?');
+    params.push(filter.priority);
+  }
+  if (filter.from) {
+    conditions.push('created_at >= ?');
+    params.push(filter.from);
+  }
+  if (filter.to) {
+    conditions.push('created_at <= ?');
+    params.push(filter.to);
   }
 
-  const skip = (page - 1) * limit;
-  const [data, total] = await Promise.all([
-    Notification.find(query)
-      .sort(sort || { createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean(),
-    Notification.countDocuments(query),
-  ]);
+  const safeSort = { createdAt: 'created_at', priority: 'priority', type: 'type' };
+  const sortEntry = sort && Object.entries(sort).find(([field]) => safeSort[field]);
+  const orderBy = sortEntry
+    ? `${safeSort[sortEntry[0]]} ${Number(sortEntry[1]) === 1 ? 'ASC' : 'DESC'}`
+    : 'created_at DESC';
+  const offset = (page - 1) * limit;
+  const where = conditions.join(' AND ');
 
+  const [rows, countRows] = await Promise.all([
+    database.query(
+      `${SELECT_NOTIFICATION} WHERE ${where} ORDER BY ${orderBy} LIMIT ? OFFSET ?`,
+      [...params, limit, offset],
+    ),
+    database.query(
+      `SELECT COUNT(*) AS total FROM notifications WHERE ${where}`,
+      params,
+    ),
+  ]);
+  const total = Number(countRows[0][0].total);
   return {
-    data,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
-    },
+    data: rows[0].map(mapNotification),
+    pagination: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
   };
 }
 
 async function findById(userId, notificationId) {
-  return Notification.findOne({ _id: notificationId, userId, deletedAt: null }).lean();
+  const [rows] = await database.query(
+    `${SELECT_NOTIFICATION} WHERE id = ? AND user_id = ? AND deleted_at IS NULL LIMIT 1`,
+    [notificationId, userId],
+  );
+  return mapNotification(rows[0]);
 }
 
 async function unreadCount(userId) {
-  return Notification.countDocuments({ userId, readAt: null, deletedAt: null });
+  const [rows] = await database.query(
+    'SELECT COUNT(*) AS total FROM notifications WHERE user_id = ? AND read_at IS NULL AND deleted_at IS NULL',
+    [userId],
+  );
+  return Number(rows[0].total);
 }
 
-/**
- * Grouped unread counts per type (used by badge menus).
- */
 async function unreadByType(userId) {
-  const rows = await Notification.aggregate([
-    { $match: { userId: toObjectId(userId), readAt: null, deletedAt: null } },
-    { $group: { _id: '$type', count: { $sum: 1 } } },
-    { $project: { _id: 0, type: '$_id', count: 1 } },
-  ]);
-  return rows;
+  const [rows] = await database.query(
+    `SELECT type, COUNT(*) AS count FROM notifications
+     WHERE user_id = ? AND read_at IS NULL AND deleted_at IS NULL GROUP BY type`,
+    [userId],
+  );
+  return rows.map((row) => ({ type: row.type, count: Number(row.count) }));
 }
 
 async function statsForUser(userId) {
-  const objectId = toObjectId(userId);
-  const [total, unread] = await Promise.all([
-    Notification.countDocuments({ userId: objectId, deletedAt: null }),
-    Notification.countDocuments({ userId: objectId, readAt: null, deletedAt: null }),
-  ]);
-  return { total, unread };
+  const [rows] = await database.query(
+    `SELECT COUNT(*) AS total, SUM(read_at IS NULL) AS unread
+     FROM notifications WHERE user_id = ? AND deleted_at IS NULL`,
+    [userId],
+  );
+  return { total: Number(rows[0].total), unread: Number(rows[0].unread || 0) };
 }
 
-// --- Used by jobs/notificationDispatch.job.js -------------------------------
-
-/**
- * Fetch pending notifications whose channel status is queued/retrying.
- * Called by the dispatch job — returns lean docs so we don't load full models.
- */
 async function findPendingChannelBatch(limit = 100) {
-  return Notification.find({
-    $or: [
-      { 'channelStatus.email.state': { $in: ['queued', 'retrying'] } },
-      { 'channelStatus.sms.state': { $in: ['queued', 'retrying'] } },
-    ],
-  })
-    .sort({ createdAt: 1 })
-    .limit(limit)
-    .lean();
-}
-
-// --- Helpers ---------------------------------------------------------------
-
-function toObjectId(id) {
-  if (!id) return null;
-  if (id instanceof mongoose.Types.ObjectId) return id;
-  return new mongoose.Types.ObjectId(String(id));
+  const [rows] = await database.query(
+    `${SELECT_NOTIFICATION}
+     WHERE JSON_UNQUOTE(JSON_EXTRACT(channel_status_json, '$.email.state')) IN ('queued', 'retrying')
+        OR JSON_UNQUOTE(JSON_EXTRACT(channel_status_json, '$.sms.state')) IN ('queued', 'retrying')
+     ORDER BY created_at ASC LIMIT ?`,
+    [limit],
+  );
+  return rows.map(mapNotification);
 }
 
 module.exports = {

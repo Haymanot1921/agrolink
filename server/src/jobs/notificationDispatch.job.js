@@ -4,45 +4,30 @@
 // sockets/adminNotifications.socket.js — this job only handles
 // buffered channel delivery and retries.
 //
-// Uses the notification.model's `channelStatus` field to track per-channel
+// Uses the notification channel-status JSON field to track per-channel
 // delivery. Picks up rows where a channel is `queued` or `retrying`.
 // Schedule: every minute.
 
 'use strict';
 
 const { execute } = require('./_runtime/jobRunner');
-const logger = require('../config/logger');
 const email = require('../config/email');
 const sms = require('../config/smsProvider');
 const { NOTIFICATION_CHANNELS } = require('../shared/constants/notificationTypes');
+const notificationsRepository = require('../modules/notifications/notifications.repository');
 
 const NAME = 'notificationDispatch';
 const SCHEDULE = '* * * * *'; // every minute
 const BATCH_SIZE = 100;
 const MAX_ATTEMPTS = 3;
 
-async function run({ log, now }) {
-  // eslint-disable-next-line global-require
-  const Notification = require('../modules/administrator/notifications/notification.model');
-
+async function run({ log }) {
   let processed = 0;
   let skipped = 0;
   let failed = 0;
 
   // Find notifications with pending channels
-  const pending = await Notification.find({
-    $or: [
-      { 'channelStatus.email.state': { $in: ['queued', 'retrying'] } },
-      { 'channelStatus.sms.state': { $in: ['queued', 'retrying'] } },
-    ],
-  })
-    .sort({ createdAt: 1 })
-    .limit(BATCH_SIZE)
-    .lean()
-    .catch((err) => {
-      log.error('query failed', { message: err.message });
-      return [];
-    });
+  const pending = await notificationsRepository.findPendingChannelBatch(BATCH_SIZE);
 
   if (!pending.length) {
     return { processed: 0, skipped: 0, failed: 0, notes: 'no pending' };
@@ -54,7 +39,7 @@ async function run({ log, now }) {
       const emailState = notif.channelStatus && notif.channelStatus.email;
       if (emailState && ['queued', 'retrying'].includes(emailState.state)) {
         if ((emailState.attempts || 0) >= MAX_ATTEMPTS) {
-          await markChannelFailed(Notification, notif._id, 'email', 'MAX_ATTEMPTS');
+          await markChannelFailed(notif._id, 'email', 'MAX_ATTEMPTS');
           skipped += 1;
         } else if (notif.channels.includes(NOTIFICATION_CHANNELS.EMAIL) && notif.recipientEmail) {
           try {
@@ -64,15 +49,15 @@ async function run({ log, now }) {
               html: renderEmail(notif),
               text: notif.body || '',
             });
-            await markChannelSent(Notification, notif._id, 'email');
+            await markChannelSent(notif._id, 'email');
             processed += 1;
           } catch (err) {
-            await markChannelRetry(Notification, notif._id, 'email', err.message);
+            await markChannelRetry(notif._id, 'email', err.message);
             failed += 1;
             log.error('email send failed', { id: String(notif._id), message: err.message });
           }
         } else {
-          await markChannelFailed(Notification, notif._id, 'email', 'MISSING_RECIPIENT');
+          await markChannelFailed(notif._id, 'email', 'MISSING_RECIPIENT');
           skipped += 1;
         }
       }
@@ -81,7 +66,7 @@ async function run({ log, now }) {
       const smsState = notif.channelStatus && notif.channelStatus.sms;
       if (smsState && ['queued', 'retrying'].includes(smsState.state)) {
         if ((smsState.attempts || 0) >= MAX_ATTEMPTS) {
-          await markChannelFailed(Notification, notif._id, 'sms', 'MAX_ATTEMPTS');
+          await markChannelFailed(notif._id, 'sms', 'MAX_ATTEMPTS');
           skipped += 1;
         } else if (notif.channels.includes(NOTIFICATION_CHANNELS.SMS) && notif.recipientPhone) {
           try {
@@ -89,15 +74,15 @@ async function run({ log, now }) {
               to: notif.recipientPhone,
               message: buildSmsText(notif),
             });
-            await markChannelSent(Notification, notif._id, 'sms');
+            await markChannelSent(notif._id, 'sms');
             processed += 1;
           } catch (err) {
-            await markChannelRetry(Notification, notif._id, 'sms', err.message);
+            await markChannelRetry(notif._id, 'sms', err.message);
             failed += 1;
             log.error('sms send failed', { id: String(notif._id), message: err.message });
           }
         } else {
-          await markChannelFailed(Notification, notif._id, 'sms', 'MISSING_RECIPIENT');
+          await markChannelFailed(notif._id, 'sms', 'MISSING_RECIPIENT');
           skipped += 1;
         }
       }
@@ -112,43 +97,19 @@ async function run({ log, now }) {
 
 // --- Channel state helpers -------------------------------------------------
 
-async function markChannelSent(Notification, id, channel) {
-  await Notification.updateOne(
-    { _id: id },
-    {
-      $set: {
-        [`channelStatus.${channel}.state`]: 'sent',
-        [`channelStatus.${channel}.sentAt`]: new Date(),
-        [`channelStatus.${channel}.lastError`]: null,
-      },
-    },
-  );
+async function markChannelSent(id, channel) {
+  await notificationsRepository.updateChannelState(id, channel, 'sent', { lastError: null });
 }
 
-async function markChannelRetry(Notification, id, channel, error) {
-  await Notification.updateOne(
-    { _id: id },
-    {
-      $inc: { [`channelStatus.${channel}.attempts`]: 1 },
-      $set: {
-        [`channelStatus.${channel}.state`]: 'retrying',
-        [`channelStatus.${channel}.lastError`]: String(error).slice(0, 500),
-        [`channelStatus.${channel}.lastAttemptAt`]: new Date(),
-      },
-    },
-  );
+async function markChannelRetry(id, channel, error) {
+  await notificationsRepository.updateChannelState(id, channel, 'retrying', {
+    attempts: 1,
+    lastError: String(error).slice(0, 500),
+  });
 }
 
-async function markChannelFailed(Notification, id, channel, code) {
-  await Notification.updateOne(
-    { _id: id },
-    {
-      $set: {
-        [`channelStatus.${channel}.state`]: 'failed',
-        [`channelStatus.${channel}.lastError`]: code,
-      },
-    },
-  );
+async function markChannelFailed(id, channel, code) {
+  await notificationsRepository.updateChannelState(id, channel, 'failed', { lastError: code });
 }
 
 // --- Template helpers ------------------------------------------------------
