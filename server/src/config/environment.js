@@ -41,6 +41,12 @@ if (missing.length > 0) {
 const splitList = (value, fallback = []) =>
   (value ? value.split(',').map((s) => s.trim()).filter(Boolean) : fallback);
 
+const includeDevelopmentWebOrigin = (origins) => (
+  process.env.NODE_ENV === 'development'
+    ? [...new Set([...origins, 'http://localhost:5173'])]
+    : origins
+);
+
 const toInt = (value, fallback) => {
   const n = Number.parseInt(value, 10);
   return Number.isNaN(n) ? fallback : n;
@@ -90,7 +96,9 @@ const env = Object.freeze({
   },
 
   cors: {
-    origins: splitList(process.env.CORS_ORIGINS, ['http://localhost:3000']),
+    origins: includeDevelopmentWebOrigin(
+      splitList(process.env.CORS_ORIGINS, ['http://localhost:3000']),
+    ),
     credentials: toBool(process.env.CORS_CREDENTIALS, true),
     methods: splitList(process.env.CORS_METHODS, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']),
     allowedHeaders: splitList(process.env.CORS_ALLOWED_HEADERS, ['Content-Type', 'Authorization', 'Accept-Language', 'X-Request-Id']),
@@ -114,9 +122,11 @@ const env = Object.freeze({
   socket: {
     enabled: toBool(process.env.SOCKET_ENABLED, true),
     path: process.env.SOCKET_PATH || '/socket.io',
-    corsOrigins: splitList(
-      process.env.SOCKET_CORS_ORIGIN,
-      [process.env.CLIENT_URL || 'http://localhost:3000'],
+    corsOrigins: includeDevelopmentWebOrigin(
+      splitList(
+        process.env.SOCKET_CORS_ORIGIN,
+        [process.env.CLIENT_URL || 'http://localhost:3000'],
+      ),
     ),
     pingTimeout: toInt(process.env.SOCKET_PING_TIMEOUT, 25000),
     pingInterval: toInt(process.env.SOCKET_PING_INTERVAL, 20000),
