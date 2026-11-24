@@ -24,6 +24,7 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
+const { randomUUID } = require('crypto');
 const env = require('../../config/environment');
 const { ROLES } = require('../../shared/constants/roles');
 
@@ -35,13 +36,19 @@ const SUPERADMIN = {
 };
 
 const ADMIN = {
-  email: 'admin@agrolink.et',
-  phone: '+251900000001',
-  fullName: 'Platform Administrator',
-  password: 'Admin#2026',
+  email: process.env.SEED_ADMIN_EMAIL || 'admin@agrolink.et',
+  phone: process.env.SEED_ADMIN_PHONE || '+251900000001',
+  fullName: process.env.SEED_ADMIN_FULL_NAME || 'Platform Administrator',
+  password: process.env.SEED_ADMIN_PASSWORD || 'Admin#2026',
 };
 
 async function ensureAdmin({ pool, user, roleCode }) {
+  const [roleColumns] = await pool.query('SHOW COLUMNS FROM roles');
+  const usesLegacySchema = !roleColumns.some((column) => column.Field === 'code');
+  if (usesLegacySchema) {
+    return ensureLegacyAdmin({ pool, user });
+  }
+
   const [roleRows] = await pool.query('SELECT id FROM roles WHERE code = ? LIMIT 1', [roleCode]);
   if (!roleRows.length) throw new Error(`Role '${roleCode}' not found — run 001_roles.seeder.js first`);
   const roleId = roleRows[0].id;
@@ -76,6 +83,33 @@ async function ensureAdmin({ pool, user, roleCode }) {
   );
 
   return userId;
+}
+
+async function ensureLegacyAdmin({ pool, user }) {
+  const [roleRows] = await pool.query(
+    'SELECT id FROM roles WHERE name = ? LIMIT 1',
+    ['administrator'],
+  );
+  if (!roleRows.length) throw new Error("Role 'administrator' not found in the legacy schema");
+
+  const passwordHash = bcrypt.hashSync(user.password, env.security.bcryptRounds);
+  await pool.query(
+    `INSERT INTO users
+       (id, email, phone, password_hash, full_name, role_id, account_status,
+        email_verified_at, phone_verified_at)
+     VALUES (?, ?, ?, ?, ?, ?, 'active', NOW(), NOW())
+     ON DUPLICATE KEY UPDATE
+       phone = VALUES(phone),
+       password_hash = VALUES(password_hash),
+       full_name = VALUES(full_name),
+       role_id = VALUES(role_id),
+       account_status = 'active',
+       email_verified_at = NOW(),
+       phone_verified_at = NOW()`,
+    [randomUUID(), user.email, user.phone, passwordHash, user.fullName, roleRows[0].id],
+  );
+
+  return user.email;
 }
 
 async function run({ pool }) {
