@@ -1,7 +1,26 @@
 // Canonical MySQL repository for user records.
 'use strict';
 
+const crypto = require('crypto');
 const database = require('../../config/database');
+const { getDefaultPermissionsForRole } = require('../../shared/constants/permissions');
+
+let legacySchemaPromise;
+
+async function usesLegacySchema() {
+  if (!legacySchemaPromise) {
+    legacySchemaPromise = database.query('SHOW COLUMNS FROM users')
+      .then(([columns]) => (
+        columns.some((column) => column.Field === 'role_id')
+        && !columns.some((column) => column.Field === 'primary_role_id')
+      ))
+      .catch((error) => {
+        legacySchemaPromise = null;
+        throw error;
+      });
+  }
+  return legacySchemaPromise;
+}
 
 const USER_SELECT = `
   SELECT u.id, u.email, u.phone, u.full_name AS fullName, u.password_hash AS passwordHash,
@@ -43,6 +62,37 @@ const USER_SELECT = `
   LEFT JOIN expert_profiles ep ON ep.user_id = u.id
   LEFT JOIN service_provider_profiles sp ON sp.user_id = u.id
   LEFT JOIN user_addresses ua ON ua.user_id = u.id
+`;
+
+const LEGACY_USER_SELECT = `
+  SELECT u.id, u.email, u.phone, u.full_name AS fullName, u.password_hash AS passwordHash,
+         NULL AS passwordChangedAt,
+         CASE u.account_status
+           WHEN 'pending_verification' THEN 'pending'
+           ELSE u.account_status
+         END AS status,
+         u.preferred_language AS language,
+         (u.email_verified_at IS NOT NULL) AS isEmailVerified,
+         (u.phone_verified_at IS NOT NULL) AS isPhoneVerified,
+         u.email_verified_at AS emailVerifiedAt,
+         u.phone_verified_at AS phoneVerifiedAt,
+         CASE WHEN u.email_verified_at IS NOT NULL OR u.phone_verified_at IS NOT NULL
+           THEN 'approved' ELSE 'unverified'
+         END AS verificationStatus,
+         NULL AS verificationApplicationId,
+         NULL AS avatarUrl, NULL AS businessName, NULL AS bio,
+         u.provider_type AS providerType, NULL AS yearsOfExperience,
+         0 AS tokenVersion, u.last_login_at AS lastLoginAt,
+         u.last_login_ip AS lastLoginIp, NULL AS lastLoginUserAgent,
+         NULL AS notificationPreferences,
+         u.created_at AS createdAt, u.updated_at AS updatedAt, u.deleted_at AS deletedAt,
+         primary_role.name AS role, NULL AS rolesCsv, NULL AS permissionsCsv,
+         NULL AS primaryCrops, NULL AS farmingExperienceYears,
+         NULL AS region, NULL AS zone, NULL AS woreda, NULL AS kebele, NULL AS city,
+         NULL AS line1, NULL AS line2, NULL AS postalCode,
+         NULL AS geoLat, NULL AS geoLng, NULL AS specialtiesCsv
+  FROM users u
+  JOIN roles primary_role ON primary_role.id = u.role_id
 `;
 
 const USER_COLUMNS = Object.freeze({
@@ -143,18 +193,35 @@ function mapUser(row) {
   };
 }
 
+function mapLegacyUser(row) {
+  const user = mapUser(row);
+  if (user && user.role === 'administrator') {
+    user.roles = ['administrator', 'admin'];
+    user.permissions = getDefaultPermissionsForRole('admin');
+  }
+  return user;
+}
+
 async function findOne(whereSql, params, { includeRefreshTokens = false } = {}) {
-  const [rows] = await database.query(`${USER_SELECT} WHERE ${whereSql} LIMIT 1`, params);
-  const user = mapUser(rows[0]);
+  const legacySchema = await usesLegacySchema();
+  const [rows] = await database.query(
+    `${legacySchema ? LEGACY_USER_SELECT : USER_SELECT} WHERE ${whereSql} LIMIT 1`,
+    params,
+  );
+  const user = legacySchema ? mapLegacyUser(rows[0]) : mapUser(rows[0]);
   if (user && includeRefreshTokens) {
-    const [tokens] = await database.query(
-      `SELECT token_hash AS hash, created_at AS createdAt, expires_at AS expiresAt,
-              device_fingerprint AS deviceFingerprint, user_agent AS userAgent, ip
-       FROM refresh_tokens
-       WHERE user_id = ? AND revoked_at IS NULL AND expires_at > NOW()
-       ORDER BY created_at DESC LIMIT 10`,
-      [user._id],
-    );
+    const tokenQuery = legacySchema
+      ? `SELECT token_hash AS hash, created_at AS createdAt, expires_at AS expiresAt,
+                NULL AS deviceFingerprint, user_agent AS userAgent, ip_address AS ip
+         FROM refresh_tokens
+         WHERE user_id = ? AND revoked_at IS NULL AND expires_at > NOW()
+         ORDER BY created_at DESC LIMIT 10`
+      : `SELECT token_hash AS hash, created_at AS createdAt, expires_at AS expiresAt,
+                device_fingerprint AS deviceFingerprint, user_agent AS userAgent, ip
+         FROM refresh_tokens
+         WHERE user_id = ? AND revoked_at IS NULL AND expires_at > NOW()
+         ORDER BY created_at DESC LIMIT 10`;
+    const [tokens] = await database.query(tokenQuery, [user._id]);
     user.refreshTokens = tokens;
   }
   return user;
@@ -287,6 +354,43 @@ async function saveAddress(connection, userId, address) {
 }
 
 async function updateById(id, patch = {}) {
+  if (await usesLegacySchema()) {
+    const legacyColumns = {
+      email: 'email',
+      phone: 'phone',
+      fullName: 'full_name',
+      passwordHash: 'password_hash',
+      status: 'account_status',
+      language: 'preferred_language',
+    };
+    const assignments = [];
+    const values = [];
+    for (const [key, value] of Object.entries(patch)) {
+      if (key === 'isEmailVerified' || key === 'isPhoneVerified') {
+        const column = key === 'isEmailVerified' ? 'email_verified_at' : 'phone_verified_at';
+        assignments.push(`${column} = IF(?, COALESCE(${column}, NOW()), NULL)`);
+        values.push(value ? 1 : 0);
+      } else if (Object.prototype.hasOwnProperty.call(legacyColumns, key)) {
+        assignments.push(`${legacyColumns[key]} = ?`);
+        values.push(
+          key === 'status' && value === 'pending'
+            ? 'pending_verification'
+            : value,
+        );
+      } else {
+        throw new Error(`Unsupported legacy user profile field: ${key}`);
+      }
+    }
+
+    if (assignments.length) {
+      await database.query(
+        `UPDATE users SET ${assignments.join(', ')} WHERE id = ?`,
+        [...values, id],
+      );
+    }
+    return findById(id);
+  }
+
   const values = [];
   const assignments = [];
   const relatedFields = new Set([
@@ -428,6 +532,34 @@ async function softDelete(id) {
 }
 
 async function addRefreshToken(id, record) {
+  if (await usesLegacySchema()) {
+    await database.query(
+      `INSERT INTO refresh_tokens
+       (id, user_id, token_hash, expires_at, user_agent, ip_address, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        crypto.randomUUID(),
+        id,
+        record.hash,
+        record.expiresAt,
+        record.userAgent,
+        record.ip,
+        record.createdAt,
+      ],
+    );
+    await database.query(
+      `UPDATE refresh_tokens SET revoked_at = NOW()
+       WHERE user_id = ? AND revoked_at IS NULL AND id NOT IN (
+         SELECT id FROM (
+           SELECT id FROM refresh_tokens WHERE user_id = ? AND revoked_at IS NULL
+           ORDER BY created_at DESC LIMIT 10
+         ) AS retained
+       )`,
+      [id, id],
+    );
+    return;
+  }
+
   await database.query(
     `INSERT INTO refresh_tokens
      (user_id, token_hash, device_fingerprint, user_agent, ip, created_at, expires_at)
@@ -455,6 +587,32 @@ async function addRefreshToken(id, record) {
 }
 
 async function setRefreshTokens(id, records) {
+  if (await usesLegacySchema()) {
+    await database.transaction(async (connection) => {
+      await connection.execute(
+        'UPDATE refresh_tokens SET revoked_at = NOW() WHERE user_id = ? AND revoked_at IS NULL',
+        [id],
+      );
+      for (const record of records) {
+        await connection.execute(
+          `INSERT INTO refresh_tokens
+           (id, user_id, token_hash, expires_at, user_agent, ip_address, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [
+            crypto.randomUUID(),
+            id,
+            record.hash,
+            record.expiresAt,
+            record.userAgent,
+            record.ip,
+            record.createdAt,
+          ],
+        );
+      }
+    });
+    return;
+  }
+
   await database.transaction(async (connection) => {
     await connection.execute(
       'UPDATE refresh_tokens SET revoked_at = NOW() WHERE user_id = ? AND revoked_at IS NULL',
@@ -481,7 +639,9 @@ async function setRefreshTokens(id, records) {
 
 async function revokeAllTokens(id) {
   await database.transaction(async (connection) => {
-    await connection.execute('UPDATE users SET token_version = token_version + 1 WHERE id = ?', [id]);
+    if (!(await usesLegacySchema())) {
+      await connection.execute('UPDATE users SET token_version = token_version + 1 WHERE id = ?', [id]);
+    }
     await connection.execute(
       'UPDATE refresh_tokens SET revoked_at = NOW() WHERE user_id = ? AND revoked_at IS NULL',
       [id],
@@ -490,6 +650,10 @@ async function revokeAllTokens(id) {
 }
 
 async function updatePassword(id, hash) {
+  if (await usesLegacySchema()) {
+    await database.query('UPDATE users SET password_hash = ? WHERE id = ?', [hash, id]);
+    return;
+  }
   await database.query(
     `UPDATE users SET password_hash = ?, password_changed_at = NOW(),
      token_version = token_version + 1 WHERE id = ?`,
@@ -498,6 +662,13 @@ async function updatePassword(id, hash) {
 }
 
 async function recordLogin(id, meta = {}) {
+  if (await usesLegacySchema()) {
+    await database.query(
+      'UPDATE users SET last_login_at = NOW(), last_login_ip = ? WHERE id = ?',
+      [meta.ip || null, id],
+    );
+    return;
+  }
   await database.query(
     'UPDATE users SET last_login_at = NOW(), last_login_ip = ?, last_login_user_agent = ? WHERE id = ?',
     [meta.ip || null, meta.userAgent || null, id],

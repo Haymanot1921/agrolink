@@ -196,7 +196,9 @@ function safeDecodeRefresh(refreshToken) {
   const dot = refreshToken.indexOf('.');
   if (dot < 1) return null;
   const userId = refreshToken.slice(0, dot);
-  if (!/^[1-9]\d{0,19}$/.test(userId)) return null;
+  const isNumericId = /^[1-9]\d{0,19}$/.test(userId);
+  const isUuid = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(userId);
+  if (!isNumericId && !isUuid) return null;
   return { userId };
 }
 

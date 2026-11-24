@@ -88,32 +88,55 @@ async function writeAudit({
   };
 
   try {
-    await database.query(
-      `INSERT INTO audit_logs
-       (actor_id, actor_role, action, category, severity, outcome, target_type,
-        target_id, changes_json, metadata_json, reason, ip, user_agent, request_id,
-        mfa_verified, consent_id, timestamp)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        actor.id,
-        actor.role,
-        action,
-        category,
-        severity,
-        outcome,
-        entry.targetType,
-        entry.targetId,
-        changes ? JSON.stringify(changes) : null,
-        entry.metadata ? JSON.stringify(entry.metadata) : null,
-        entry.reason,
-        entry.ip,
-        entry.userAgent,
-        entry.requestId,
-        entry.mfaVerified ? 1 : 0,
-        entry.consentId,
-        entry.timestamp,
-      ],
-    );
+    const [columns] = await database.query('SHOW COLUMNS FROM audit_logs');
+    const isLegacySchema = !columns.some((column) => column.Field === 'category');
+    if (isLegacySchema) {
+      await database.query(
+        `INSERT INTO audit_logs
+         (actor_id, actor_role, action, entity_type, entity_id, old_values,
+          new_values, ip_address, user_agent, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          actor.id,
+          actor.role,
+          action,
+          entry.targetType || category,
+          entry.targetId,
+          changes && changes.before ? JSON.stringify(changes.before) : null,
+          changes || entry.metadata ? JSON.stringify({ changes, metadata: entry.metadata }) : null,
+          entry.ip,
+          entry.userAgent,
+          entry.timestamp,
+        ],
+      );
+    } else {
+      await database.query(
+        `INSERT INTO audit_logs
+         (actor_id, actor_role, action, category, severity, outcome, target_type,
+          target_id, changes_json, metadata_json, reason, ip, user_agent, request_id,
+          mfa_verified, consent_id, timestamp)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          actor.id,
+          actor.role,
+          action,
+          category,
+          severity,
+          outcome,
+          entry.targetType,
+          entry.targetId,
+          changes ? JSON.stringify(changes) : null,
+          entry.metadata ? JSON.stringify(entry.metadata) : null,
+          entry.reason,
+          entry.ip,
+          entry.userAgent,
+          entry.requestId,
+          entry.mfaVerified ? 1 : 0,
+          entry.consentId,
+          entry.timestamp,
+        ],
+      );
+    }
     logger.info('[audit] written', {
       action,
       actorId: actor.id,
