@@ -12,7 +12,10 @@ function originValidator(origin, callback) {
   if (env.cors.origins.includes('*') || env.cors.origins.includes(origin)) {
     return callback(null, true);
   }
-  return callback(new Error(`CORS blocked for origin: ${origin}`));
+  const error = new Error(`CORS blocked for origin: ${origin}`);
+  error.statusCode = 403;
+  error.code = 'CORS_ORIGIN_DENIED';
+  return callback(error);
 }
 
 const corsOptions = {
@@ -28,7 +31,7 @@ const corsOptions = {
 // Socket.IO has its own shape; keep a shared builder.
 function buildSocketCors(extra = {}) {
   return {
-    origin: env.socket.corsOrigin === '*' ? '*' : env.socket.corsOrigin,
+    origin: env.socket.corsOrigins.includes('*') ? '*' : env.socket.corsOrigins,
     methods: ['GET', 'POST'],
     credentials: env.cors.credentials,
     ...extra,

@@ -28,6 +28,15 @@ function isJoi(err) {
 }
 
 function normalize(err) {
+  if (err && err.code === 'CORS_ORIGIN_DENIED') {
+    return {
+      statusCode: 403,
+      code: err.code,
+      message: err.message,
+      isOperational: true,
+    };
+  }
+
   if (err instanceof AppError) {
     return {
       statusCode: err.statusCode || 400,

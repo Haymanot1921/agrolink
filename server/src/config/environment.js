@@ -114,7 +114,10 @@ const env = Object.freeze({
   socket: {
     enabled: toBool(process.env.SOCKET_ENABLED, true),
     path: process.env.SOCKET_PATH || '/socket.io',
-    corsOrigin: process.env.SOCKET_CORS_ORIGIN || process.env.CLIENT_URL || 'http://localhost:3000',
+    corsOrigins: splitList(
+      process.env.SOCKET_CORS_ORIGIN,
+      [process.env.CLIENT_URL || 'http://localhost:3000'],
+    ),
     pingTimeout: toInt(process.env.SOCKET_PING_TIMEOUT, 25000),
     pingInterval: toInt(process.env.SOCKET_PING_INTERVAL, 20000),
     maxHttpBufferSize: toInt(process.env.SOCKET_MAX_BUFFER, 1e6),
