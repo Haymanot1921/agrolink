@@ -54,6 +54,12 @@ const tokenStore = {
   },
 };
 
+function getErrorMessage(value) {
+  if (typeof value === 'string') return value;
+  if (value && typeof value.message === 'string') return value.message;
+  return null;
+}
+
 /** Public axios instance. */
 export const api = axios.create({
   baseURL: API_BASE,
@@ -108,15 +114,21 @@ api.interceptors.response.use(
     }
 
     // Normalize error surface for callers
+    const responseError = error.response?.data?.error;
     const normalized = {
       message:
-        error.response?.data?.message ??
-        error.response?.data?.error ??
+        getErrorMessage(error.response?.data?.message) ??
+        getErrorMessage(responseError) ??
         error.message ??
         'Something went wrong',
-      code: error.response?.data?.code ?? error.code ?? 'UNKNOWN',
+      code:
+        error.response?.data?.code ??
+        responseError?.code ??
+        error.code ??
+        'UNKNOWN',
       status: error.response?.status ?? 0,
-      details: error.response?.data?.details ?? null,
+      details:
+        error.response?.data?.details ?? responseError?.details ?? null,
       response: error.response,
     };
     return Promise.reject(normalized);
