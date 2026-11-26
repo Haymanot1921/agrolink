@@ -1432,7 +1432,7 @@ VALUES (
   UUID(),
   'admin@agrolink.et',
   '+251900000001',
-  '$2b$12$REPLACE_WITH_BCRYPT_HASH_OF_ADMIN@12345',
+  '$2a$12$RX2kmpQME81WO0pbxhoP/OfRHk1wT7WhEWPm0UiVHBLBhb4ma9Dn2',
   'System Administrator',
   (SELECT id FROM roles WHERE name='administrator'),
   'active', NOW(), NOW()
