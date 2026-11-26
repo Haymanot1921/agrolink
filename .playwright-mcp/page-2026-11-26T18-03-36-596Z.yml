@@ -1,0 +1,42 @@
+- generic [ref=e2]:
+  - generic [ref=e6]:
+    - button "Language" [ref=e9] [cursor=pointer]:
+      - generic [aria-hidden] [ref=e10]: 🇬🇧
+      - generic [aria-hidden] [ref=e11]: ▼
+    - complementary [aria-hidden] [ref=e12]:
+      - link [ref=e13] [cursor=pointer]:
+        - /url: /
+        - text: AgroLink Ethiopia
+      - heading [level=2] [ref=e14]: Welcome to AgroLink Ethiopia
+      - paragraph [ref=e15]: Buy, sell, and get expert advice — all in one place
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Welcome back" [level=1] [ref=e19]
+        - paragraph [ref=e20]: Log in to continue
+      - alert [ref=e21]: Invalid credentials
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e24]: Email or phone
+          - textbox "Email or phone" [ref=e25]:
+            - /placeholder: you@example.com or +251...
+            - text: haymanotwondmagegn3@gmail.com
+        - generic [ref=e26]:
+          - generic [ref=e27]: Password
+          - textbox "Password" [ref=e28]:
+            - /placeholder: Enter your password
+            - text: Hay1221#
+        - link "Forgot password?" [ref=e30] [cursor=pointer]:
+          - /url: /auth/forgot-password
+        - button "Log in" [ref=e31] [cursor=pointer]
+      - paragraph [ref=e32]:
+        - text: Don't have an account?
+        - link "Sign up" [ref=e33] [cursor=pointer]:
+          - /url: /auth/role
+      - paragraph [ref=e34]:
+        - text: Terms of Service · Privacy Policy
+        - link "Terms of Service" [ref=e35] [cursor=pointer]:
+          - /url: /terms
+        - text: ·
+        - link "Privacy Policy" [ref=e36] [cursor=pointer]:
+          - /url: /privacy
+  - button "Open Tanstack query devtools" [ref=e87] [cursor=pointer]
